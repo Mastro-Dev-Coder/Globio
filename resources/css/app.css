@@ -1,0 +1,2748 @@
+@import 'tailwindcss';
+@import './all.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Custom animations */
+@keyframes pulse-red {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .5;
+    }
+}
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Theme toggle animations */
+@keyframes rotate-in {
+    from {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes rotate-out {
+    from {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: rotate(180deg) scale(0);
+    }
+}
+
+/* Background Colors - Red */
+.bg-red-50 {
+    background-color: rgba(var(--primary-rgb), 0.05) !important;
+}
+
+.bg-red-100 {
+    background-color: rgba(var(--primary-rgb), 0.1) !important;
+}
+
+.bg-red-200 {
+    background-color: rgba(var(--primary-rgb), 0.2) !important;
+}
+
+.bg-red-300 {
+    background-color: rgba(var(--primary-rgb), 0.3) !important;
+}
+
+.bg-red-400 {
+    background-color: rgba(var(--primary-rgb), 0.4) !important;
+}
+
+.bg-red-500 {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-red-600 {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-red-700 {
+    background-color: var(--primary-color-dark) !important;
+}
+
+.bg-red-800 {
+    background-color: var(--primary-color-dark) !important;
+}
+
+.bg-red-900 {
+    background-color: var(--primary-color-dark) !important;
+}
+
+/* Background Colors - From gradients */
+.from-red-400 {
+    --tw-gradient-from: var(--primary-color-light) !important;
+}
+
+.from-red-500 {
+    --tw-gradient-from: var(--primary-color) !important;
+}
+
+.from-red-600 {
+    --tw-gradient-from: var(--primary-color) !important;
+}
+
+.from-red-700 {
+    --tw-gradient-from: var(--primary-color-dark) !important;
+}
+
+.from-red-800 {
+    --tw-gradient-from: var(--primary-color-dark) !important;
+}
+
+.to-red-500 {
+    --tw-gradient-to: var(--primary-color) !important;
+}
+
+.to-red-600 {
+    --tw-gradient-to: var(--primary-color) !important;
+}
+
+.to-red-700 {
+    --tw-gradient-to: var(--primary-color-dark) !important;
+}
+
+.to-red-800 {
+    --tw-gradient-to: var(--primary-color-dark) !important;
+}
+
+.to-pink-400 {
+    --tw-gradient-to: var(--primary-color-light) !important;
+}
+
+.to-pink-800 {
+    --tw-gradient-to: var(--primary-color-dark) !important;
+}
+
+/* Text Colors - Red */
+.text-red-400 {
+    color: var(--primary-color-light) !important;
+}
+
+.text-red-500 {
+    color: var(--primary-color) !important;
+}
+
+.text-red-600 {
+    color: var(--primary-color) !important;
+}
+
+.text-red-700 {
+    color: var(--primary-color-dark) !important;
+}
+
+.text-red-800 {
+    color: var(--primary-color-dark) !important;
+}
+
+.text-red-900 {
+    color: var(--primary-color-dark) !important;
+}
+
+/* Border Colors - Red */
+.border-red-200 {
+    border-color: rgba(var(--primary-rgb), 0.3) !important;
+}
+
+.border-red-300 {
+    border-color: rgba(var(--primary-rgb), 0.4) !important;
+}
+
+.border-red-400 {
+    border-color: rgba(var(--primary-rgb), 0.5) !important;
+}
+
+.border-red-500 {
+    border-color: var(--primary-color) !important;
+}
+
+.border-red-600 {
+    border-color: var(--primary-color) !important;
+}
+
+.border-red-700 {
+    border-color: var(--primary-color-dark) !important;
+}
+
+/* Border Color - Focus Ring */
+.focus\:ring-red-200:focus {
+    --tw-ring-color: rgba(var(--primary-rgb), 0.3) !important;
+}
+
+.focus\:ring-red-500:focus {
+    --tw-ring-color: var(--primary-color) !important;
+}
+
+.focus\:ring-red-600:focus {
+    --tw-ring-color: var(--primary-color) !important;
+}
+
+/* Focus Border */
+.focus\:border-red-300:focus {
+    border-color: rgba(var(--primary-rgb), 0.4) !important;
+}
+
+.focus\:border-red-500:focus {
+    border-color: var(--primary-color) !important;
+}
+
+.focus\:border-red-600:focus {
+    border-color: var(--primary-color) !important;
+}
+
+/* Hover States - Background */
+.hover\:bg-red-50:hover {
+    background-color: rgba(var(--primary-rgb), 0.05) !important;
+}
+
+.hover\:bg-red-100:hover {
+    background-color: rgba(var(--primary-rgb), 0.1) !important;
+}
+
+.hover\:bg-red-200:hover {
+    background-color: rgba(var(--primary-rgb), 0.2) !important;
+}
+
+.hover\:bg-red-400:hover {
+    background-color: var(--primary-color-light) !important;
+}
+
+.hover\:bg-red-600:hover {
+    background-color: var(--primary-color) !important;
+}
+
+.hover\:bg-red-700:hover {
+    background-color: var(--primary-color-dark) !important;
+}
+
+.hover\:bg-red-800:hover {
+    background-color: var(--primary-color-dark) !important;
+}
+
+.hover\:bg-red-900:hover {
+    background-color: var(--primary-color-dark) !important;
+}
+
+.hover\:from-red-400:hover {
+    --tw-gradient-from: var(--primary-color-light) !important;
+}
+
+.hover\:from-red-500:hover {
+    --tw-gradient-from: var(--primary-color) !important;
+}
+
+.hover\:to-red-500:hover {
+    --tw-gradient-to: var(--primary-color) !important;
+}
+
+.hover\:to-red-600:hover {
+    --tw-gradient-to: var(--primary-color) !important;
+}
+
+.hover\:to-red-700:hover {
+    --tw-gradient-to: var(--primary-color-dark) !important;
+}
+
+/* Hover States - Text */
+.hover\:text-red-400:hover {
+    color: var(--primary-color-light) !important;
+}
+
+.hover\:text-red-500:hover {
+    color: var(--primary-color) !important;
+}
+
+.hover\:text-red-600:hover {
+    color: var(--primary-color) !important;
+}
+
+.hover\:text-red-700:hover {
+    color: var(--primary-color-dark) !important;
+}
+
+.hover\:text-red-800:hover {
+    color: var(--primary-color-dark) !important;
+}
+
+.hover\:text-red-900:hover {
+    color: var(--primary-color-dark) !important;
+}
+
+/* Hover States - Border */
+.hover\:border-red-300:hover {
+    border-color: rgba(var(--primary-rgb), 0.4) !important;
+}
+
+.hover\:border-red-500:hover {
+    border-color: var(--primary-color) !important;
+}
+
+.hover\:border-red-600:hover {
+    border-color: var(--primary-color) !important;
+}
+
+/* Checkbox and Radio styling */
+input[type="checkbox"]:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+input[type="radio"]:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Custom classes for red variants */
+.text-red-600.dark\:text-red-400 {
+    color: var(--primary-color) !important;
+}
+
+.bg-red-100.dark\:bg-red-900\/20 {
+    background-color: rgba(var(--primary-rgb), 0.1) !important;
+}
+
+.bg-red-600.dark\:bg-red-900\/30 {
+    background-color: rgba(var(--primary-rgb), 0.2) !important;
+}
+
+/* Ring focus override */
+.focus\:ring-2:focus {
+    --tw-ring-color: var(--primary-color) !important;
+}
+
+/* Accent color utility classes */
+.accent-red-600 {
+    accent-color: var(--primary-color) !important;
+}
+
+/* Dark mode adjustments for red */
+.dark .bg-red-900\/10 {
+    background-color: rgba(var(--primary-rgb), 0.1) !important;
+}
+
+.dark .bg-red-900\/20 {
+    background-color: rgba(var(--primary-rgb), 0.2) !important;
+}
+
+.dark .bg-red-900\/30 {
+    background-color: rgba(var(--primary-rgb), 0.3) !important;
+}
+
+.dark .text-red-400 {
+    color: var(--primary-color-light) !important;
+}
+
+.dark .border-red-700 {
+    border-color: var(--primary-color-dark) !important;
+}
+
+.dark .border-red-800 {
+    border-color: var(--primary-color-dark) !important;
+}
+
+/* Override border-l-4 */
+.border-l-4.border-red-500 {
+    border-left-color: var(--primary-color) !important;
+}
+
+/* Gradient text */
+.from-red-500.to-red-600 {
+    background: linear-gradient(to right, var(--primary-color), var(--primary-color-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.bg-gradient-to-br.from-red-500.via-red-600.to-red-700 {
+    background: linear-gradient(to bottom right, var(--primary-color), var(--primary-color), var(--primary-color-dark)) !important;
+}
+
+/* Theme toggle button styles */
+.theme-toggle-btn {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-icon {
+    position: absolute;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-icon.sun {
+    color: #f59e0b;
+}
+
+.theme-icon.moon {
+    color: #60a5fa;
+}
+
+.theme-toggle-btn:hover .theme-icon {
+    transform: scale(1.1);
+}
+
+.theme-icon.hidden {
+    opacity: 0;
+    transform: rotate(180deg) scale(0);
+}
+
+.theme-icon.visible {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+    animation: rotate-in 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* water fill + wave */
+#water-layer {
+    mix-blend-mode: screen;
+}
+
+.water-fill-inner {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 99, 71, 0.9), rgba(220, 38, 38, 0.95));
+    overflow: hidden;
+}
+
+.water-fill-inner::before {
+    content: "";
+    position: absolute;
+    left: -50%;
+    top: -10%;
+    width: 300%;
+    height: 120%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 320' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' fill-opacity='0.25' d='M0,128L48,149.3C96,171,192,213,288,218.7C384,224,480,192,576,160C672,128,768,96,864,122.7C960,149,1056,235,1152,234.7C1248,235,1344,149,1392,106.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: cover;
+    animation: waveMove 4s linear infinite;
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes waveMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-33%);
+    }
+}
+
+#water-fill {
+    transition: height 0.45s cubic-bezier(.2, .8, .2, 1);
+}
+
+#water-percent {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+}
+
+.wave-animation {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: translateX(-100%);
+    animation: wave 2s infinite;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(200%);
+    }
+}
+
+/* Like & Dislike */
+.video-like-dislike {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.video-like-dislike button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.video-like-dislike button:active {
+    transform: translateY(0);
+}
+
+.video-like-dislike button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.video-like-dislike button span {
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.animate-pulse {
+    animation: pulse-scale 0.6s ease-in-out;
+}
+
+@keyframes pulse-scale {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Mode Cinema */
+body.cinema-mode {
+    width: 98%;
+}
+
+/* Custom scrollbar for webkit browsers */
+#volumeSlider::-webkit-slider-thumb {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#volumeSlider::-webkit-slider-thumb:hover {
+    background: #f0f0f0;
+    transform: scale(1.1);
+}
+
+#volumeSlider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* Smooth transitions */
+#progressContainer:hover #progressThumb {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+
+/* Autoplay active state */
+#autoplayToggle.active {
+    color: #dc2626 !important;
+}
+
+#autoplayToggle.active .fa-play {
+    color: #dc2626 !important;
+}
+
+/* Stili per Switch Dinamici */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: .4s;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+input:checked+.toggle-slider {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+input:focus+.toggle-slider {
+    box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked+.toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* Dark mode adjustments */
+.dark .toggle-slider {
+    background-color: #374151;
+    border-color: #4b5563;
+}
+
+.dark input:checked+.toggle-slider {
+    background-color: var(--primary-color);
+    border-color: varm(--primary-color);
+}
+
+/* Professional Video Components Styles */
+.video-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Professional Gradient Backgrounds */
+.gradient-indigo-purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-emerald-teal {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+}
+
+.gradient-blue-purple {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+}
+
+/* Modern Button Styles */
+.modern-btn {
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.modern-btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.modern-btn:hover:before {
+    left: 100%;
+}
+
+.modern-btn:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Professional Play Button Animation */
+.play-button-overlay {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.play-button-overlay:hover {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Modern Duration Badge */
+.duration-badge {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+}
+
+/* Professional User Avatar */
+.user-avatar {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-avatar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    pointer-events: none;
+}
+
+/* Modern Progress Bar */
+.modern-progress {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.modern-progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* Professional Text Styles */
+.modern-title {
+    background: linear-gradient(135deg, #1f2937, #374151);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.dark .modern-title {
+    background: linear-gradient(135deg, #f9fafb, #e5e7eb);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.modern-title:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Professional Views Counter */
+.views-counter {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.dark .views-counter {
+    color: #9ca3af;
+}
+
+.views-counter svg {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0.7;
+}
+
+/* Modern Action Buttons Container */
+.action-buttons {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .action-buttons {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Professional Loading Animation */
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+.dark .loading-skeleton {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200% 100%;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Modern Toast Notifications */
+.toast-notification {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast-notification.show {
+    transform: translateX(0);
+}
+
+/* Professional Modal Styles */
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark .modal-content {
+    background: rgba(31, 41, 55, 0.95);
+    border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Professional Playlist Item */
+.playlist-item {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.playlist-item:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dark .playlist-item {
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* Professional Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+}
+
+.dark .empty-state-icon {
+    background: linear-gradient(135deg, #374151, #4b5563);
+    color: #6b7280;
+}
+
+/* Professional Success Animation */
+.success-animation {
+    animation: successPulse 0.6s ease-out;
+}
+
+@keyframes successPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* === MOBILE RESPONSIVE ENHANCEMENTS - ADVANCED === */
+
+/* Mobile-first responsive design */
+@media (max-width: 640px) {
+    /* Modern button adjustments */
+    .modern-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .action-buttons {
+        gap: 0.5rem;
+    }
+
+    .duration-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    /* Header mobile optimizations */
+    .header-action-btn {
+        min-width: 40px;
+        min-height: 40px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .header-search-input {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+    }
+    
+    /* Bottom navigation enhancements */
+    .bottom-navigation {
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        /* Supporto per dispositivi con notch */
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+    
+    .dark .bottom-navigation {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Touch improvements for all interactive elements */
+    button, a, [role="button"] {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        /* Prevenzione del doppio tap zoom */
+        touch-action: manipulation;
+    }
+    
+    /* Improved scrolling on mobile */
+    .scroll-container {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        /* Hardware acceleration */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+    
+    /* Mobile video cards adjustments */
+    .video-card {
+        margin-bottom: 1rem;
+        /* Miglioramento performance */
+        will-change: transform;
+    }
+    
+    /* Mobile sidebar improvements */
+    @media (max-width: 1024px) {
+        .mobile-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
+    }
+    
+    /* Improved modal responsiveness */
+    .modal-content {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        /* Hardware acceleration per modali */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+    
+    /* Better text sizing on mobile */
+    .mobile-text-sm {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+    
+    .mobile-text-xs {
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+    
+    /* Improved spacing on mobile */
+    .mobile-px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .mobile-py-2 {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    /* Miglioramenti per il bottom navigation */
+    .bottom-nav-item {
+        position: relative;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Prevenzione zoom su iOS */
+        touch-action: manipulation;
+    }
+    
+    .bottom-nav-item:hover {
+        transform: translateY(-2px);
+    }
+    
+    .bottom-nav-item:active {
+        transform: translateY(0) scale(0.98);
+    }
+    
+    /* Glow effect per il pulsante centrale */
+    .upload-button {
+        position: relative;
+        overflow: hidden;
+        /* Hardware acceleration */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+    
+    .upload-button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s, height 0.3s;
+    }
+    
+    .upload-button:active::before {
+        width: 100px;
+        height: 100px;
+    }
+    
+    /* Indicatore di pagina attiva */
+    .active-page-indicator {
+        animation: pageIndicator 0.3s ease-out;
+    }
+    
+    @keyframes pageIndicator {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.2);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    /* Miglioramenti per l'avatar profilo */
+    .profile-avatar {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Prevenzione selezione testo */
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    
+    .profile-avatar:active {
+        transform: scale(0.95);
+    }
+    
+    /* Badge notifiche migliorati */
+    .notification-badge {
+        animation: notification-bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        /* Hardware acceleration */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+    
+    @keyframes notification-bounce {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.3);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .tablet-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .tablet-hidden {
+        display: none;
+    }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .high-dpi-optimized {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Safe area support for devices with notches */
+@supports (padding: max(0px)) {
+    .safe-area-top {
+        padding-top: max(1rem, env(safe-area-inset-top));
+    }
+    
+    .safe-area-bottom {
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+    
+    .safe-area-left {
+        padding-left: max(1rem, env(safe-area-inset-left));
+    }
+    
+    .safe-area-right {
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+    
+    /* Bottom navigation safe area */
+    .bottom-navigation {
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+    
+    /* Header safe area */
+    .header-safe-area {
+        padding-top: max(1rem, env(safe-area-inset-top));
+    }
+    
+    /* Layout adjustments for safe areas */
+    .main-content-safe {
+        padding-bottom: max(5rem, calc(5rem + env(safe-area-inset-bottom)));
+    }
+    
+    .video-page-safe {
+        padding-top: max(4rem, calc(4rem + env(safe-area-inset-top)));
+        padding-bottom: max(5rem, calc(5rem + env(safe-area-inset-bottom)));
+    }
+}
+
+/* Dark mode mobile optimizations */
+@media (prefers-color-scheme: dark) and (max-width: 640px) {
+    .mobile-dark-optimized {
+        background-color: rgb(17, 24, 39);
+        color: rgb(243, 244, 246);
+    }
+    
+    .mobile-dark-border {
+        border-color: rgb(75, 85, 99);
+    }
+    
+    /* Bottom navigation dark mode */
+    .bottom-navigation {
+        background: rgba(17, 24, 39, 0.95);
+        backdrop-filter: blur(20px);
+    }
+    
+    /* Header dark mode mobile */
+    .header-mobile-dark {
+        background: rgba(17, 24, 39, 0.95);
+        backdrop-filter: blur(20px);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Mobile landscape optimizations */
+@media (max-width: 640px) and (orientation: landscape) {
+    .landscape-hidden {
+        display: none;
+    }
+    
+    .landscape-compact {
+        padding: 0.5rem;
+    }
+    
+    .landscape-text-sm {
+        font-size: 0.75rem;
+    }
+    
+    /* Bottom navigation in landscape */
+    .bottom-navigation {
+        height: 3rem;
+        padding-bottom: max(4px, env(safe-area-inset-bottom));
+    }
+    
+    .bottom-nav-item {
+        padding: 0.25rem;
+    }
+    
+    .bottom-nav-item span {
+        display: none;
+    }
+    
+    .upload-button {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    
+    /* Header compact in landscape */
+    .header-landscape {
+        height: 3rem;
+        padding-top: max(0.5rem, env(safe-area-inset-top));
+    }
+    
+    .header-search-input {
+        font-size: 14px;
+    }
+    
+    /* Main content adjustments for landscape */
+    .main-content-landscape {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+}
+
+/* === PROFESSIONAL NOTIFICATION SYSTEM === */
+
+/* Notification Dropdown Animations */
+.notification-dropdown-enter {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+}
+
+.notification-dropdown-enter-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-dropdown-exit {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.notification-dropdown-exit-active {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Professional Notification Animations - Simplified */
+@keyframes pulse-notification {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Notification Avatar Styles */
+.notification-avatar {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.notification-avatar:hover {
+    transform: scale(1.05);
+}
+
+.notification-avatar img {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.notification-avatar:hover img {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+
+/* Notification Badge - Simplified */
+.notification-badge {
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.125rem 0.375rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Notification Icons - Simplified */
+.notification-icon {
+    transition: opacity 0.2s ease;
+}
+
+.notification-item:hover .notification-icon {
+    opacity: 0.9;
+}
+
+/* Color Variants for Notifications */
+.notification-icon.blue {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+}
+
+.notification-icon.green {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.notification-icon.red {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.notification-icon.purple {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: white;
+}
+
+.notification-icon.orange {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+}
+
+.notification-icon.yellow {
+    background: linear-gradient(135deg, #eab308, #ca8a04);
+    color: white;
+}
+
+/* Notification Content */
+.notification-content {
+    transition: all 0.3s ease;
+}
+
+.notification-title {
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.notification-message {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.dark .notification-message {
+    color: #9ca3af;
+}
+
+.notification-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.notification-time {
+    color: #9ca3af;
+    transition: color 0.3s ease;
+}
+
+.notification-item:hover .notification-time {
+    color: #6b7280;
+}
+
+.notification-type {
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.375rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+/* Loading States */
+.notification-loading {
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: notification-loading 1.5s infinite;
+}
+
+.dark .notification-loading {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+}
+
+@keyframes notification-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Empty State - Simplified */
+.notification-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: rgba(249, 250, 251, 0.5);
+}
+
+.dark .notification-empty {
+    background: rgba(31, 41, 55, 0.5);
+}
+
+.notification-empty-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    background: rgba(243, 244, 246, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    transition: opacity 0.2s ease;
+}
+
+.dark .notification-empty-icon {
+    background: rgba(55, 65, 81, 0.8);
+    color: #6b7280;
+}
+
+.notification-item:hover .notification-empty-icon {
+    opacity: 0.8;
+}
+
+.notification-empty-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.dark .notification-empty-title {
+    color: #f9fafb;
+}
+
+.notification-empty-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    max-width: 16rem;
+    margin: 0 auto;
+}
+
+.dark .notification-empty-text {
+    color: #9ca3af;
+}
+
+/* Responsive Design for Notifications */
+@media (max-width: 640px) {
+    .notification-dropdown {
+        width: 20rem !important;
+        right: -2rem !important;
+    }
+
+    .notification-item {
+        padding: 1rem !important;
+    }
+
+    .notification-avatar {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+
+    .notification-content {
+        margin-left: 0.5rem !important;
+    }
+
+    .notification-title {
+        font-size: 0.875rem !important;
+    }
+
+    .notification-message {
+        font-size: 0.75rem !important;
+        line-height: 1.4 !important;
+    }
+}
+
+/* Line Clamp Utility */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* High DPI Display Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    .modern-btn {
+        border-width: 0.5px;
+    }
+
+    .modal-content {
+        border-width: 0.5px;
+    }
+
+    /* Camera Icon Animations for Channel Owner */
+    .camera-icon {
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .camera-icon:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .camera-icon::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(45deg, #dc2626, #ef4444, #f87171);
+        border-radius: 50%;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .camera-icon:hover::before {
+        opacity: 1;
+        animation: camera-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes camera-glow {
+
+        0%,
+        100% {
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+        }
+
+        50% {
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.8);
+        }
+    }
+
+    .camera-icon .camera-tooltip {
+        position: absolute;
+        bottom: -45px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+    }
+
+    .camera-icon:hover .camera-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .camera-icon .camera-tooltip::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid rgba(0, 0, 0, 0.9);
+    }
+
+    .camera-icon .fa-camera {
+        animation: camera-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes camera-pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    /* Responsive adjustments for camera icons */
+    @media (max-width: 640px) {
+        .camera-icon {
+            width: 2.5rem !important;
+            height: 2.5rem !important;
+        }
+
+        .camera-icon .fa-camera {
+            font-size: 0.75rem !important;
+        }
+
+        .camera-icon .camera-tooltip {
+            font-size: 10px;
+            padding: 6px 10px;
+            bottom: -35px;
+        }
+    }
+}
+
+/* Video Effects */
+[data-color-wrapper-trending]:hover {
+    background: var(--hover-bg) !important;
+}
+
+[data-thumbnail-trending] {
+    min-height: 150px;
+}
+
+@media (min-width: 640px) {
+    [data-thumbnail-trending] {
+        min-height: 180px;
+    }
+}
+
+@media (min-width: 1024px) {
+    [data-thumbnail-trending] {
+        min-height: 200px;
+    }
+}
+
+@media (min-width: 1280px) {
+    [data-thumbnail-trending] {
+        min-height: 220px;
+    }
+}
+
+/* === TIKTOK-STYLE REEL SCROLLING === */
+
+/* Container principale TikTok-style */
+.reel-container-tiktok {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Stack di reel */
+.reel-stack {
+    position: relative;
+    height: auto;
+}
+
+/* Singolo reel item */
+.reel-item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+}
+
+.reel-item.active {
+    z-index: 10;
+}
+
+.reel-item:not(.active) {
+    z-index: 1;
+}
+
+/* Video con effetti TikTok */
+.reel-video {
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: opacity, transform, scale;
+}
+
+.reel-video:not(.active) {
+    pointer-events: none;
+}
+
+/* Overlay di transizione per ogni reel */
+.reel-transition-overlay {
+    transition: opacity 0.3s ease-out;
+}
+
+/* Controlli con animazioni TikTok */
+.reel-controls {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reel-item.active .reel-controls {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Progress bar TikTok-style */
+.reel-progress {
+    transition: width 0.3s ease-out;
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+/* Progress dots laterali */
+[data-scroll-to] {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-scroll-to].active {
+    transform: scale(1.25);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+}
+
+/* Animazioni di entrata per i reel */
+@keyframes reelSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(100vh) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.reel-item.entering {
+    animation: reelSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Effetti hover per dispositivi con mouse */
+@media (hover: hover) {
+    .reel-action-btn:hover {
+        transform: scale(1.15) translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .reel-item:hover .reel-video {
+        transform: scale(1.02);
+    }
+}
+
+/* Ottimizzazioni per dispositivi touch */
+@media (hover: none) and (pointer: coarse) {
+    .reel-container-tiktok {
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: y proximity;
+    }
+    
+    .reel-action-btn:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Nascondi scrollbar ma mantieni funzionalità */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Loading states */
+.reel-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.reel-loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 2s infinite;
+    z-index: 1;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Animazioni per la transizione tra reel */
+.reel-transitioning .reel-video {
+    filter: blur(2px) brightness(0.8);
+    transform: scale(1.05);
+}
+
+.reel-transitioning .reel-controls {
+    opacity: 0.3;
+    transform: translateY(-10px);
+}
+
+/* Responsive adjustments per TikTok-style */
+@media (max-width: 768px) {
+    .reel-container-tiktok {
+        scroll-snap-type: y proximity;
+    }
+    
+    .reel-item {
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height per iOS */
+    }
+    
+    /* Riduci spazio per controlli su mobile */
+    .reel-controls .absolute.right-4 {
+        right: 1rem;
+    }
+    
+    .reel-controls .absolute.bottom-0 {
+        padding: 1rem;
+    }
+    
+    .reel-action-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+}
+
+/* Ottimizzazioni per tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .reel-container-tiktok {
+        scroll-snap-type: y mandatory;
+    }
+}
+
+/* Supporto per modalità landscape su mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .reel-item {
+        height: 100vh;
+    }
+    
+    .reel-controls .absolute.bottom-0 {
+        padding: 0.5rem;
+    }
+    
+    .reel-action-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+/* Effetti di transizione avanzati */
+.reel-stack {
+    perspective: 1000px;
+}
+
+.reel-item {
+    transform-style: preserve-3d;
+}
+
+.reel-item:not(.active) {
+    filter: brightness(0.8) contrast(0.9);
+}
+
+/* Animazioni per i progress dots */
+.progress-dot {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.progress-dot.active {
+    animation: progressPulse 2s infinite;
+}
+
+@keyframes progressPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+    }
+}
+
+/* Performance optimizations */
+.reel-video {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .reel-item {
+        transition: none;
+        animation: none;
+    }
+    
+    .reel-video {
+        transition: none;
+    }
+    
+    .reel-controls {
+        transition: none;
+    }
+}
+
+[data-color-wrapper-trending] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-color-wrapper-trending]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* === REEL SCROLLING FLUIDO === */
+
+/* Container principale dei reel */
+.reel-container {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+}
+
+/* Video element con transizioni fluide */
+#reel-video {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    will-change: opacity, transform;
+}
+
+/* Overlay di transizione */
+#video-transition-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 10;
+}
+
+/* Animazione di transizione tra video */
+@keyframes reel-transition {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.reel-transitioning {
+    animation: reel-transition 0.4s ease-in-out;
+}
+
+/* Pulsante di navigazione con effetti migliorati */
+.reel-nav-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reel-nav-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.reel-nav-btn:active {
+    transform: scale(0.95);
+}
+
+/* Progress dots con animazioni fluide */
+.reel-progress-dot {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.reel-progress-dot:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.reel-progress-dot.active {
+    transform: scale(1.25);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.7);
+}
+
+/* Gestione del caricamento fluido */
+.reel-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.reel-loading-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Spinner personalizzato per i reel */
+.reel-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top: 3px solid #ef4444;
+    border-radius: 50%;
+    animation: reel-spin 1s linear infinite;
+}
+
+@keyframes reel-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Ottimizzazioni per il scroll con la rotellina */
+.reel-container {
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+}
+
+/* Prevenzione del bounce effect su iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+    .reel-container {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Animazioni per i controlli del video */
+.reel-controls {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reel-controls:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Effetti per i bottoni di azione */
+.reel-action-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reel-action-btn:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.reel-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* Animazione per i like/dislike */
+.reel-action-btn.liked {
+    background: rgba(239, 68, 68, 0.8) !important;
+    animation: reel-like-pulse 0.6s ease-out;
+}
+
+@keyframes reel-like-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); }
+    100% { transform: scale(1); }
+}
+
+/* Ottimizzazioni per dispositivi mobili */
+@media (max-width: 768px) {
+    .reel-nav-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    
+    .reel-action-btn {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .reel-progress-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    /* Migliora la sensibilità del touch */
+    .reel-container {
+        touch-action: pan-y;
+    }
+}
+
+/* Supporto per modalità ad alto contrasto */
+@media (prefers-contrast: high) {
+    .reel-nav-btn,
+    .reel-action-btn {
+        border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+    
+    .reel-progress-dot.active {
+        border: 2px solid #ef4444;
+    }
+}
+
+/* Riduzione del movimento per utenti sensibili */
+@media (prefers-reduced-motion: reduce) {
+    .reel-container * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Ottimizzazioni per schermi ad alta densità */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .reel-nav-btn,
+    .reel-action-btn {
+        border-width: 0.5px;
+    }
+    
+    .reel-progress-dot {
+        border-radius: 1px;
+    }
+}
+
+/* === MIGLIORIE SPECIFICHE NOTIFICHE BELL === */
+
+/* Animazioni migliorate per il badge delle notifiche */
+.notification-badge {
+    animation: notification-bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes notification-bounce {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Effetti hover migliorati per le icone delle notifiche */
+.notification-icon {
+    position: relative;
+    overflow: hidden;
+}
+
+.notification-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.notification-item:hover .notification-icon::before {
+    width: 100%;
+    height: 100%;
+}
+
+/* Miglioramenti per il testo delle notifiche */
+.notification-title {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.notification-message {
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* Stilizzazione migliorata per le notifiche non lette */
+.notification-item.unread {
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.notification-item.unread::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary-color), var(--primary-color-light));
+    border-radius: 0 1px 1px 0;
+}
+
+/* Effetti per il pulsante "Segna tutte" */
+.mark-all-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.mark-all-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.mark-all-button:hover::before {
+    left: 100%;
+}
+
+/* Notification Header - Simplified */
+.notification-header {
+    background: rgba(249, 250, 251, 0.95);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.dark .notification-header {
+    background: rgba(31, 41, 55, 0.95);
+    border-bottom: 1px solid rgba(75, 85, 99, 0.8);
+}
+
+/* Stilizzazione per l'indicatore di caricamento */
+.notification-loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: notification-loading 1.5s infinite;
+}
+
+.dark .notification-loading-skeleton {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+}
+
+/* Miglioramenti per dispositivi mobile */
+@media (max-width: 640px) {
+    .notification-dropdown {
+        width: calc(100vw - 2rem) !important;
+        right: 1rem !important;
+        left: auto !important;
+    }
+    
+    .notification-item {
+        padding: 1rem !important;
+    }
+    
+    .notification-icon {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+    
+    .notification-title {
+        font-size: 0.875rem !important;
+    }
+    
+    .notification-message {
+        font-size: 0.75rem !important;
+    }
+    
+    .notification-time {
+        font-size: 0.625rem !important;
+    }
+}
+
+/* Effetti di transizione per l'apertura/chiusura del dropdown */
+.notification-dropdown {
+    transform-origin: top right;
+    animation: notification-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes notification-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Stilizzazione per il pulsante di chiusura implicita */
+.notification-backdrop {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    z-index: 40;
+}
+
+/* Miglioramenti per l'accessibilità */
+.notification-item:focus-within {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
+}
+
+.notification-button:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Effetti per le notifiche con azione rapida */
+.notification-quick-action {
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-item:hover .notification-quick-action {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Stilizzazione per il tooltip del tempo */
+.notification-time-tooltip {
+    position: relative;
+}
+
+.notification-time-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.notification-time-tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* === MOBILE UTILITY CLASSES === */
+
+/* Classi per gestire la visibilità mobile */
+.mobile-only {
+    display: block;
+}
+
+.desktop-only {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .mobile-only {
+        display: none;
+    }
+    
+    .desktop-only {
+        display: block;
+    }
+}
+
+/* Classi per il layout mobile */
+.mobile-container {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 640px) {
+    .mobile-container {
+        max-width: 640px;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .mobile-container {
+        max-width: 1024px;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* Classi per il bottom spacing */
+.bottom-spacing {
+    padding-bottom: 5rem; /* Altezza del bottom navigation */
+}
+
+@media (min-width: 1024px) {
+    .bottom-spacing {
+        padding-bottom: 1rem;
+    }
+}
+
+/* Classi per il top spacing con safe area */
+.top-spacing-safe {
+    padding-top: 4rem; /* Altezza dell'header */
+    padding-top: max(4rem, calc(4rem + env(safe-area-inset-top)));
+}
+
+/* Classi per il touch feedback */
+.touch-feedback {
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.touch-feedback:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+/* Classi per l'hover migliorato su mobile */
+@media (hover: hover) {
+    .touch-feedback:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Classi per le animazioni fluide */
+.smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smooth-transition-fast {
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Classi per il glassmorphism */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-effect {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Classi per le performance */
+.gpu-accelerated {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Classi per l'accessibilità mobile */
+.mobile-focus-ring {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Classi per i loading states mobile */
+.mobile-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: mobile-shimmer 1.5s infinite;
+}
+
+.dark .mobile-skeleton {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+}
+
+@keyframes mobile-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Classi per il text sizing responsive */
+.responsive-text {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+.responsive-text-lg {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+}
+
+.responsive-text-xl {
+    font-size: clamp(1.125rem, 4vw, 1.5rem);
+}
+
+/* Classi per il spacing responsive */
+.responsive-spacing {
+    padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.responsive-margin {
+    margin: clamp(0.5rem, 2vw, 1rem);
+}
+
+/* === CONNECTION STATUS STYLES === */
+
+/* Offline mode overlay */
+body.offline-mode {
+    overflow: hidden;
+    pointer-events: none;
+}
+
+body.offline-mode::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+}
+
+.offline-overlay {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Slow connection banner */
+.slow-connection-banner {
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+body.slow-mode {
+    cursor: progress;
+}
+
+/* Connection status indicator */
+.connection-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.connection-indicator.online {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.connection-indicator.slow {
+    background: rgba(234, 179, 8, 0.1);
+    color: #eab308;
+}
+
+.connection-indicator.offline {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Blinking indicator for offline/slow */
+.connection-indicator.slow::before,
+.connection-indicator.offline::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.connection-indicator.slow::before {
+    background: #eab308;
+}
+
+.connection-indicator.offline::before {
+    background: #ef4444;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

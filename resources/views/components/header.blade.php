@@ -1,0 +1,555 @@
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+    <!-- Desktop Layout (lg and above) -->
+    <div class="hidden lg:flex items-center justify-between px-4 h-16">
+        <!-- Left Section: Logo -->
+        <div class="flex items-center space-x-4">
+            <!-- Logo -->
+            <a href="{{ route('home') }}" class="flex items-center space-x-2 text-2xl font-bold">
+                @if (\App\Models\Setting::getValue('logo'))
+                    <img src="{{ asset('storage/' . \App\Models\Setting::getValue('logo')) }}"
+                        class="w-8 h-8 rounded-lg object-contain" alt="{{ \App\Models\Setting::getValue('site_name') }}">
+                @else
+                    <div class="w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center"
+                        style="background: linear-gradient(to bottom right, var(--primary-color), var(--primary-color-dark));">
+                        <i class="fas fa-play text-white text-sm"></i>
+                    </div>
+                @endif
+                <span class="text-gray-800 dark:text-white">
+                    {{ \App\Models\Setting::getValue('site_name') }}
+                </span>
+            </a>
+        </div>
+
+        <!-- Center Section: Search Bar -->
+        <div class="flex-1 max-w-2xl mx-4">
+            <div class="relative">
+                <form action="{{ route('search') }}" method="GET" class="flex">
+                    <div class="relative flex-1">
+                        <input type="text" name="q" placeholder="Cerca..."
+                            class="w-full h-full px-4 pl-10 text-base bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-l-full focus:outline-none focus:ring-2 focus:border-transparent transition-all"
+                            style="--tw-ring-color: var(--primary-color);">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <button type="submit"
+                        class="px-6 py-2 bg-gray-100 dark:bg-gray-700 border border-l-0 border-gray-200 dark:border-gray-600 rounded-r-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Section: Actions -->
+        <div class="flex items-center space-x-2">
+            @auth
+                <!-- Upload Video -->
+                <a href="{{ route('channel.edit', Auth::user()->userProfile->channel_name) }}?tab=content&upload=true"
+                    class="flex items-center px-4 py-2 text-white rounded-lg hover:opacity-90 transition-all no-underline"
+                    style="background-color: var(--primary-color);">
+                    <i class="fas fa-plus mr-2"></i>
+                    <span class="font-medium">Carica</span>
+                </a>
+
+                <!-- Notifications -->
+                <div class="relative">
+                    <livewire:notifications-bell />
+                </div>
+
+                <!-- User Menu -->
+                <div class="relative" id="user-menu">
+                    <button onclick="toggleUserMenu()"
+                        class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+                        @if (Auth::user()->userProfile && Auth::user()->userProfile->avatar_url)
+                            <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}" alt="Avatar"
+                                class="w-8 h-8 rounded-full object-cover">
+                        @else
+                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-medium">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </span>
+                            </div>
+                        @endif
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </button>
+
+                    <!-- User Dropdown -->
+                    <div id="user-dropdown"
+                        class="absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 opacity-0 scale-95 transform translate-y-2 pointer-events-none transition-all duration-200">
+                        <!-- User Info -->
+                        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center space-x-3">
+                                @if (Auth::user()->userProfile && Auth::user()->userProfile->avatar_url)
+                                    <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}"
+                                        alt="Avatar" class="w-12 h-12 rounded-full object-cover">
+                                @else
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                        <span class="text-white text-lg font-medium">
+                                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                        </span>
+                                    </div>
+                                @endif
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold text-gray-900 dark:text-white truncate">
+                                        {{ Auth::user()->name }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
+                                        <span>@</span>{{ Auth::user()->userProfile->username }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Menu Items -->
+                        <div class="py-2">
+                            <a href="{{ route('channel.show', Auth::user()->userProfile?->channel_name) }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-user w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Il mio canale</span>
+                            </a>
+                            <a href="{{ route('videos.my') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-video w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">I miei video</span>
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <a href="{{ route('users.profile') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-cog w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Impostazioni</span>
+                            </a>
+                            <a href="{{ route('history') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-history w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Cronologia</span>
+                            </a>
+                            <a href="{{ route('liked-videos') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-thumbs-up w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Video piaciuti</span>
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-dashboard w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Admin</span>
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <button onclick="toggleTheme()"
+                                class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left">
+                                <div class="relative w-5 h-5 flex items-center justify-center">
+                                    <i id="dropdown-moon-icon" class="fas fa-moon absolute text-gray-500 dark:text-gray-400 theme-icon moon dark:hidden"></i>
+                                    <i id="dropdown-sun-icon" class="fas fa-sun absolute text-gray-500 dark:text-gray-400 theme-icon sun hidden dark:block"></i>
+                                </div>
+                                <span class="text-gray-700 dark:text-gray-300">
+                                    <span class="dark:hidden">Tema scuro</span>
+                                    <span class="hidden dark:inline">Tema chiaro</span>
+                                </span>
+                            </button>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left"
+                                    style="color: var(--primary-color);">
+                                    <i class="fas fa-sign-out-alt w-5"></i>
+                                    <span>Esci</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <!-- Login/Register -->
+                <div class="flex items-center space-x-2">
+                    <a href="{{ route('login') }}"
+                        class="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Accedi
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors"
+                        style="background-color: var(--primary-color);">
+                        <i class="fas fa-user-plus mr-2"></i>Registrati
+                    </a>
+                </div>
+            @endauth
+        </div>
+    </div>
+
+    <!-- Mobile Layout (below lg) -->
+    <div class="lg:hidden flex items-center justify-between px-4 h-16">
+        <!-- Left Section: Logo -->
+        <div class="flex items-center">
+            <a href="{{ route('home') }}" class="flex items-center space-x-2 text-xl font-bold">
+                @if (\App\Models\Setting::getValue('logo'))
+                    <img src="{{ asset('storage/' . \App\Models\Setting::getValue('logo')) }}"
+                        class="w-8 h-8 rounded-lg object-contain" alt="{{ \App\Models\Setting::getValue('site_name') }}">
+                @else
+                    <div class="w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center"
+                        style="background: linear-gradient(to bottom right, var(--primary-color), var(--primary-color-dark));">
+                        <i class="fas fa-play text-white text-sm"></i>
+                    </div>
+                @endif
+            </a>
+        </div>
+
+        <!-- Right Section: Search and Notifications -->
+        <div class="flex items-center space-x-2">
+            @auth
+                <!-- Search Button -->
+                <button onclick="toggleSearchModal()"
+                    class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors touch-feedback">
+                    <i class="fas fa-search text-gray-600 dark:text-gray-300"></i>
+                </button>
+
+                <!-- Notifications -->
+                <div class="relative">
+                    <livewire:notifications-bell />
+                </div>
+
+                <!-- User Avatar -->
+                <div class="relative" id="user-menu-mobile">
+                    <button onclick="toggleUserMenuMobile()"
+                        class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors touch-feedback">
+                        @if (Auth::user()->userProfile && Auth::user()->userProfile->avatar_url)
+                            <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}" alt="Avatar"
+                                class="w-8 h-8 rounded-full object-cover">
+                        @else
+                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-medium">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </span>
+                            </div>
+                        @endif
+                    </button>
+
+                    <!-- Mobile User Dropdown -->
+                    <div id="user-dropdown-mobile"
+                        class="absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 opacity-0 scale-95 transform translate-y-2 pointer-events-none transition-all duration-200">
+                        <!-- User Info -->
+                        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center space-x-3">
+                                @if (Auth::user()->userProfile && Auth::user()->userProfile->avatar_url)
+                                    <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}"
+                                        alt="Avatar" class="w-12 h-12 rounded-full object-cover">
+                                @else
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                        <span class="text-white text-lg font-medium">
+                                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                        </span>
+                                    </div>
+                                @endif
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold text-gray-900 dark:text-white truncate">
+                                        {{ Auth::user()->name }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
+                                        <span>@</span>{{ Auth::user()->userProfile->username }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Menu Items -->
+                        <div class="py-2">
+                            <a href="{{ route('channel.show', Auth::user()->userProfile?->channel_name) }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-user w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Il mio canale</span>
+                            </a>
+                            <a href="{{ route('videos.my') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-video w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">I miei video</span>
+                            </a>
+                            <a href="{{ route('channel.edit', Auth::user()->userProfile->channel_name) }}?tab=content&upload=true"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-plus w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Carica video</span>
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <a href="{{ route('users.profile') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-cog w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Impostazioni</span>
+                            </a>
+                            <a href="{{ route('history') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-history w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Cronologia</span>
+                            </a>
+                            <a href="{{ route('liked-videos') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-thumbs-up w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Video piaciuti</span>
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-dashboard w-5 text-gray-500 dark:text-gray-400"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Admin</span>
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <button onclick="toggleTheme()"
+                                class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left">
+                                <div class="relative w-5 h-5 flex items-center justify-center">
+                                    <i class="fas fa-moon absolute text-gray-500 dark:text-gray-400 theme-icon moon dark:hidden"></i>
+                                    <i class="fas fa-sun absolute text-gray-500 dark:text-gray-400 theme-icon sun hidden dark:block"></i>
+                                </div>
+                                <span class="text-gray-700 dark:text-gray-300">
+                                    <span class="dark:hidden">Tema scuro</span>
+                                    <span class="hidden dark:inline">Tema chiaro</span>
+                                </span>
+                            </button>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left"
+                                    style="color: var(--primary-color);">
+                                    <i class="fas fa-sign-out-alt w-5"></i>
+                                    <span>Esci</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <!-- Login/Register for Mobile -->
+                <div class="flex items-center space-x-2">
+                    <a href="{{ route('login') }}"
+                        class="px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm">
+                        Accedi
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="px-3 py-2 text-white rounded-lg hover:opacity-90 transition-colors text-sm"
+                        style="background-color: var(--primary-color);">
+                        Registrati
+                    </a>
+                </div>
+            @endauth
+        </div>
+    </div>
+</header>
+
+<!-- Search Modal for Mobile -->
+<div id="search-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-gray-900 bg-opacity-50" onclick="toggleSearchModal()"></div>
+    <div class="relative z-10 p-4 pt-20">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl">
+            <div class="p-4">
+                <form action="{{ route('search') }}" method="GET" class="flex">
+                    <div class="relative flex-1">
+                        <input type="text" name="q" placeholder="Cerca video, canali..." autofocus
+                            class="w-full px-4 py-3 pl-10 text-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-l-full focus:outline-none focus:ring-2 focus:border-transparent"
+                            style="--tw-ring-color: var(--primary-color); font-size: 16px;">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <button type="submit"
+                        class="px-6 py-3 bg-gray-100 dark:bg-gray-700 border border-l-0 border-gray-200 dark:border-gray-600 rounded-r-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Mobile optimizations */
+    @media (max-width: 1024px) {
+        /* Ensure proper touch targets */
+        button, a {
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        /* Prevent zoom on iOS inputs */
+        input[type="text"], input[type="search"] {
+            font-size: 16px;
+        }
+    }
+    
+    /* Touch feedback improvements */
+    .touch-feedback {
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .touch-feedback:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    
+    /* Search modal animations */
+    #search-modal {
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    #search-modal > div:first-child {
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* User dropdown mobile optimization */
+    @media (max-width: 1024px) {
+        #user-dropdown-mobile {
+            width: calc(100vw - 2rem);
+            right: -1rem;
+        }
+    }
+    
+    /* Smooth theme transitions */
+    .theme-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Search input focus states */
+    input[type="text"]:focus, input[type="search"]:focus {
+        box-shadow: 0 0 0 2px var(--primary-color, #ef4444);
+    }
+    
+    /* Button hover effects */
+    button:hover, .hover\:bg-gray-100:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .dark button:hover, .dark .hover\:bg-gray-100:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+</style>
+
+<script>
+    // State management
+    let userMenuOpen = false;
+    let userMenuMobileOpen = false;
+    let searchModalOpen = false;
+
+    // Desktop user menu
+    function toggleUserMenu() {
+        const dropdown = document.getElementById('user-dropdown');
+        userMenuOpen = !userMenuOpen;
+
+        if (userMenuOpen) {
+            dropdown.classList.remove('opacity-0', 'scale-95', 'translate-y-2', 'pointer-events-none');
+            dropdown.classList.add('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
+        } else {
+            dropdown.classList.add('opacity-0', 'scale-95', 'translate-y-2', 'pointer-events-none');
+            dropdown.classList.remove('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
+        }
+    }
+
+    // Mobile user menu
+    function toggleUserMenuMobile() {
+        const dropdown = document.getElementById('user-dropdown-mobile');
+        userMenuMobileOpen = !userMenuMobileOpen;
+
+        if (userMenuMobileOpen) {
+            dropdown.classList.remove('opacity-0', 'scale-95', 'translate-y-2', 'pointer-events-none');
+            dropdown.classList.add('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
+        } else {
+            dropdown.classList.add('opacity-0', 'scale-95', 'translate-y-2', 'pointer-events-none');
+            dropdown.classList.remove('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
+        }
+    }
+
+    // Search modal for mobile
+    function toggleSearchModal() {
+        const modal = document.getElementById('search-modal');
+        searchModalOpen = !searchModalOpen;
+
+        if (searchModalOpen) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            // Focus on input after a short delay
+            setTimeout(() => {
+                const input = modal.querySelector('input[name="q"]');
+                if (input) input.focus();
+            }, 100);
+        } else {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // Close menus when clicking outside
+    document.addEventListener('click', function(event) {
+        // Desktop user menu
+        const userMenu = document.getElementById('user-menu');
+        const userDropdown = document.getElementById('user-dropdown');
+        if (userMenu && !userMenu.contains(event.target) && userMenuOpen) {
+            userMenuOpen = false;
+            userDropdown.classList.add('opacity-0', 'scale-95', 'translate-y-2', 'pointer-events-none');
+            userDropdown.classList.remove('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
+        }
+
+        // Mobile user menu
+        const userMenuMobile = document.getElementById('user-menu-mobile');
+        const userDropdownMobile = document.getElementById('user-dropdown-mobile');
+        if (userMenuMobile && !userMenuMobile.contains(event.target) && userMenuMobileOpen) {
+            userMenuMobileOpen = false;
+            userDropdownMobile.classList.add('opacity-0', 'scale-95', 'translate-y-2', 'pointer-events-none');
+            userDropdownMobile.classList.remove('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
+        }
+
+        // Search modal
+        const searchModal = document.getElementById('search-modal');
+        if (searchModal && !searchModal.contains(event.target) && searchModalOpen && !event.target.closest('button[onclick="toggleSearchModal()"]')) {
+            toggleSearchModal();
+        }
+    });
+
+    // Close search modal with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && searchModalOpen) {
+            toggleSearchModal();
+        }
+    });
+
+    // Theme toggle
+    function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+
+        if (isDark) {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+
+        updateThemeIcons();
+    }
+
+    function updateThemeIcons() {
+        const isDark = document.documentElement.classList.contains('dark');
+        
+        // Update all theme icons
+        const moonIcons = document.querySelectorAll('.theme-icon.moon');
+        const sunIcons = document.querySelectorAll('.theme-icon.sun');
+        
+        moonIcons.forEach(icon => {
+            if (isDark) {
+                icon.classList.add('hidden');
+            } else {
+                icon.classList.remove('hidden');
+            }
+        });
+        
+        sunIcons.forEach(icon => {
+            if (isDark) {
+                icon.classList.remove('hidden');
+            } else {
+                icon.classList.add('hidden');
+            }
+        });
+    }
+
+    // Initialize theme
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+        updateThemeIcons();
+    });
+
+
+</script>
