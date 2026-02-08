@@ -1,4 +1,4 @@
-<x-admin-layout>
+﻿<x-admin-layout>
     <div class="px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
         <div class="mb-8">
@@ -24,10 +24,10 @@
                         @endif
                         <div>
                             <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-                                Modifica {{ $legalPage->title }}
+                                {{ __('ui.admin_legal_edit_title', ['title' => $legalPage->title]) }}
                             </h1>
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Modifica il contenuto della pagina {{ strtolower($legalPage->title) }}
+                                {{ __('ui.admin_legal_edit_subtitle', ['title' => strtolower($legalPage->title)]) }}
                             </p>
                         </div>
                     </div>
@@ -36,12 +36,12 @@
                     <button type="button" id="preview-btn" onclick="togglePreview()"
                         class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">
                         <i class="fas fa-eye mr-2" id="preview-icon"></i>
-                        <span id="preview-text">Anteprima</span>
+                        <span id="preview-text">{{ __('ui.admin_legal_preview') }}</span>
                     </button>
                     <a href="{{ route('admin.legal.index') }}"
                         class="inline-flex items-center rounded-md bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         <i class="fas fa-arrow-left mr-2"></i>
-                        Torna all'elenco
+                        {{ __('ui.admin_legal_back_list') }}
                     </a>
                 </div>
             </div>
@@ -97,10 +97,9 @@
                             class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 px-4 py-3">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Editor
-                                        HTML</span>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('ui.admin_legal_editor_html') }}</span>
                                     <span class="text-xs text-gray-500 dark:text-gray-400" id="char-count">0
-                                        caratteri</span>
+                                        {{ __('ui.admin_legal_characters') }}</span>
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     <button type="button" onclick="insertHTML('h2')"
@@ -127,12 +126,12 @@
                         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
                             <label for="title"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Titolo della Pagina
+                                {{ __('ui.admin_legal_title_label') }}
                             </label>
                             <input type="text" name="title" id="title"
                                 value="{{ old('title', $legalPage->title) }}"
                                 class="block p-2 w-full rounded-md outline-none border-gray-300 dark:border-gray-600 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                                placeholder="Inserisci il titolo della pagina" required>
+                                placeholder="{{ __('ui.admin_legal_title_placeholder') }}" required>
                             @error('title')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                             @enderror
@@ -142,15 +141,15 @@
                         <div class="px-6 py-4">
                             <label for="content"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Contenuto HTML
+                                {{ __('ui.admin_legal_content_label') }}
                             </label>
                             <textarea name="content" id="content" rows="20"
                                 class="block p-2 w-full rounded-md outline-none border-gray-300 dark:border-gray-600 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-700 dark:text-white font-mono text-sm editor-textarea"
-                                placeholder="Inserisci il contenuto HTML della pagina..." required>{{ old('content', $legalPage->content) }}</textarea>
+                                placeholder="{{ __('ui.admin_legal_content_placeholder') }}" required>{{ old('content', $legalPage->content) }}</textarea>
                             <div
                                 class="mt-2 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                                <span>Usa tag HTML validi per la formattazione</span>
-                                <span id="word-count">0 parole</span>
+                                <span>{{ __('ui.admin_legal_content_help') }}</span>
+                                <span id="word-count">0 {{ __('ui.admin_legal_words') }}</span>
                             </div>
                             @error('content')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -165,18 +164,18 @@
                                     <button type="button" onclick="saveDraft()"
                                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-500">
                                         <i class="fas fa-save mr-2"></i>
-                                        Bozza
+                                        {{ __('ui.admin_legal_draft') }}
                                     </button>
                                     <button type="button" onclick="validateHTML()"
                                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-500">
                                         <i class="fas fa-check-circle mr-2"></i>
-                                        Valida HTML
+                                        {{ __('ui.admin_legal_validate_html') }}
                                     </button>
                                 </div>
                                 <button type="submit" id="save-btn"
                                     class="inline-flex items-center rounded-md bg-red-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
                                     <i class="fas fa-check mr-2"></i>
-                                    Salva Modifiche
+                                    {{ __('ui.admin_legal_save_changes') }}
                                 </button>
                             </div>
                         </div>
@@ -190,7 +189,7 @@
                         class="bg-white dark:bg-gray-800 shadow ring-1 ring-gray-900/10 dark:ring-white/10 rounded-lg overflow-hidden">
                         <div
                             class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">Informazioni Pagina</h3>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">{{ __('ui.admin_legal_page_info') }}</h3>
                         </div>
                         <div class="px-4 py-3 space-y-3">
                             <div class="flex justify-between text-sm">
@@ -198,17 +197,17 @@
                                 <span class="font-mono text-gray-900 dark:text-white">{{ $legalPage->slug }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500 dark:text-gray-400">Creata:</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('ui.admin_legal_created') }}:</span>
                                 <span
                                     class="text-gray-900 dark:text-white">{{ $legalPage->created_at->format('d/m/Y H:i') }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500 dark:text-gray-400">Modificata:</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('ui.admin_legal_updated') }}:</span>
                                 <span
                                     class="text-gray-900 dark:text-white">{{ $legalPage->updated_at->format('d/m/Y H:i') }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500 dark:text-gray-400">Caratteri:</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('ui.admin_legal_characters_label') }}:</span>
                                 <span class="text-gray-900 dark:text-white"
                                     id="sidebar-char-count">{{ strlen(strip_tags($legalPage->content)) }}</span>
                             </div>
@@ -220,24 +219,24 @@
                         class="bg-white dark:bg-gray-800 shadow ring-1 ring-gray-900/10 dark:ring-white/10 rounded-lg overflow-hidden">
                         <div
                             class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">Template Rapidi</h3>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">{{ __('ui.admin_legal_quick_templates') }}</h3>
                         </div>
                         <div class="px-4 py-3 space-y-2">
                             <button type="button" onclick="insertTemplate('section')"
                                 class="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
-                                Nuova Sezione
+                                {{ __('ui.admin_legal_template_section') }}
                             </button>
                             <button type="button" onclick="insertTemplate('list')"
                                 class="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
-                                Lista Punti
+                                {{ __('ui.admin_legal_template_list') }}
                             </button>
                             <button type="button" onclick="insertTemplate('highlight')"
                                 class="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
-                                Testo Evidenziato
+                                {{ __('ui.admin_legal_template_highlight') }}
                             </button>
                             <button type="button" onclick="insertTemplate('contact-info')"
                                 class="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
-                                Info Contatto
+                                {{ __('ui.admin_legal_template_contact') }}
                             </button>
                         </div>
                     </div>
@@ -254,13 +253,13 @@
                                 </svg>
                             </div>
                             <div class="ml-3">
-                                <h4 class="text-sm font-medium text-blue-900 dark:text-blue-100">Suggerimenti</h4>
+                                <h4 class="text-sm font-medium text-blue-900 dark:text-blue-100">{{ __('ui.admin_legal_tips_title') }}</h4>
                                 <div class="mt-2 text-sm text-blue-800 dark:text-blue-200">
                                     <ul class="list-disc list-inside space-y-1">
-                                        <li>Usa tag HTML semantici</li>
-                                        <li>Testa l'anteprima prima di salvare</li>
-                                        <li>Mantieni un linguaggio professionale</li>
-                                        <li>Salva frequentemente le modifiche</li>
+                                        <li>{{ __('ui.admin_legal_tip_semantic_html') }}</li>
+                                        <li>{{ __('ui.admin_legal_tip_preview') }}</li>
+                                        <li>{{ __('ui.admin_legal_tip_professional') }}</li>
+                                        <li>{{ __('ui.admin_legal_tip_save_often') }}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -278,7 +277,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                        Anteprima: <span id="preview-title">{{ $legalPage->title }}</span>
+                        {{ __('ui.admin_legal_preview_label') }}: <span id="preview-title">{{ $legalPage->title }}</span>
                     </h3>
                     <button onclick="closePreview()"
                         class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -303,14 +302,22 @@
         const charCount = document.getElementById('char-count');
         const wordCount = document.getElementById('word-count');
         const sidebarCharCount = document.getElementById('sidebar-char-count');
+        const adminLegalStrings = {
+            characters: @json(__('ui.admin_legal_characters')),
+            words: @json(__('ui.admin_legal_words')),
+            draftSaved: @json(__('ui.admin_legal_draft_saved')),
+            htmlInvalid: @json(__('ui.admin_legal_html_invalid')),
+            htmlValid: @json(__('ui.admin_legal_html_valid')),
+            draftRestore: @json(__('ui.admin_legal_draft_restore_prompt'))
+        };
 
         function updateCounters() {
             const content = contentTextarea.value;
             const chars = content.length;
             const words = content.trim().split(/\s+/).filter(word => word.length > 0).length;
 
-            charCount.textContent = chars + ' caratteri';
-            wordCount.textContent = words + ' parole';
+            charCount.textContent = chars + ' ' + adminLegalStrings.characters;
+            wordCount.textContent = words + ' ' + adminLegalStrings.words;
             sidebarCharCount.textContent = chars;
         }
 
@@ -339,30 +346,30 @@
             switch (type) {
                 case 'section':
                     template = `<section class="mb-8">
-    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Titolo Sezione</h2>
-    <p class="text-gray-700 dark:text-gray-300">Contenuto della sezione...</p>
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{{ __('ui.admin_legal_template_section_title') }}</h2>
+    <p class="text-gray-700 dark:text-gray-300">{{ __('ui.admin_legal_template_section_content') }}</p>
 </section>`;
                     break;
                 case 'list':
                     template = `<ul class="list-disc pl-6 space-y-2">
-    <li class="text-gray-700 dark:text-gray-300">Primo punto</li>
-    <li class="text-gray-700 dark:text-gray-300">Secondo punto</li>
-    <li class="text-gray-700 dark:text-gray-300">Terzo punto</li>
+    <li class="text-gray-700 dark:text-gray-300">{{ __('ui.admin_legal_template_list_first') }}</li>
+    <li class="text-gray-700 dark:text-gray-300">{{ __('ui.admin_legal_template_list_second') }}</li>
+    <li class="text-gray-700 dark:text-gray-300">{{ __('ui.admin_legal_template_list_third') }}</li>
 </ul>`;
                     break;
                 case 'highlight':
                     template = `<div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-    <p class="text-blue-800 dark:text-blue-200">Testo evidenziato importante...</p>
+    <p class="text-blue-800 dark:text-blue-200">{{ __('ui.admin_legal_template_highlight_text') }}</p>
 </div>`;
                     break;
                 case 'contact-info':
                     template = `<div class="grid md:grid-cols-2 gap-6">
     <div class="text-center">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Email</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-2">{{ __('ui.admin_legal_contact_email_label') }}</h3>
         <p class="text-gray-600 dark:text-gray-400">info@globio.com</p>
     </div>
     <div class="text-center">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Telefono</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-2">{{ __('ui.admin_legal_contact_phone_label') }}</h3>
         <p class="text-gray-600 dark:text-gray-400">+39 06 1234 5678</p>
     </div>
 </div>`;
@@ -403,7 +410,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Bozza salvata!');
+                        alert(adminLegalStrings.draftSaved);
                     }
                 });
         }
@@ -415,9 +422,9 @@
             const doc = parser.parseFromString(content, 'text/html');
 
             if (doc.body.querySelector('parsererror')) {
-                alert('Errore nel formato HTML. Verifica la sintassi.');
+                alert(adminLegalStrings.htmlInvalid);
             } else {
-                alert('HTML valido! ✓');
+                alert(adminLegalStrings.htmlValid);
             }
         }
 
@@ -445,9 +452,8 @@
 
                 if (diffMinutes < 60 && (data.content !== '{{ $legalPage->content }}' || data.title !==
                         '{{ $legalPage->title }}')) {
-                    if (confirm(
-                            `È stata trovata una bozza salvata automaticamente ${diffMinutes} minuti fa. Vuoi ripristinarla?`
-                            )) {
+                    const restoreMessage = adminLegalStrings.draftRestore.replace(':minutes', diffMinutes);
+                    if (confirm(restoreMessage)) {
                         document.getElementById('title').value = data.title;
                         document.getElementById('content').value = data.content;
                         updateCounters();
@@ -474,3 +480,5 @@
         }
     </style>
 </x-admin-layout>
+
+

@@ -1,9 +1,9 @@
-<x-admin-layout>
+﻿<x-admin-layout>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
                 <div class="px-6 py-8">
-                    <!-- Header di anteprima admin -->
+                    <!-- Header di {{ __('ui.admin_legal_preview_admin_title') }} -->
                     <div
                         class="mb-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-4">
                         <div class="flex items-center">
@@ -14,10 +14,10 @@
                             </svg>
                             <div>
                                 <h3 class="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                                    Anteprima Admin
+                                    {{ __('ui.admin_legal_preview_admin_title') }}
                                 </h3>
                                 <p class="mt-1 text-sm text-yellow-700 dark:text-yellow-300">
-                                    Stai visualizzando l'anteprima di {{ $legalPage->title }}. Le modifiche sono già
+                                    Stai visualizzando l'anteprima di {{ $legalPage->title }}. Le modifiche sono giÃ 
                                     attive sul sito.
                                 </p>
                             </div>
@@ -39,3 +39,4 @@
         </div>
     </div>
 </x-admin-layout>
+

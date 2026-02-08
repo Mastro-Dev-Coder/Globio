@@ -8,14 +8,14 @@
             <a href="{{ route('admin.dashboard') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-tachometer-alt w-4 h-4"></i>
-                <span class="font-medium">Dashboard</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_dashboard') }}</span>
             </a>
 
             <!-- Users Management -->
             <a href="{{ route('admin.users') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.users*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-users w-4 h-4"></i>
-                <span class="font-medium">Utenti</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_users') }}</span>
                 <span
                     class="ml-auto bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full">
                     {{ \App\Models\User::count() }}
@@ -26,7 +26,7 @@
             <a href="{{ route('admin.videos-management') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.videos-management*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-video w-4 h-4"></i>
-                <span class="font-medium">Video</span>
+                <span class="font-medium">{{ __('ui.videos') }}</span>
                 <span
                     class="ml-auto bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full">
                     {{ \App\Models\Video::count() }}
@@ -37,7 +37,7 @@
             <a href="{{ route('admin.comments') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.comments') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-comments w-4 h-4"></i>
-                <span class="font-medium">Commenti</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_comments') }}</span>
                 <span
                     class="ml-auto bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs px-2 py-0.5 rounded-full">
                     {{ \App\Models\Comment::count() }}
@@ -48,14 +48,14 @@
             <a href="{{ route('admin.statistics') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.statistics') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-chart-bar w-4 h-4"></i>
-                <span class="font-medium">Statistiche</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_statistics') }}</span>
             </a>
 
             <!-- FFmpeg Settings -->
             <a href="{{ route('admin.settings.index') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.settings.*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fa-solid fa-screwdriver-wrench w-4 h-4"></i>
-                <span class="font-medium">Impostazioni FFmpeg</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_ffmpeg_settings') }}</span>
                 <div class="ml-auto flex items-center space-x-1">
                     <div class="w-2 h-2 bg-green-400 rounded-full" title="FFmpeg Online"></div>
                 </div>
@@ -65,21 +65,21 @@
             <a href="{{ route('admin.settings') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.settings') && !request()->routeIs('admin.settings.*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fa-solid fa-gear w-4 h-4"></i>
-                <span class="font-medium">Impostazioni Generali</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_general_settings') }}</span>
             </a>
 
             <!-- Pagine Legali -->
             <a href="{{ route('admin.legal.index') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.legal*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fa-solid fa-file-contract w-4 h-4"></i>
-                <span class="font-medium">Pagine Legali</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_legal_pages') }}</span>
             </a>
 
             <!-- Advertisement Management -->
             <a href="{{ route('admin.advertisements') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.advertisements') && !request()->routeIs('admin.advertisements.settings') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-bullhorn w-4 h-4"></i>
-                <span class="font-medium">Pubblicità</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_ads') }}</span>
                 <span
                     class="ml-auto bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-xs px-2 py-0.5 rounded-full">
                     {{ \App\Models\Advertisement::currentlyActive()->count() }}
@@ -90,21 +90,21 @@
             <a href="{{ route('admin.advertisements.settings') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.advertisements.settings') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-cogs w-4 h-4"></i>
-                <span class="font-medium">Impostazioni Ads</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_ads_settings') }}</span>
             </a>
 
             <!-- Analytics & Reports -->
             <a href="{{ route('admin.analytics') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.analytics*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-chart-line w-4 h-4"></i>
-                <span class="font-medium">Analytics Avanzate</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_advanced_analytics') }}</span>
             </a>
 
             <!-- Reports Management -->
             <a href="{{ route('admin.reports') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.reports') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-flag w-4 h-4"></i>
-                <span class="font-medium">Gestione Segnalazioni</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_reports') }}</span>
                 <span
                     class="ml-auto bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs px-2 py-0.5 rounded-full">
                     {{ \App\Models\Report::where('status', 'pending')->count() }}
@@ -115,13 +115,14 @@
         <!-- Admin Quick Stats -->
         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
             <h4 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                Statistiche Rapide
+                {{ __('ui.admin_sidebar_quick_stats') }}
             </h4>
 
             <div class="space-y-3">
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Utenti Oggi</span>
+                        <span
+                            class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_sidebar_users_today') }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
                             {{ \App\Models\User::whereDate('created_at', today())->count() }}
                         </span>
@@ -130,7 +131,8 @@
 
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Video Oggi</span>
+                        <span
+                            class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_sidebar_videos_today') }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
                             {{ \App\Models\Video::whereDate('created_at', today())->count() }}
                         </span>
@@ -139,7 +141,8 @@
 
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Video in Processamento</span>
+                        <span
+                            class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_sidebar_processing_videos') }}</span>
                         <span class="text-sm font-semibold text-orange-600 dark:text-orange-400">
                             {{ \App\Models\Video::where('status', 'processing')->count() }}
                         </span>
@@ -151,16 +154,17 @@
         <!-- System Status -->
         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
             <h4 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                Stato Sistema
+                {{ __('ui.admin_sidebar_system_status') }}
             </h4>
 
             <div class="space-y-2">
                 <div class="flex items-center justify-between px-3 py-2">
                     <div class="flex items-center space-x-2">
                         <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Database</span>
+                        <span
+                            class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_sidebar_database') }}</span>
                     </div>
-                    <span class="text-xs text-green-600 dark:text-green-400">Online</span>
+                    <span class="text-xs text-green-600 dark:text-green-400">{{ __('ui.admin_sidebar_online') }}</span>
                 </div>
 
                 <div class="flex items-center justify-between px-3 py-2">
@@ -168,15 +172,17 @@
                         <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                         <span class="text-sm text-gray-600 dark:text-gray-400">FFmpeg</span>
                     </div>
-                    <span class="text-xs text-green-600 dark:text-green-400">Ready</span>
+                    <span class="text-xs text-green-600 dark:text-green-400">{{ __('ui.admin_sidebar_ready') }}</span>
                 </div>
 
                 <div class="flex items-center justify-between px-3 py-2">
                     <div class="flex items-center space-x-2">
                         <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Storage</span>
+                        <span
+                            class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_sidebar_storage') }}</span>
                     </div>
-                    <span class="text-xs text-yellow-600 dark:text-yellow-400">Monitor</span>
+                    <span
+                        class="text-xs text-yellow-600 dark:text-yellow-400">{{ __('ui.admin_sidebar_monitor') }}</span>
                 </div>
             </div>
         </div>
@@ -247,44 +253,44 @@
             <a href="{{ route('admin.dashboard') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-tachometer-alt w-4 h-4"></i>
-                <span class="font-medium">Dashboard</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_dashboard') }}</span>
             </a>
 
             <a href="{{ route('admin.users') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.users*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-users w-4 h-4"></i>
-                <span class="font-medium">Gestione Utenti</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_user_management') }}</span>
             </a>
 
             <a href="{{ route('admin.videos-management') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.videos-management*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-video w-4 h-4"></i>
-                <span class="font-medium">Gestione Video</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_video_management') }}</span>
             </a>
 
             <a href="{{ route('admin.legal.index') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.legal*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fa-solid fa-file-contract w-4 h-4"></i>
-                <span class="font-medium">Pagine Legali</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_legal_pages') }}</span>
             </a>
 
             <a href="{{ route('admin.advertisements') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.advertisements*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-bullhorn w-4 h-4"></i>
-                <span class="font-medium">Pubblicità</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_ads') }}</span>
             </a>
 
             <a href="{{ route('admin.settings.index') }}"
                 class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ request()->routeIs('admin.settings.*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300' }}">
                 <i class="fas fa-cogs w-4 h-4"></i>
-                <span class="font-medium">Impostazioni FFmpeg</span>
+                <span class="font-medium">{{ __('ui.admin_sidebar_ffmpeg_settings') }}</span>
             </a>
         </nav>
 
         <!-- Mobile Quick Stats -->
         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
             <h4 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                Statistiche Oggi
+                {{ __('ui.admin_sidebar_today_stats') }}
             </h4>
 
             <div class="grid grid-cols-2 gap-3">
@@ -292,14 +298,15 @@
                     <div class="text-lg font-bold text-gray-900 dark:text-white">
                         {{ \App\Models\User::whereDate('created_at', today())->count() }}
                     </div>
-                    <div class="text-xs text-gray-600 dark:text-gray-400">Nuovi Utenti</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">{{ __('ui.admin_sidebar_new_users') }}</div>
                 </div>
 
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 text-center">
                     <div class="text-lg font-bold text-gray-900 dark:text-white">
                         {{ \App\Models\Video::whereDate('created_at', today())->count() }}
                     </div>
-                    <div class="text-xs text-gray-600 dark:text-gray-400">Nuovi Video</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">{{ __('ui.admin_sidebar_new_videos') }}
+                    </div>
                 </div>
             </div>
         </div>

@@ -6,9 +6,11 @@ use App\Models\Video;
 use App\Models\WatchHistory;
 use App\Models\Comment;
 use App\Models\Like;
+use App\Models\Playlist;
 use App\Notifications\NewLikeNotification;
 use App\Notifications\NewCommentNotification;
 use App\Services\VideoService;
+use App\Services\AutomatedPlaylistService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -134,25 +136,36 @@ class VideoController extends Controller
                     }
                 }
             })
-            ->limit(6)
+            ->limit(10)
             ->get();
+
+        // Get suggested playlists for sidebar
+        $suggestedPlaylists = collect();
+        if (Auth::check()) {
+            $autoPlaylistService = new AutomatedPlaylistService();
+            $suggestedPlaylists = $autoPlaylistService->getSuggestedPlaylistsForSidebar(
+                Auth::id(),
+                $video,
+                3
+            );
+        }
 
         // Get next video from playlist if video is in a playlist
         $nextVideo = null;
         $playlistNextVideos = [];
         $currentPlaylistId = null;
-        
+
         // Check if video is in any playlist
         $playlistVideo = \App\Models\PlaylistVideo::where('video_id', $video->id)->first();
         if ($playlistVideo) {
             $currentPlaylistId = $playlistVideo->playlist_id;
-            
+
             // Get ALL remaining videos in the playlist
             $remainingPlaylistVideos = \App\Models\PlaylistVideo::where('playlist_id', $playlistVideo->playlist_id)
                 ->where('position', '>=', $playlistVideo->position)
                 ->orderBy('position', 'asc')
                 ->get();
-            
+
             // Build the queue of videos to play
             $playlistNextVideos = [];
             $foundCurrent = false;
@@ -169,13 +182,13 @@ class VideoController extends Controller
                     $playlistNextVideos[] = $nextVideoInPlaylist;
                 }
             }
-            
+
             // Set next video to first in queue
             if (!empty($playlistNextVideos)) {
                 $nextVideo = $playlistNextVideos[0];
             }
         }
-        
+
         // If no next video from playlist, use first related video for autoplay
         if (!$nextVideo && $relatedVideos->isNotEmpty()) {
             $nextVideo = $relatedVideos->first();
@@ -201,7 +214,7 @@ class VideoController extends Controller
 
         if (Auth::check()) {
             $miniPlayerState = session()->get('mini_player_state');
-            
+
             if ($miniPlayerState && $miniPlayerState['video_id'] !== $video->id) {
                 // Se c'è uno stato salvato per un altro video, prova a ripristinarlo
                 $lastWatchedVideo = Video::find($miniPlayerState['video_id']);
@@ -231,11 +244,12 @@ class VideoController extends Controller
         }
 
         return view('videos.show', compact(
-            'video', 
-            'relatedVideos', 
+            'video',
+            'relatedVideos',
+            'suggestedPlaylists',
             'shareUrl',
             'restoreMiniPlayerState',
-            'miniPlayerVideoId', 
+            'miniPlayerVideoId',
             'miniPlayerStartTime',
             'miniPlayerLastVideo',
             'nextVideo',
@@ -298,7 +312,7 @@ class VideoController extends Controller
 
         if (Auth::check()) {
             $miniPlayerState = session()->get('mini_player_state');
-            
+
             if ($miniPlayerState && $miniPlayerState['video_id'] !== $video->id) {
                 // Se c'è uno stato salvato per un altro video, prova a ripristinarlo
                 $lastWatchedVideo = Video::find($miniPlayerState['video_id']);
@@ -327,13 +341,69 @@ class VideoController extends Controller
             }
         }
 
+        // Carica tutti i reel disponibili
+        $allReels = Video::published()
+            ->where('is_reel', true)
+            ->with(['user.userProfile'])
+            ->orderBy('created_at', 'desc')
+            ->limit(50)
+            ->get()
+            ->map(function ($v) {
+                return [
+                    'id' => $v->id,
+                    'title' => $v->title,
+                    'description' => $v->description,
+                    'thumbnail_path' => $v->thumbnail_path,
+                    'video_path' => $v->video_path,
+                    'video_url' => $v->video_url,
+                    'duration' => $v->duration,
+                    'views_count' => $v->views_count,
+                    'comments_count' => $v->comments_count,
+                    'created_at' => $v->created_at->toISOString(),
+                    'user' => [
+                        'id' => $v->user->id,
+                        'name' => $v->user->name,
+                        'channel_name' => $v->user->userProfile?->channel_name,
+                        'avatar_url' => $v->user->userProfile?->avatar_url,
+                        'subscribers' => $v->user->subscribers()->count(),
+                    ],
+                ];
+            })->toArray();
+
+        // Trova l'indice corrente
+        $currentReelIndex = 0;
+        foreach ($allReels as $index => $reel) {
+            if ($reel['id'] == $video->id) {
+                $currentReelIndex = $index;
+                break;
+            }
+        }
+
+        $totalReels = count($allReels);
+
+        // Reel correlati (escludendo quello corrente)
+        $relatedReels = array_filter($allReels, function ($r) use ($video) {
+            return $r['id'] != $video->id;
+        });
+        $relatedReels = array_values($relatedReels);
+
+        // Variabili per la velocità e loop
+        $isLooping = false;
+        $currentSpeed = 1;
+
         // Passa il video e le variabili del miniplayer al componente Livewire
         return view('reels.show', compact(
-            'video', 
+            'video',
+            'allReels',
+            'currentReelIndex',
+            'totalReels',
+            'relatedReels',
             'restoreMiniPlayerState',
-            'miniPlayerVideoId', 
+            'miniPlayerVideoId',
             'miniPlayerStartTime',
-            'miniPlayerLastVideo'
+            'miniPlayerLastVideo',
+            'isLooping',
+            'currentSpeed'
         ));
     }
 
@@ -1098,12 +1168,11 @@ class VideoController extends Controller
 
             // Reindirizza immediatamente al primo reel disponibile
             return redirect()->route('reels.show', $firstReel);
-            
         } catch (\Exception $e) {
             Log::error('Errore nel caricamento della pagina reels', [
                 'error' => $e->getMessage()
             ]);
-            
+
             return redirect()->route('home')
                 ->with('error', 'Errore nel caricamento dei reels.');
         }

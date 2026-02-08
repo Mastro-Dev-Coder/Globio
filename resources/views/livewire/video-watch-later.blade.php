@@ -4,7 +4,7 @@
             {{-- Modalità compatta per componenti video e reel --}}
             <button wire:click="toggleWatchLater" wire:loading.attr="disabled"
                             class="watch-later-button w-9 h-9 bg-gray-900/70 text-white rounded-xl flex items-center justify-center hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-lg backdrop-blur-sm border border-white/20 hover:scale-105 hover:shadow-xl cursor-pointer disabled:opacity-50 {{ $isInWatchLater ? 'saved' : '' }}"
-                            title="{{ $isInWatchLater ? 'Rimuovi da Guarda più tardi' : 'Aggiungi a Guarda più tardi' }}"
+                            title="{{ $isInWatchLater ? __('ui.remove_from_watch_later') : __('ui.add_to_watch_later') }}"
                             id="watch-later-btn-{{ $video->id }}">
             
                             <div wire:loading.remove wire:target="toggleWatchLater">
@@ -20,7 +20,7 @@
             {{-- Modalità normale per le pagine video --}}
             <button wire:click="toggleWatchLater" wire:loading.attr="disabled"
                 class="flex items-center gap-2 px-4 py-2.5 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group border border-gray-600/50 hover:border-gray-500 backdrop-blur-sm cursor-pointer disabled:opacity-50"
-                title="{{ $isInWatchLater ? 'Rimuovi da Guarda più tardi' : 'Salva per guardarlo più tardi' }}">
+                title="{{ $isInWatchLater ? __('ui.remove_from_watch_later') : __('ui.save_for_later') }}">
 
                 <div wire:loading.remove wire:target="toggleWatchLater">
                     <i class="fas {{ $isInWatchLater ? 'fa-check-double' : 'fa-clock' }} text-gray-300 group-hover:text-white transition-colors duration-200"
@@ -35,13 +35,13 @@
     @else
         @if ($compact)
             {{-- Modalità compatta per utenti non autenticati --}}
-            <button onclick="showToast('Devi effettuare l\'accesso per salvare i video.', 'error')"
+            <button onclick="showToast('{{ __('ui.login_to_save_videos') }}', 'error')"
                 class="w-9 h-9 bg-gray-900/70 text-white rounded-xl flex items-center justify-center hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-lg backdrop-blur-sm border border-white/20 hover:scale-105 hover:shadow-xl cursor-pointer">
                 <i class="fas fa-clock text-sm"></i>
             </button>
         @else
             {{-- Modalità normale per utenti non autenticati --}}
-            <button onclick="showToast('Devi effettuare l\'accesso per salvare i video.', 'error')"
+            <button onclick="showToast('{{ __('ui.login_to_save_videos') }}', 'error')"
                 class="flex items-center gap-2 px-4 py-2.5 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group border border-gray-600/50 hover:border-gray-500 backdrop-blur-sm cursor-pointer">
                 <i class="fas fa-clock text-gray-300 group-hover:text-white"></i>
             </button>

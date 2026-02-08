@@ -17,10 +17,13 @@ class Playlist extends Model
         'is_public',
         'video_count',
         'views_count',
+        'is_automatic',
+        'auto_playlist_type',
     ];
 
     protected $casts = [
         'is_public' => 'boolean',
+        'is_automatic' => 'boolean',
     ];
 
     public function user(): BelongsTo
@@ -33,13 +36,11 @@ class Playlist extends Model
         return $this->belongsToMany(Video::class, 'playlist_videos')->withPivot('position');
     }
 
-    // Scope per playlist pubbliche
     public function scopePublic($query)
     {
         return $query->where('is_public', true);
     }
 
-    // Ottieni thumbnail URL
     public function getThumbnailUrlAttribute(): ?string
     {
         if (!$this->thumbnail_path) {
@@ -49,19 +50,16 @@ class Playlist extends Model
         return asset($this->thumbnail_path);
     }
 
-    // Incrementa conteggio visualizzazioni
     public function incrementViews(): void
     {
         $this->increment('views_count');
     }
 
-    // Ottieni il primo video della playlist ordinato per posizione
     public function getFirstVideoAttribute()
     {
         return $this->videos()->orderBy('playlist_videos.position', 'asc')->first();
     }
 
-    // Ottieni miniature dinamica basata sui video della playlist
     public function getDynamicThumbnailUrlAttribute()
     {
         $firstVideo = $this->first_video;
@@ -70,12 +68,10 @@ class Playlist extends Model
             return $firstVideo->thumbnail_url;
         }
         
-        // Fallback: thumbnail personalizzata della playlist se presente
         if ($this->thumbnail_url) {
             return $this->thumbnail_url;
         }
         
-        // Fallback finale: icona di default
         return null;
     }
 }

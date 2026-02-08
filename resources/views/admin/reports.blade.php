@@ -3,10 +3,10 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                <i class="fas fa-flag mr-3 text-red-600"></i>Gestione Segnalazioni
+                <i class="fas fa-flag mr-3 text-red-600"></i>{{ __('ui.admin_reports_title') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400">
-                Dashboard completa per gestire segnalazioni, moderazione contenuti e analytics di compliance
+                {{ __('ui.admin_reports_subtitle') }}
             </p>
         </div>
 
@@ -15,36 +15,36 @@
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('ui.admin_reports_status') }}</label>
                         <select name="status" onchange="updateReports()"
                             class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
-                            <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>In Attesa</option>
-                            <option value="resolved" {{ $status === 'resolved' ? 'selected' : '' }}>Risolte</option>
-                            <option value="dismissed" {{ $status === 'dismissed' ? 'selected' : '' }}>Respinte</option>
-                            <option value="all" {{ $status === 'all' ? 'selected' : '' }}>Tutte</option>
+                            <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_pending') }}</option>
+                            <option value="resolved" {{ $status === 'resolved' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_resolved') }}</option>
+                            <option value="dismissed" {{ $status === 'dismissed' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_dismissed') }}</option>
+                            <option value="all" {{ $status === 'all' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_all') }}</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priorità</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('ui.admin_reports_priority') }}</label>
                         <select name="priority" onchange="updateReports()"
                             class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
-                            <option value="">Tutte</option>
-                            <option value="urgent" {{ $priority === 'urgent' ? 'selected' : '' }}>Urgente</option>
-                            <option value="high" {{ $priority === 'high' ? 'selected' : '' }}>Alta</option>
-                            <option value="medium" {{ $priority === 'medium' ? 'selected' : '' }}>Media</option>
-                            <option value="low" {{ $priority === 'low' ? 'selected' : '' }}>Bassa</option>
+                            <option value="">{{ __('ui.admin_reports_status_all') }}</option>
+                            <option value="urgent" {{ $priority === 'urgent' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_urgent') }}</option>
+                            <option value="high" {{ $priority === 'high' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_high') }}</option>
+                            <option value="medium" {{ $priority === 'medium' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_medium') }}</option>
+                            <option value="low" {{ $priority === 'low' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_low') }}</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('ui.admin_reports_type') }}</label>
                         <select name="type" onchange="updateReports()"
                             class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
-                            <option value="">Tutti</option>
-                            <option value="spam" {{ $type === 'spam' ? 'selected' : '' }}>Spam</option>
-                            <option value="harassment" {{ $type === 'harassment' ? 'selected' : '' }}>Molestie</option>
-                            <option value="copyright" {{ $type === 'copyright' ? 'selected' : '' }}>Copyright</option>
+                            <option value="">{{ __('ui.all') }}</option>
+                            <option value="spam" {{ $type === 'spam' ? 'selected' : '' }}>{{ __('ui.admin_reports_type_spam') }}</option>
+                            <option value="harassment" {{ $type === 'harassment' ? 'selected' : '' }}>{{ __('ui.admin_reports_type_harassment') }}</option>
+                            <option value="copyright" {{ $type === 'copyright' ? 'selected' : '' }}>{{ __('ui.admin_reports_type_copyright') }}</option>
                             <option value="inappropriate_content"
-                                {{ $type === 'inappropriate_content' ? 'selected' : '' }}>Contenuto Inappropriato
+                                {{ $type === 'inappropriate_content' ? 'selected' : '' }}>{{ __('ui.admin_reports_type_inappropriate') }}
                             </option>
                         </select>
                     </div>
@@ -52,11 +52,11 @@
                 <div class="flex items-center gap-3">
                     <a href="{{ route('admin.reports.export') }}?{{ http_build_query(request()->all()) }}"
                         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm inline-flex items-center">
-                        <i class="fas fa-download mr-2"></i>Esporta
+                        <i class="fas fa-download mr-2"></i>{{ __('ui.admin_reports_export') }}
                     </a>
                     <button onclick="openBulkActionModal()"
                         class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors text-sm inline-flex items-center">
-                        <i class="fas fa-tasks mr-2"></i>Azioni Bulk
+                        <i class="fas fa-tasks mr-2"></i>{{ __('ui.admin_reports_bulk_actions') }}
                     </button>
                     <form method="GET" action="" class="inline">
                         @foreach(request()->except('page') as $key => $value)
@@ -64,7 +64,7 @@
                         @endforeach
                         <button type="submit"
                             class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm inline-flex items-center">
-                            <i class="fas fa-sync-alt mr-2"></i>Aggiorna
+                            <i class="fas fa-sync-alt mr-2"></i>{{ __('ui.admin_reports_refresh') }}
                         </button>
                     </form>
                 </div>
@@ -88,7 +88,7 @@
                     {{ $reportStats['pending'] ?? 0 }}
                 </h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Segnalazioni in attesa
+                    {{ __('ui.admin_reports_pending_reports') }}
                 </p>
                 <div class="mt-3 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div class="bg-yellow-600 h-2 rounded-full"
@@ -110,7 +110,7 @@
                     {{ $reportStats['avg_resolution_time'] ?? 0 }}h
                 </h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Tempo medio risoluzione
+                    {{ __('ui.admin_reports_avg_resolution_time') }}
                 </p>
                 <div class="mt-3 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div class="bg-blue-600 h-2 rounded-full"
@@ -134,7 +134,7 @@
                     {{ number_format($reportStats['accuracy_rate'] ?? 0, 1) }}%
                 </h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Tasso di precisione
+                    {{ __('ui.admin_reports_accuracy_rate') }}
                 </p>
                 <div class="mt-3 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div class="bg-green-600 h-2 rounded-full"
@@ -156,7 +156,7 @@
                     {{ $reportStats['false_reports'] ?? 0 }}
                 </h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Segnalazioni false
+                    {{ __('ui.admin_reports_false_reports') }}
                 </p>
                 <div class="mt-3 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div class="bg-red-600 h-2 rounded-full"
@@ -173,7 +173,7 @@
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                         <i class="fas fa-chart-line mr-2 text-blue-500"></i>
-                        Trend Segnalazioni
+                        {{ __('ui.admin_reports_reports_trend') }}
                     </h2>
                 </div>
                 <div class="p-6">
@@ -188,7 +188,7 @@
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                         <i class="fas fa-chart-pie mr-2 text-purple-500"></i>
-                        Distribuzione per Tipo
+                        {{ __('ui.admin_reports_type_distribution') }}
                     </h2>
                 </div>
                 <div class="p-6">
@@ -204,7 +204,7 @@
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                     <i class="fas fa-users mr-2 text-green-500"></i>
-                    Performance del Team di Moderazione
+                    {{ __('ui.admin_reports_team_performance') }}
                 </h2>
             </div>
             <div class="p-6">
@@ -218,22 +218,22 @@
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-900 dark:text-white">{{ $admin->name }}</h4>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Moderatore</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_moderator') }}</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">Risolte:</span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_resolved') }}:</span>
                                     <span
                                         class="text-sm font-medium text-gray-900 dark:text-white">{{ $admin->resolved_count }}</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">Tempo medio:</span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_avg_time') }}:</span>
                                     <span
                                         class="text-sm font-medium text-gray-900 dark:text-white">{{ $admin->avg_resolution_time }}h</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">Precisione:</span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_accuracy') }}:</span>
                                     <span
                                         class="text-sm font-medium text-green-600 dark:text-green-400">{{ number_format($admin->accuracy_rate, 1) }}%</span>
                                 </div>
@@ -249,13 +249,13 @@
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                     <i class="fas fa-list mr-2 text-gray-500"></i>
-                    Lista Segnalazioni
+                    {{ __('ui.admin_reports_reports_list') }}
                 </h2>
                 <div class="flex items-center gap-3">
                     <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                         <input type="checkbox" id="selectAll" onchange="toggleSelectAll()"
                             class="rounded border-gray-300 dark:border-gray-600 text-red-600 focus:ring-red-500">
-                        Seleziona tutto
+                        {{ __('ui.admin_reports_select_all') }}
                     </label>
                 </div>
             </div>
@@ -271,31 +271,31 @@
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                ID</th>
+                                {{ __('ui.admin_reports_id') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Segnalante</th>
+                                {{ __('ui.admin_reports_reporter') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Target</th>
+                                {{ __('ui.admin_reports_target') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Tipo</th>
+                                {{ __('ui.admin_reports_type') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Priorità</th>
+                                {{ __('ui.admin_reports_priority') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Status</th>
+                                {{ __('ui.admin_reports_status') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Assegnato</th>
+                                {{ __('ui.admin_reports_assigned') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Data</th>
+                                {{ __('ui.admin_reports_date') }}</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                Azioni</th>
+                                {{ __('ui.admin_reports_actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -317,7 +317,7 @@
                                         </div>
                                         <div>
                                             <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                {{ $report->reporter->name ?? 'Utente eliminato' }}
+                                                {{ $report->reporter->name ?? __('ui.anonymous') }}
                                             </div>
                                         </div>
                                     </div>
@@ -326,20 +326,20 @@
                                     @if ($report->video)
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-video text-blue-500 text-sm"></i>
-                                            <span class="text-sm text-gray-900 dark:text-white">Video</span>
+                                            <span class="text-sm text-gray-900 dark:text-white">{{ __('ui.admin_reports_video') }}</span>
                                         </div>
                                     @elseif ($report->comment)
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-comment text-green-500 text-sm"></i>
-                                            <span class="text-sm text-gray-900 dark:text-white">Commento</span>
+                                            <span class="text-sm text-gray-900 dark:text-white">{{ __('ui.admin_reports_comment') }}</span>
                                         </div>
                                     @elseif ($report->reportedUser)
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-user text-purple-500 text-sm"></i>
-                                            <span class="text-sm text-gray-900 dark:text-white">Utente</span>
+                                            <span class="text-sm text-gray-900 dark:text-white">{{ __('ui.admin_reports_user') }}</span>
                                         </div>
                                     @else
-                                        <span class="text-sm text-gray-500 dark:text-gray-400">N/A</span>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_reports_na') }}</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -351,13 +351,13 @@
                                         {{ $report->type === 'inappropriate_content' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' : '' }}
                                     ">
                                         @if ($report->type === 'spam')
-                                            <i class="fas fa-spam mr-1"></i>Spam
+                                            <i class="fas fa-spam mr-1"></i>{{ __('ui.admin_reports_type_spam') }}
                                         @elseif ($report->type === 'harassment')
-                                            <i class="fas fa-bullhorn mr-1"></i>Molestie
+                                            <i class="fas fa-bullhorn mr-1"></i>{{ __('ui.admin_reports_type_harassment') }}
                                         @elseif ($report->type === 'copyright')
-                                            <i class="fas fa-copyright mr-1"></i>Copyright
+                                            <i class="fas fa-copyright mr-1"></i>{{ __('ui.admin_reports_type_copyright') }}
                                         @elseif ($report->type === 'inappropriate_content')
-                                            <i class="fas fa-exclamation-triangle mr-1"></i>Inappropriato
+                                            <i class="fas fa-exclamation-triangle mr-1"></i>{{ __('ui.admin_reports_type_inappropriate') }}
                                         @else
                                             {{ $report->type }}
                                         @endif
@@ -378,7 +378,7 @@
                                             {{ $report->priority === 'medium' ? 'text-yellow-500' : '' }}
                                             {{ $report->priority === 'low' ? 'text-green-500' : '' }}
                                         "></i>
-                                        {{ ucfirst($report->priority) }}
+                                        {{ __('ui.admin_reports_priority_' . $report->priority) }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -391,22 +391,22 @@
                                         {{ $report->status === 'reviewed' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' : '' }}
                                     ">
                                         @if ($report->status === 'pending')
-                                            <i class="fas fa-clock mr-1"></i>In Attesa
+                                            <i class="fas fa-clock mr-1"></i>{{ __('ui.admin_reports_status_pending') }}
                                         @elseif ($report->status === 'resolved')
-                                            <i class="fas fa-check mr-1"></i>Risolta
+                                            <i class="fas fa-check mr-1"></i>{{ __('ui.admin_reports_status_resolved') }}
                                         @elseif ($report->status === 'dismissed')
-                                            <i class="fas fa-times mr-1"></i>Respinta
+                                            <i class="fas fa-times mr-1"></i>{{ __('ui.admin_reports_status_dismissed') }}
                                         @elseif ($report->status === 'escalated')
-                                            <i class="fas fa-exclamation-triangle mr-1"></i>Escalata
+                                            <i class="fas fa-exclamation-triangle mr-1"></i>{{ __('ui.admin_reports_status_escalated') }}
                                         @elseif ($report->status === 'reviewed')
-                                            <i class="fas fa-eye mr-1"></i>In Revisione
+                                            <i class="fas fa-eye mr-1"></i>{{ __('ui.admin_reports_status_reviewed') }}
                                         @else
                                             {{ $report->status }}
                                         @endif
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    {{ $report->admin->name ?? 'Non assegnato' }}
+                                    {{ $report->admin->name ?? __('ui.admin_reports_not_assigned') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     {{ $report->created_at->format('d/m/Y H:i') }}
@@ -415,7 +415,7 @@
                                     <div class="flex items-center gap-2">
                                         <a href="{{ route('admin.reports.show', $report) }}"
                                             class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300"
-                                            title="Visualizza dettagli">
+                                            title="{{ __('ui.admin_reports_view_details') }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         @if ($report->status === 'pending' && !$report->admin_id)
@@ -425,7 +425,7 @@
                                                 <input type="hidden" name="admin_id" value="{{ auth()->id() }}">
                                                 <button type="submit"
                                                     class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300"
-                                                    title="Assegna a me">
+                                                    title="{{ __('ui.admin_reports_assign_to_me') }}">
                                                     <i class="fas fa-user-plus"></i>
                                                 </button>
                                             </form>
@@ -433,23 +433,23 @@
                                         @if ($report->status === 'pending')
                                             <form action="{{ route('admin.reports.resolve', $report) }}"
                                                 method="POST" class="inline"
-                                                onsubmit="return confirm('Sei sicuro di voler risolvere questa segnalazione?');">
+                                                onsubmit="return confirm('{{ __('ui.admin_reports_confirm_resolve') }}');">
                                                 @csrf
                                                 <input type="hidden" name="resolution_action"
                                                     value="{{ \App\Models\Report::ACTION_NO_ACTION }}">
                                                 <button type="submit"
                                                     class="text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300"
-                                                    title="Risolvi">
+                                                    title="{{ __('ui.admin_reports_mark_resolved') }}">
                                                     <i class="fas fa-check"></i>
                                                 </button>
                                             </form>
                                             <form action="{{ route('admin.reports.dismiss', $report) }}"
                                                 method="POST" class="inline"
-                                                onsubmit="return confirm('Sei sicuro di voler respingere questa segnalazione?');">
+                                                onsubmit="return confirm('{{ __('ui.admin_reports_confirm_dismiss') }}');">
                                                 @csrf
                                                 <button type="submit"
                                                     class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-                                                    title="Respingi">
+                                                    title="{{ __('ui.admin_reports_dismiss') }}">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </form>
@@ -461,7 +461,7 @@
                             <tr>
                                 <td colspan="10" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                     <i class="fas fa-inbox text-4xl mb-4"></i>
-                                    <p>Nessuna segnalazione trovata con i filtri selezionati</p>
+                                    <p>{{ __('ui.admin_reports_no_reports_found') }}</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -480,6 +480,7 @@
 
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Reports Trend Chart
@@ -491,7 +492,7 @@
                     data: {
                         labels: trendData.map(item => item.date),
                         datasets: [{
-                                label: 'Segnalazioni',
+                                label: @json(__('ui.admin_reports_reports_list')),
                                 data: trendData.map(item => item.total),
                                 borderColor: '#ef4444',
                                 backgroundColor: 'rgba(239, 68, 68, 0.1)',
@@ -499,7 +500,7 @@
                                 fill: true
                             },
                             {
-                                label: 'Risolte',
+                                label: @json(__('ui.admin_reports_status_resolved')),
                                 data: trendData.map(item => item.resolved),
                                 borderColor: '#10b981',
                                 backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -539,7 +540,13 @@
                 new Chart(typeCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Spam', 'Molestie', 'Copyright', 'Inappropriato', 'Altro'],
+                        labels: [
+                            @json(__('ui.admin_reports_type_spam')),
+                            @json(__('ui.admin_reports_type_harassment')),
+                            @json(__('ui.admin_reports_type_copyright')),
+                            @json(__('ui.admin_reports_type_inappropriate')),
+                            @json(__('ui.admin_reports_type_other'))
+                        ],
                         datasets: [{
                             data: [
                                 typeData.spam ?? 0,
@@ -596,7 +603,7 @@
             function openBulkActionModal() {
                 const selected = document.querySelectorAll('.report-checkbox:checked');
                 if (selected.length === 0) {
-                    alert('Seleziona almeno una segnalazione');
+                    alert('{{ __('ui.admin_reports_select_min_one') }}');
                     return;
                 }
 
@@ -635,14 +642,14 @@
             <div class="mt-3">
                 <div class="flex items-center justify-between mb-4">
                     <h5 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        <i class="fas fa-tasks mr-2 text-yellow-500"></i>Azioni Bulk
+                        <i class="fas fa-tasks mr-2 text-yellow-500"></i>{{ __('ui.admin_reports_bulk_action_title') }}
                     </h5>
                     <button onclick="closeBulkActionModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <p class="text-gray-600 dark:text-gray-400 mb-4">
-                    Seleziona l'azione da eseguire sulle segnalazioni selezionate:
+                    {{ __('ui.admin_reports_bulk_action_text') }}
                 </p>
                 <div class="space-y-3">
                     <button onclick="executeBulkAction('assign')"
@@ -651,8 +658,8 @@
                             <i class="fas fa-user-plus text-blue-600 dark:text-blue-400"></i>
                         </div>
                         <div>
-                            <div class="font-medium text-gray-900 dark:text-white">Assegna a me</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400">Assegna le segnalazioni selezionate al tuo account</div>
+                            <div class="font-medium text-gray-900 dark:text-white">{{ __('ui.admin_reports_bulk_assign') }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_reports_bulk_assign_desc') }}</div>
                         </div>
                     </button>
                     <button onclick="executeBulkAction('resolve')"
@@ -661,8 +668,8 @@
                             <i class="fas fa-check text-green-600 dark:text-green-400"></i>
                         </div>
                         <div>
-                            <div class="font-medium text-gray-900 dark:text-white">Risolvi</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400">Segna le segnalazioni come risolte</div>
+                            <div class="font-medium text-gray-900 dark:text-white">{{ __('ui.admin_reports_bulk_resolve') }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_reports_bulk_resolve_desc') }}</div>
                         </div>
                     </button>
                     <button onclick="executeBulkAction('escalate')"
@@ -671,8 +678,8 @@
                             <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400"></i>
                         </div>
                         <div>
-                            <div class="font-medium text-gray-900 dark:text-white">Escalata</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400">Escala le segnalazioni a un livello superiore</div>
+                            <div class="font-medium text-gray-900 dark:text-white">{{ __('ui.admin_reports_bulk_escalate') }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_reports_bulk_escalate_desc') }}</div>
                         </div>
                     </button>
                     <button onclick="executeBulkAction('dismiss')"
@@ -681,15 +688,15 @@
                             <i class="fas fa-times text-gray-600 dark:text-gray-400"></i>
                         </div>
                         <div>
-                            <div class="font-medium text-gray-900 dark:text-white">Respingi</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400">Respingi le segnalazioni selezionate</div>
+                            <div class="font-medium text-gray-900 dark:text-white">{{ __('ui.admin_reports_bulk_dismiss') }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_reports_bulk_dismiss_desc') }}</div>
                         </div>
                     </button>
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <button onclick="closeBulkActionModal()"
                         class="w-full px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
-                        Annulla
+                        {{ __('ui.admin_reports_cancel') }}
                     </button>
                 </div>
             </div>

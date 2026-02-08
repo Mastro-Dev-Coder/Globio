@@ -8,7 +8,7 @@
                         <i class="fas fa-users text-blue-600 dark:text-blue-400"></i>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Totale Utenti</p>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('ui.admin_users_total') }}</p>
                         <p class="text-xl font-semibold text-gray-900 dark:text-white">{{ $users->total() }}</p>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                         <i class="fas fa-user-check text-green-600 dark:text-green-400"></i>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Nuovi Questo Mese</p>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('ui.admin_users_new_this_month') }}</p>
                         <p class="text-xl font-semibold text-gray-900 dark:text-white">
                             {{ \App\Models\User::whereMonth('created_at', now()->month)->count() }}
                         </p>
@@ -34,7 +34,7 @@
                         <i class="fas fa-user-shield text-red-600 dark:text-red-400"></i>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Amministratori</p>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('ui.admin_users_admins') }}</p>
                         <p class="text-xl font-semibold text-gray-900 dark:text-white">
                             {{ \App\Models\User::where('role', 'admin')->count() }}
                         </p>
@@ -48,7 +48,7 @@
                         <i class="fas fa-user-cog text-yellow-600 dark:text-yellow-400"></i>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Moderatori</p>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('ui.admin_users_moderators') }}</p>
                         <p class="text-xl font-semibold text-gray-900 dark:text-white">
                             {{ \App\Models\User::where('role', 'moderator')->count() }}
                         </p>
@@ -60,19 +60,19 @@
         <!-- Filters -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
             <form method="GET" action="{{ route('admin.users') }}" class="flex items-center space-x-4">
-                <input type="text" name="search" placeholder="Cerca utenti..." value="{{ $search ?? '' }}"
+                <input type="text" name="search" placeholder="{{ __('ui.admin_users_search_placeholder') }}" value="{{ $search ?? '' }}"
                     class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
                 <button type="submit"
                     class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
-                    <i class="fas fa-search mr-2"></i>Cerca
+                    <i class="fas fa-search mr-2"></i>{{ __('ui.admin_users_search') }}
                 </button>
                 <a href="{{ route('admin.users', ['sort' => 'newest']) }}"
                     class="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-                    Più recenti
+                    {{ __('ui.admin_users_sort_newest') }}
                 </a>
                 <a href="{{ route('admin.users', ['sort' => 'oldest']) }}"
                     class="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-                    Meno recenti
+                    {{ __('ui.admin_users_sort_oldest') }}
                 </a>
             </form>
         </div>
@@ -81,7 +81,7 @@
         <div
             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Lista Utenti</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('ui.admin_users_list_title') }}</h3>
             </div>
 
             <div class="overflow-x-auto">
@@ -90,31 +90,31 @@
                         <tr>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Utente
+                                {{ __('ui.admin_users_table_user') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Email
+                                {{ __('ui.admin_users_table_email') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Ruolo
+                                {{ __('ui.admin_users_table_role') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Video
+                                {{ __('ui.admin_users_table_videos') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Iscritti
+                                {{ __('ui.admin_users_table_subscribers') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Registrato
+                                {{ __('ui.admin_users_table_registered') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Azioni
+                                {{ __('ui.admin_users_table_actions') }}
                             </th>
                         </tr>
                     </thead>
@@ -143,7 +143,7 @@
                                                     <span
                                                         class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                                                         <i class="fas fa-check-circle mr-1"></i>
-                                                        Verificato
+                                                        {{ __('ui.admin_users_verified') }}
                                                     </span>
                                                 @endif
                                             </div>
@@ -188,7 +188,7 @@
                                         </a>
                                         <form method="POST" action="{{ route('admin.users.delete', $user) }}"
                                             class="inline"
-                                            onsubmit="return confirm('Sei sicuro di voler eliminare questo utente?')">
+                                            onsubmit="return confirm(@json(__('ui.admin_users_delete_confirm')))">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -204,7 +204,7 @@
                                 <td colspan="7" class="px-6 py-12 text-center">
                                     <div class="flex flex-col items-center">
                                         <i class="fas fa-users text-4xl text-gray-300 dark:text-gray-600 mb-4"></i>
-                                        <p class="text-gray-500 dark:text-gray-400">Nessun utente trovato</p>
+                                        <p class="text-gray-500 dark:text-gray-400">{{ __('ui.admin_users_none') }}</p>
                                     </div>
                                 </td>
                             </tr>

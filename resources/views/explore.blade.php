@@ -3,10 +3,10 @@
         <!-- Header Section -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                <i class="fas fa-compass mr-3 text-red-600"></i>Esplora
+                <i class="fas fa-compass mr-3 text-red-600"></i>{{ __('ui.explore_title') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400">
-                Scopri nuovi contenuti e creatori
+                {{ __('ui.explore_subtitle') }}
             </p>
         </div>
 
@@ -16,25 +16,25 @@
                 <!-- Sort By -->
                 <div class="flex-1">
                     <label for="sort" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Ordina per
+                        {{ __('ui.sort_by') }}
                     </label>
                     <select name="sort" id="sort" onchange="this.form.submit()"
                         class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-900 dark:text-white">
-                        <option value="latest" {{ $sortBy === 'latest' ? 'selected' : '' }}>Più recenti</option>
-                        <option value="popular" {{ $sortBy === 'popular' ? 'selected' : '' }}>Più popolari</option>
-                        <option value="trending" {{ $sortBy === 'trending' ? 'selected' : '' }}>In tendenza</option>
-                        <option value="oldest" {{ $sortBy === 'oldest' ? 'selected' : '' }}>Più vecchi</option>
+                        <option value="latest" {{ $sortBy === 'latest' ? 'selected' : '' }}>{{ __('ui.newest') }}</option>
+                        <option value="popular" {{ $sortBy === 'popular' ? 'selected' : '' }}>{{ __('ui.most_popular') }}</option>
+                        <option value="trending" {{ $sortBy === 'trending' ? 'selected' : '' }}>{{ __('ui.trending') }}</option>
+                        <option value="oldest" {{ $sortBy === 'oldest' ? 'selected' : '' }}>{{ __('ui.oldest') }}</option>
                     </select>
                 </div>
 
                 <!-- Category Filter -->
                 <div class="flex-1">
                     <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Categoria
+                        {{ __('ui.category') }}
                     </label>
                     <select name="category" id="category" onchange="this.form.submit()"
                         class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-900 dark:text-white">
-                        <option value="">Tutte le categorie</option>
+                        <option value="">{{ __('ui.all_categories') }}</option>
                         @foreach ($popularCategories as $cat => $count)
                             <option value="{{ $cat }}" {{ $category === $cat ? 'selected' : '' }}>
                                 {{ ucfirst($cat) }} ({{ $count }})
@@ -48,7 +48,7 @@
                     <div class="flex items-end">
                         <a href="{{ route('explore') }}"
                             class="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-                            <i class="fas fa-redo mr-2"></i>Reset
+                            <i class="fas fa-redo mr-2"></i>{{ __('ui.reset') }}
                         </a>
                     </div>
                 @endif
@@ -76,15 +76,15 @@
                     <i class="fas fa-video text-4xl text-gray-400"></i>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Nessun video trovato
+                    {{ __('ui.no_videos_found') }}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    Prova a modificare i filtri di ricerca
+                    {{ __('ui.try_modifying_filters') }}
                 </p>
                 <a href="{{ route('explore') }}"
                     class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
                     <i class="fas fa-redo mr-2"></i>
-                    Reset filtri
+                    {{ __('ui.reset_filters') }}
                 </a>
             </div>
         @endif
@@ -102,7 +102,7 @@
                             <i class="fas fa-folder-plus text-white text-sm"></i>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Aggiungi a Playlist
+                            {{ __('ui.add_to_playlist') }}
                         </h3>
                     </div>
                     <button onclick="closeAddToPlaylistModal()"
@@ -118,11 +118,11 @@
                 <div class="flex gap-3">
                     <button type="button" onclick="showCreatePlaylistModal()"
                         class="flex-1 px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 font-medium flex items-center justify-center gap-2">
-                        <i class="fas fa-plus text-sm"></i>Nuova Playlist
+                        <i class="fas fa-plus text-sm"></i>{{ __('ui.new_playlist') }}
                     </button>
                     <button type="button" onclick="closeAddToPlaylistModal()"
                         class="flex-1 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl transition-colors font-medium">
-                        Chiudi
+                        {{ __('ui.close') }}
                     </button>
                 </div>
             </div>
@@ -141,7 +141,7 @@
                             <i class="fas fa-plus text-white text-sm"></i>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Crea Nuova Playlist
+                            {{ __('ui.create_playlist') }}
                         </h3>
                     </div>
                     <button onclick="closeCreatePlaylistModal()"
@@ -154,31 +154,31 @@
                     <div class="mb-5">
                         <label for="playlistName"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Nome Playlist
+                            {{ __('ui.playlist_name') }}
                         </label>
                         <input type="text" id="playlistName" name="name"
                             class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:text-white transition-all"
-                            placeholder="Inserisci il nome della playlist" required>
+                            placeholder="{{ __('ui.enter_playlist_name') }}" required>
                     </div>
 
                     <div class="mb-6">
                         <label for="playlistDescription"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Descrizione (opzionale)
+                            {{ __('ui.description_optional') }}
                         </label>
                         <textarea id="playlistDescription" name="description" rows="3"
                             class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:text-white transition-all resize-none"
-                            placeholder="Aggiungi una descrizione alla playlist"></textarea>
+                            placeholder="{{ __('ui.add_description_to_playlist') }}"></textarea>
                     </div>
 
                     <div class="flex gap-3">
                         <button type="button" onclick="closeCreatePlaylistModal()"
                             class="flex-1 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl transition-colors font-medium">
-                            Annulla
+                            {{ __('ui.cancel') }}
                         </button>
                         <button type="submit"
                             class="flex-1 px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 font-medium">
-                            Crea Playlist
+                            {{ __('ui.create_playlist') }}
                         </button>
                     </div>
                 </form>
@@ -188,6 +188,22 @@
 </x-layout>
 
 <script>
+    const exploreTranslations = {
+        playlist_created_success: @json(__('ui.playlist_created_success')) ,
+        error_creating_playlist: @json(__('ui.error_creating_playlist')) ,
+        no_playlists_available: @json(__('ui.no_playlists_available')) ,
+        create_first_playlist: @json(__('ui.create_first_playlist')) ,
+        video_added_to_playlist: @json(__('ui.video_added_to_playlist')) ,
+        error_adding_video: @json(__('ui.error_adding_video')) ,
+        added_to_watch_later: @json(__('ui.added_to_watch_later')) ,
+        removed_from_watch_later: @json(__('ui.removed_from_watch_later')) ,
+        error_removing_video: @json(__('ui.error_removing_video')) ,
+        add_to_watch_later: @json(__('ui.add_to_watch_later')) ,
+        added_to_watch_later_short: @json(__('ui.added_to_watch_later')) ,
+        remove_from_watch_later: @json(__('ui.remove_from_watch_later')) ,
+        video_label: @json(__('ui.video_short')) ,
+    };
+
     // Global variables for modals
     window.currentVideoId = null;
 
@@ -237,7 +253,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            showToast('Playlist creata con successo!', 'success');
+                            showToast(exploreTranslations.playlist_created_success, 'success');
                             closeCreatePlaylistModal();
 
                             // If we have a video to add, add it to the new playlist
@@ -245,12 +261,12 @@
                                 addVideoToPlaylist(data.playlist.id);
                             }
                         } else {
-                            showToast('Errore nella creazione della playlist', 'error');
+                            showToast(exploreTranslations.error_creating_playlist, 'error');
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        showToast('Errore nella creazione della playlist', 'error');
+                        showToast(exploreTranslations.error_creating_playlist, 'error');
                     });
             });
         }
@@ -272,8 +288,8 @@
                         <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-folder text-gray-400 text-xl"></i>
                         </div>
-                        <p class="text-gray-500 dark:text-gray-400 font-medium">Nessuna playlist disponibile</p>
-                        <p class="text-gray-400 dark:text-gray-500 text-sm mt-1">Crea la tua prima playlist</p>
+                        <p class="text-gray-500 dark:text-gray-400 font-medium">${exploreTranslations.no_playlists_available}</p>
+                        <p class="text-gray-400 dark:text-gray-500 text-sm mt-1">${exploreTranslations.create_first_playlist}</p>
                     </div>
                 `;
                     return;
@@ -290,7 +306,7 @@
                         </div>
                         <div class="flex-1">
                             <div class="font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">${playlist.title || playlist.name}</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400">${playlist.videos_count} video</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">${playlist.videos_count} ${exploreTranslations.video_label}</div>
                         </div>
                         <i class="fas fa-chevron-right text-gray-400 group-hover:text-indigo-500 transition-colors"></i>
                     </div>
@@ -321,15 +337,15 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showToast('Video aggiunto alla playlist!', 'success');
+                    showToast(exploreTranslations.video_added_to_playlist, 'success');
                     closeAddToPlaylistModal();
                 } else {
-                    showToast(data.message || 'Errore nell\'aggiungere il video', 'error');
+                    showToast(data.message || exploreTranslations.error_adding_video, 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showToast('Errore nell\'aggiungere il video', 'error');
+                showToast(exploreTranslations.error_adding_video, 'error');
             });
     }
 
@@ -353,7 +369,7 @@
                         button.className =
                             'w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center transition-colors shadow-lg';
                         button.innerHTML = '<i class="fas fa-check text-xs"></i>';
-                        button.title = 'Aggiunto a Guarda più tardi';
+                        button.title = exploreTranslations.added_to_watch_later_short;
                         button.onclick = function(e) {
                             e.preventDefault();
                             removeFromWatchLater(videoId, this);
@@ -365,14 +381,14 @@
                             button.style.transform = 'scale(1)';
                         }, 200);
                     }
-                    showToast('Aggiunto a Guarda più tardi!', 'success');
+                    showToast(exploreTranslations.added_to_watch_later, 'success');
                 } else {
-                    showToast(data.message || 'Errore nell\'aggiungere il video', 'error');
+                    showToast(data.message || exploreTranslations.error_adding_video, 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showToast('Errore nell\'aggiungere il video', 'error');
+                showToast(exploreTranslations.error_adding_video, 'error');
             });
     }
 
@@ -392,20 +408,20 @@
                         button.className =
                             'w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors shadow-lg';
                         button.innerHTML = '<i class="fas fa-clock text-xs"></i>';
-                        button.title = 'Aggiungi a Guarda più tardi';
+                        button.title = exploreTranslations.add_to_watch_later;
                         button.onclick = function(e) {
                             e.preventDefault();
                             addToWatchLater(videoId, this);
                         };
                     }
-                    showToast('Rimosso da Guarda più tardi', 'info');
+                    showToast(exploreTranslations.removed_from_watch_later, 'info');
                 } else {
-                    showToast('Errore nel rimuovere il video', 'error');
+                    showToast(exploreTranslations.error_removing_video, 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showToast('Errore nel rimuovere il video', 'error');
+                showToast(exploreTranslations.error_removing_video, 'error');
             });
     }
 

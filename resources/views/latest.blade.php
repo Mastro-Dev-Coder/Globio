@@ -3,10 +3,10 @@
         <!-- Header Section -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                <i class="fas fa-clock mr-3 text-red-600"></i>Ultimi Video
+                <i class="fas fa-clock mr-3 text-red-600"></i>{{ __('ui.latest_videos_page') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400">
-                I video pubblicati più di recente
+                {{ __('ui.recently_published') }}
             </p>
         </div>
 
@@ -41,7 +41,7 @@
                                 @if($video->published_at->diffInHours() < 24)
                                     <div class="absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded flex items-center">
                                         <i class="fas fa-star mr-1"></i>
-                                        Nuovo
+                                        {{ __('ui.new') }}
                                     </div>
                                 @endif
                             </div>
@@ -103,17 +103,17 @@
                     <i class="fas fa-clock text-4xl text-gray-400"></i>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Nessun video disponibile
+                    {{ __('ui.no_videos_published') }}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    Non ci sono video pubblicati al momento
+                    {{ __('ui.no_videos_to_show') }}
                 </p>
                 <a 
                     href="{{ route('home') }}"
                     class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                 >
                     <i class="fas fa-home mr-2"></i>
-                    Torna alla Home
+                    {{ __('ui.go_home') }}
                 </a>
             </div>
         @endif

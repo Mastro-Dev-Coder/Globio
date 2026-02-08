@@ -7,7 +7,7 @@
         <a href="{{ route('home') }}"
             class="flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 min-w-0 flex-1 bottom-nav-item touch-feedback {{ request()->routeIs('home') ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100' }}">
             <i class="fas fa-home text-xl mb-1"></i>
-            <span class="text-xs font-medium truncate">Home</span>
+            <span class="text-xs font-medium truncate">{{ __('ui.home') }}</span>
             @if (request()->routeIs('home'))
                 <div
                     class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-red-600 dark:bg-red-400 rounded-full">
@@ -24,7 +24,7 @@
                     <div class="absolute -top-1 -right-1 w-2 h-2 bg-red-600 dark:bg-red-400 rounded-full"></div>
                 @endif
             </div>
-            <span class="text-xs font-medium truncate">Reels</span>
+            <span class="text-xs font-medium truncate">{{ __('ui.reels') }}</span>
         </a>
 
         <!-- Upload Video -->
@@ -45,7 +45,7 @@
             <div class="absolute inset-0 rounded-full bg-red-500 opacity-30 animate-ping"></div>
         </div>
 
-        <!-- Iscrizioni -->
+        <!-- Subscriptions -->
         <a href="{{ auth()->check() ? route('subscriptions') : route('login') }}"
             class="flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 min-w-0 flex-1 bottom-nav-item touch-feedback {{ request()->routeIs('subscriptions') ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100' }}">
             <div class="relative">
@@ -65,10 +65,10 @@
                     @endif
                 @endauth
             </div>
-            <span class="text-xs font-medium truncate">Iscrizioni</span>
+            <span class="text-xs font-medium truncate">{{ __('ui.subscriptions') }}</span>
         </a>
 
-        <!-- Profilo/Tu -->
+        <!-- Profile/You -->
         @auth
             <a href="{{ route('users.profile') }}"
                 class="flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 min-w-0 flex-1 bottom-nav-item touch-feedback profile-avatar {{ request()->routeIs('users.profile') || request()->routeIs('channel.show*') ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100' }}">
@@ -90,7 +90,7 @@
                         class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-500 border border-white dark:border-gray-900 rounded-full">
                     </div>
                 </div>
-                <span class="text-xs font-medium truncate">Tu</span>
+                <span class="text-xs font-medium truncate">{{ __('ui.channel') }}</span>
 
                 @if (request()->routeIs('users.profile') || request()->routeIs('channel.show*'))
                     <div
@@ -102,7 +102,7 @@
             <a href="{{ route('login') }}"
                 class="flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 min-w-0 flex-1 bottom-nav-item touch-feedback text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
                 <i class="fas fa-user text-lg mb-1"></i>
-                <span class="text-xs font-medium truncate">Accedi</span>
+                <span class="text-xs font-medium truncate">{{ __('ui.login') }}</span>
             </a>
         @endauth
 

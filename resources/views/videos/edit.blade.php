@@ -192,7 +192,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                             <i class="fas fa-eye mr-2 text-red-500"></i>
-                            Visibilità del Video
+                            Visibilità
                         </label>
                         <input type="hidden" name="status" id="status-input"
                             value="{{ old('status', $video->status) }}">
@@ -409,7 +409,7 @@
                         <button type="submit"
                             class="flex-1 flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors shadow-sm">
                             <i class="fas fa-save mr-2"></i>
-                            Salva Modifiche
+                            Salva modifiche
                         </button>
                     </div>
                 </form>

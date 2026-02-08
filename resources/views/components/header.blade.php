@@ -25,7 +25,7 @@
             <div class="relative">
                 <form action="{{ route('search') }}" method="GET" class="flex">
                     <div class="relative flex-1">
-                        <input type="text" name="q" placeholder="Cerca..."
+                        <input type="text" name="q" placeholder="{{ __('ui.search_placeholder') }}"
                             class="w-full h-full px-4 pl-10 text-base bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-l-full focus:outline-none focus:ring-2 focus:border-transparent transition-all"
                             style="--tw-ring-color: var(--primary-color);">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
@@ -46,7 +46,7 @@
                     class="flex items-center px-4 py-2 text-white rounded-lg hover:opacity-90 transition-all no-underline"
                     style="background-color: var(--primary-color);">
                     <i class="fas fa-plus mr-2"></i>
-                    <span class="font-medium">Carica</span>
+                    <span class="font-medium">{{ __('ui.upload') }}</span>
                 </a>
 
                 <!-- Notifications -->
@@ -62,7 +62,8 @@
                             <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}" alt="Avatar"
                                 class="w-8 h-8 rounded-full object-cover">
                         @else
-                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                                 <span class="text-white text-sm font-medium">
                                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                 </span>
@@ -81,7 +82,8 @@
                                     <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}"
                                         alt="Avatar" class="w-12 h-12 rounded-full object-cover">
                                 @else
-                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                                         <span class="text-white text-lg font-medium">
                                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                         </span>
@@ -103,47 +105,112 @@
                             <a href="{{ route('channel.show', Auth::user()->userProfile?->channel_name) }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-user w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Il mio canale</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.my_channel') }}</span>
                             </a>
                             <a href="{{ route('videos.my') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-video w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">I miei video</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.my_videos') }}</span>
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <a href="{{ route('users.profile') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-cog w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Impostazioni</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.settings') }}</span>
                             </a>
                             <a href="{{ route('history') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-history w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Cronologia</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.history') }}</span>
                             </a>
                             <a href="{{ route('liked-videos') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-thumbs-up w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Video piaciuti</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.liked_videos') }}</span>
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <a href="{{ route('admin.dashboard') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-dashboard w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Admin</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.admin') }}</span>
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <button onclick="toggleTheme()"
                                 class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left">
                                 <div class="relative w-5 h-5 flex items-center justify-center">
-                                    <i id="dropdown-moon-icon" class="fas fa-moon absolute text-gray-500 dark:text-gray-400 theme-icon moon dark:hidden"></i>
-                                    <i id="dropdown-sun-icon" class="fas fa-sun absolute text-gray-500 dark:text-gray-400 theme-icon sun hidden dark:block"></i>
+                                    <i id="dropdown-moon-icon"
+                                        class="fas fa-moon absolute text-gray-500 dark:text-gray-400 theme-icon moon dark:hidden"></i>
+                                    <i id="dropdown-sun-icon"
+                                        class="fas fa-sun absolute text-gray-500 dark:text-gray-400 theme-icon sun hidden dark:block"></i>
                                 </div>
                                 <span class="text-gray-700 dark:text-gray-300">
-                                    <span class="dark:hidden">Tema scuro</span>
-                                    <span class="hidden dark:inline">Tema chiaro</span>
+                                    <span class="dark:hidden">{{ __('ui.theme_dark') }}</span>
+                                    <span class="hidden dark:inline">{{ __('ui.theme_light') }}</span>
                                 </span>
                             </button>
+
+                            <!-- Language Selector as dropdown -->
+                            <div class="relative" x-data="{ langOpen: false }">
+                                <button @click="langOpen = !langOpen"
+                                    class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left">
+                                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
+                                        </path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">
+                                        @switch(app()->getLocale())
+                                            @case('it')
+                                                🇮🇹 Italiano
+                                            @break
+
+                                            @case('en')
+                                                🇬🇧 English
+                                            @break
+
+                                            @case('es')
+                                                🇪🇸 Español
+                                            @break
+
+                                            @default
+                                                🇮🇹 Italiano
+                                        @endswitch
+                                    </span>
+                                    <i class="fas fa-chevron-right ml-auto text-xs text-gray-400"
+                                        :class="{ 'rotate-90': langOpen }" x-show="!langOpen"></i>
+                                </button>
+
+                                <!-- Language Submenu -->
+                                <div x-show="langOpen" x-transition
+                                    class="pl-4 border-l border-gray-200 dark:border-gray-700 my-1">
+                                    <a href="{{ route('setLocale', 'it') }}"
+                                        class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'it' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300' }}">
+                                        <span class="text-base">🇮🇹</span>
+                                        <span class="font-medium">Italiano</span>
+                                        @if (app()->getLocale() === 'it')
+                                            <i class="fas fa-check ml-auto text-blue-500"></i>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('setLocale', 'en') }}"
+                                        class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'en' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300' }}">
+                                        <span class="text-base">🇬🇧</span>
+                                        <span class="font-medium">English</span>
+                                        @if (app()->getLocale() === 'en')
+                                            <i class="fas fa-check ml-auto text-blue-500"></i>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('setLocale', 'es') }}"
+                                        class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'es' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300' }}">
+                                        <span class="text-base">🇪🇸</span>
+                                        <span class="font-medium">Español</span>
+                                        @if (app()->getLocale() === 'es')
+                                            <i class="fas fa-check ml-auto text-blue-500"></i>
+                                        @endif
+                                    </a>
+                                </div>
+                            </div>
+
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -151,7 +218,7 @@
                                     class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left"
                                     style="color: var(--primary-color);">
                                     <i class="fas fa-sign-out-alt w-5"></i>
-                                    <span>Esci</span>
+                                    <span>{{ __('ui.logout') }}</span>
                                 </button>
                             </form>
                         </div>
@@ -160,14 +227,42 @@
             @else
                 <!-- Login/Register -->
                 <div class="flex items-center space-x-2">
+                    <!-- Language Selector for guests -->
+                    <div class="relative mr-2" x-data="{ langOpen: false }">
+                        <button @click="langOpen = !langOpen"
+                            class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
+                                </path>
+                            </svg>
+                        </button>
+                        <div x-show="langOpen" @click.away="langOpen = false"
+                            class="absolute right-0 top-full mt-2 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                            <a href="{{ route('setLocale', 'it') }}"
+                                class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 {{ app()->getLocale() === 'it' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300' }}">
+                                <span>🇮🇹</span> Italiano
+                            </a>
+                            <a href="{{ route('setLocale', 'en') }}"
+                                class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 {{ app()->getLocale() === 'en' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300' }}">
+                                <span>🇬🇧</span> English
+                            </a>
+                            <a href="{{ route('setLocale', 'es') }}"
+                                class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 {{ app()->getLocale() === 'es' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300' }}">
+                                <span>🇪🇸</span> Español
+                            </a>
+                        </div>
+                    </div>
+
                     <a href="{{ route('login') }}"
                         class="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Accedi
+                        <i class="fas fa-sign-in-alt mr-2"></i>{{ __('ui.login') }}
                     </a>
                     <a href="{{ route('register') }}"
                         class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors"
                         style="background-color: var(--primary-color);">
-                        <i class="fas fa-user-plus mr-2"></i>Registrati
+                        <i class="fas fa-user-plus mr-2"></i>{{ __('ui.register') }}
                     </a>
                 </div>
             @endauth
@@ -181,7 +276,8 @@
             <a href="{{ route('home') }}" class="flex items-center space-x-2 text-xl font-bold">
                 @if (\App\Models\Setting::getValue('logo'))
                     <img src="{{ asset('storage/' . \App\Models\Setting::getValue('logo')) }}"
-                        class="w-8 h-8 rounded-lg object-contain" alt="{{ \App\Models\Setting::getValue('site_name') }}">
+                        class="w-8 h-8 rounded-lg object-contain"
+                        alt="{{ \App\Models\Setting::getValue('site_name') }}">
                 @else
                     <div class="w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center"
                         style="background: linear-gradient(to bottom right, var(--primary-color), var(--primary-color-dark));">
@@ -213,7 +309,8 @@
                             <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}" alt="Avatar"
                                 class="w-8 h-8 rounded-full object-cover">
                         @else
-                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                                 <span class="text-white text-sm font-medium">
                                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                 </span>
@@ -231,7 +328,8 @@
                                     <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}"
                                         alt="Avatar" class="w-12 h-12 rounded-full object-cover">
                                 @else
-                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <div
+                                        class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                                         <span class="text-white text-lg font-medium">
                                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                         </span>
@@ -253,50 +351,52 @@
                             <a href="{{ route('channel.show', Auth::user()->userProfile?->channel_name) }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-user w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Il mio canale</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.my_channel') }}</span>
                             </a>
                             <a href="{{ route('videos.my') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-video w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">I miei video</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.my_videos') }}</span>
                             </a>
                             <a href="{{ route('channel.edit', Auth::user()->userProfile->channel_name) }}?tab=content&upload=true"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-plus w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Carica video</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.upload_video') }}</span>
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <a href="{{ route('users.profile') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-cog w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Impostazioni</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.settings') }}</span>
                             </a>
                             <a href="{{ route('history') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-history w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Cronologia</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.history') }}</span>
                             </a>
                             <a href="{{ route('liked-videos') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-thumbs-up w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Video piaciuti</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.liked_videos') }}</span>
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <a href="{{ route('admin.dashboard') }}"
                                 class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-dashboard w-5 text-gray-500 dark:text-gray-400"></i>
-                                <span class="text-gray-700 dark:text-gray-300">Admin</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('ui.admin') }}</span>
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <button onclick="toggleTheme()"
                                 class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left">
                                 <div class="relative w-5 h-5 flex items-center justify-center">
-                                    <i class="fas fa-moon absolute text-gray-500 dark:text-gray-400 theme-icon moon dark:hidden"></i>
-                                    <i class="fas fa-sun absolute text-gray-500 dark:text-gray-400 theme-icon sun hidden dark:block"></i>
+                                    <i
+                                        class="fas fa-moon absolute text-gray-500 dark:text-gray-400 theme-icon moon dark:hidden"></i>
+                                    <i
+                                        class="fas fa-sun absolute text-gray-500 dark:text-gray-400 theme-icon sun hidden dark:block"></i>
                                 </div>
                                 <span class="text-gray-700 dark:text-gray-300">
-                                    <span class="dark:hidden">Tema scuro</span>
-                                    <span class="hidden dark:inline">Tema chiaro</span>
+                                    <span class="dark:hidden">{{ __('ui.theme_dark') }}</span>
+                                    <span class="hidden dark:inline">{{ __('ui.theme_light') }}</span>
                                 </span>
                             </button>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
@@ -306,7 +406,7 @@
                                     class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full text-left"
                                     style="color: var(--primary-color);">
                                     <i class="fas fa-sign-out-alt w-5"></i>
-                                    <span>Esci</span>
+                                    <span>{{ __('ui.logout') }}</span>
                                 </button>
                             </form>
                         </div>
@@ -315,6 +415,34 @@
             @else
                 <!-- Login/Register for Mobile -->
                 <div class="flex items-center space-x-2">
+                    <!-- Language Selector for guests -->
+                    <div class="relative" x-data="{ langOpen: false }">
+                        <button @click="langOpen = !langOpen"
+                            class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                            <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
+                                </path>
+                            </svg>
+                        </button>
+                        <div x-show="langOpen" @click.away="langOpen = false"
+                            class="absolute right-10 top-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                            <a href="{{ route('setLocale', 'it') }}"
+                                class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 {{ app()->getLocale() === 'it' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300' }}">
+                                <span>🇮🇹</span> Italiano
+                            </a>
+                            <a href="{{ route('setLocale', 'en') }}"
+                                class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 {{ app()->getLocale() === 'en' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300' }}">
+                                <span>🇬🇧</span> English
+                            </a>
+                            <a href="{{ route('setLocale', 'es') }}"
+                                class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 {{ app()->getLocale() === 'es' ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300' }}">
+                                <span>🇪🇸</span> Español
+                            </a>
+                        </div>
+                    </div>
+
                     <a href="{{ route('login') }}"
                         class="px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm">
                         Accedi
@@ -352,68 +480,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    /* Mobile optimizations */
-    @media (max-width: 1024px) {
-        /* Ensure proper touch targets */
-        button, a {
-            min-height: 44px;
-            min-width: 44px;
-        }
-        
-        /* Prevent zoom on iOS inputs */
-        input[type="text"], input[type="search"] {
-            font-size: 16px;
-        }
-    }
-    
-    /* Touch feedback improvements */
-    .touch-feedback {
-        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .touch-feedback:active {
-        transform: scale(0.95);
-        opacity: 0.8;
-    }
-    
-    /* Search modal animations */
-    #search-modal {
-        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    #search-modal > div:first-child {
-        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    /* User dropdown mobile optimization */
-    @media (max-width: 1024px) {
-        #user-dropdown-mobile {
-            width: calc(100vw - 2rem);
-            right: -1rem;
-        }
-    }
-    
-    /* Smooth theme transitions */
-    .theme-icon {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    /* Search input focus states */
-    input[type="text"]:focus, input[type="search"]:focus {
-        box-shadow: 0 0 0 2px var(--primary-color, #ef4444);
-    }
-    
-    /* Button hover effects */
-    button:hover, .hover\:bg-gray-100:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
-    
-    .dark button:hover, .dark .hover\:bg-gray-100:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-</style>
 
 <script>
     // State management
@@ -485,12 +551,14 @@
         if (userMenuMobile && !userMenuMobile.contains(event.target) && userMenuMobileOpen) {
             userMenuMobileOpen = false;
             userDropdownMobile.classList.add('opacity-0', 'scale-95', 'translate-y-2', 'pointer-events-none');
-            userDropdownMobile.classList.remove('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto');
+            userDropdownMobile.classList.remove('opacity-100', 'scale-100', 'translate-y-0',
+                'pointer-events-auto');
         }
 
         // Search modal
         const searchModal = document.getElementById('search-modal');
-        if (searchModal && !searchModal.contains(event.target) && searchModalOpen && !event.target.closest('button[onclick="toggleSearchModal()"]')) {
+        if (searchModal && !searchModal.contains(event.target) && searchModalOpen && !event.target.closest(
+                'button[onclick="toggleSearchModal()"]')) {
             toggleSearchModal();
         }
     });
@@ -520,11 +588,11 @@
 
     function updateThemeIcons() {
         const isDark = document.documentElement.classList.contains('dark');
-        
+
         // Update all theme icons
         const moonIcons = document.querySelectorAll('.theme-icon.moon');
         const sunIcons = document.querySelectorAll('.theme-icon.sun');
-        
+
         moonIcons.forEach(icon => {
             if (isDark) {
                 icon.classList.add('hidden');
@@ -532,7 +600,7 @@
                 icon.classList.remove('hidden');
             }
         });
-        
+
         sunIcons.forEach(icon => {
             if (isDark) {
                 icon.classList.remove('hidden');
@@ -550,6 +618,4 @@
         }
         updateThemeIcons();
     });
-
-
 </script>

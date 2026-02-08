@@ -6,20 +6,26 @@
             <a href="{{ route('home') }}"
                 class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('home') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                 <i class="fas fa-home w-4 h-4"></i>
-                <span class="font-medium">Home</span>
+                <span class="font-medium">{{ __('ui.home') }}</span>
+            </a>
+
+            <a href="{{ route('reels.index') }}"
+                class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('reels.index*') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
+                <i class="fa-solid fa-circle-play w-4 h-4"></i>
+                <span class="font-medium">{{ __('ui.reels') }}</span>
             </a>
 
             <a href="{{ route('explore') }}"
                 class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('explore') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                 <i class="fas fa-compass w-4 h-4"></i>
-                <span class="font-medium">Esplora</span>
+                <span class="font-medium">{{ __('ui.explore') }}</span>
             </a>
 
             @auth
                 <a href="{{ route('subscriptions') }}"
                     class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('subscriptions') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                     <i class="fas fa-heart w-4 h-4"></i>
-                    <span class="font-medium">Iscrizioni</span>
+                    <span class="font-medium">{{ __('ui.subscriptions') }}</span>
                 </a>
             @endauth
 
@@ -30,31 +36,31 @@
             <!-- My Library -->
             <div class="mt-4">
                 <h3 class="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    La mia libreria
+                    {{ __('ui.library') }}
                 </h3>
                 <nav class="mt-2 space-y-1">
                     <a href="{{ route('history') }}"
                         class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('history') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                         <i class="fas fa-history w-4 h-4"></i>
-                        <span>Cronologia</span>
+                        <span>{{ __('ui.history') }}</span>
                     </a>
 
                     <a href="{{ route('playlists') }}"
                         class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('playlists') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                         <i class="fas fa-list w-4 h-4"></i>
-                        <span>Playlist</span>
+                        <span>{{ __('ui.playlists') }}</span>
                     </a>
 
                     <a href="{{ route('liked-videos') }}"
                         class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('liked-videos') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                         <i class="fas fa-thumbs-up w-4 h-4"></i>
-                        <span>Video che mi piacciono</span>
+                        <span>{{ __('ui.liked_videos') }}</span>
                     </a>
 
                     <a href="{{ route('watch-later') }}"
                         class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('watch-later') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                         <i class="fas fa-clock w-4 h-4"></i>
-                        <span>Guarda più tardi</span>
+                        <span>{{ __('ui.watch_later') }}</span>
                     </a>
                 </nav>
 
@@ -70,7 +76,7 @@
                 @if ($subscriptions->count() > 0)
                     <div class="mt-4">
                         <h3 class="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Iscrizioni
+                            {{ __('ui.subscriptions') }}
                         </h3>
                         <nav class="mt-2 space-y-1">
                             @foreach ($subscriptions as $subscription)
@@ -101,7 +107,7 @@
                                 <a href="{{ route('subscriptions') }}"
                                     class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-red-600 dark:text-red-400">
                                     <i class="fas fa-ellipsis-h w-4 h-4"></i>
-                                    <span class="font-medium">Mostra tutte</span>
+                                    <span class="font-medium">{{ __('ui.show_more') }}</span>
                                 </a>
                             @endif
                         </nav>
@@ -112,25 +118,25 @@
             <!-- My Channel -->
             <div class="mt-4">
                 <h3 class="px-3 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Il mio canale
+                    {{ __('ui.my_channel') }}
                 </h3>
                 <nav class="mt-2 space-y-1">
                     <a href="{{ route('channel.show', auth()->user()->userProfile->channel_name) }}"
                         class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('channel.show') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                         <i class="fas fa-user w-4 h-4"></i>
-                        <span>Tu</span>
+                        <span>{{ __('ui.channel') }}</span>
                     </a>
 
                     <a href="{{ route('channel.edit', auth()->user()->userProfile->channel_name) }}?tab=content"
                         class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('videos.my') ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                         <i class="fas fa-video w-4 h-4"></i>
-                        <span>I miei video</span>
+                        <span>{{ __('ui.my_videos') }}</span>
                     </a>
 
                     <a href="{{ route('channel.edit', auth()->user()->userProfile->channel_name) }}?tab=analytics"
                         class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('channel.edit') && request()->query('tab') == 'analytics' ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400' : '' }}">
                         <i class="fas fa-chart-bar w-4 h-4"></i>
-                        <span>Analisi</span>
+                        <span>{{ __('ui.analytics') }}</span>
                     </a>
                 </nav>
             </div>
@@ -153,14 +159,6 @@
                 <i class="fas fa-home w-4 h-4"></i>
                 <span class="font-medium">Home</span>
             </a>
-
-            @auth
-                <a href="{{ route('channel.edit', Auth::user()->userProfile->channel_name) }}?tab=content&upload=true"
-                    class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors {{ request()->routeIs('videos.upload') ? 'bg-red-50 dark:bg-red-900/20' : '' }} text-red-600">
-                    <i class="fas fa-plus w-4 h-4"></i>
-                    <span class="font-medium">Carica Video</span>
-                </a>
-            @endauth
         </nav>
 
         @auth

@@ -1,12 +1,12 @@
-<x-admin-layout>
+﻿<x-admin-layout>
     <div class="px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
         <div class="mb-8">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Gestione Pagine Legali</h1>
+                    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">{{ __('ui.admin_legal_title') }}</h1>
                     <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-                        Modifica e gestisci i contenuti delle pagine legali del sito web
+                        {{ __('ui.admin_legal_subtitle') }}
                     </p>
                 </div>
                 <div class="mt-4 sm:mt-0">
@@ -14,7 +14,7 @@
                         <a href="{{ route('admin.legal.preview', 'contatti') }}" target="_blank"
                             class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500">
                             <i class="fas fa-eye mr-2"></i>
-                            Anteprima Contatti
+                            {{ __('ui.admin_legal_preview_contacts') }}
                         </a>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                     <!-- Page Content Preview -->
                     <div class="px-6 py-4">
                         <div class="mb-4">
-                            <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-2">Contenuto:</h4>
+                            <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-2">{{ __('ui.admin_legal_content_label') }}</h4>
                             <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
                                 {!! Str::limit(strip_tags($page->content), 120) !!}
                             </p>
@@ -94,7 +94,7 @@
                             </span>
                             <span>
                                 <i class="fas fa-align-left mr-1"></i>
-                                {{ Str::length(strip_tags($page->content)) }} caratteri
+                                {{ Str::length(strip_tags($page->content)) }} {{ __('ui.admin_legal_characters') }}
                             </span>
                         </div>
                     </div>
@@ -105,12 +105,12 @@
                             <a href="{{ route('admin.legal.edit', $page->slug) }}"
                                 class="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 transition-colors">
                                 <i class="fas fa-edit mr-2"></i>
-                                Modifica
+                                {{ __('ui.admin_legal_edit') }}
                             </a>
                             <a href="{{ route('admin.legal.preview', $page->slug) }}" target="_blank"
                                 class="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-500 transition-colors">
                                 <i class="fas fa-eye mr-2"></i>
-                                Anteprima
+                                {{ __('ui.admin_legal_preview') }}
                             </a>
                         </div>
                     </div>
@@ -122,25 +122,25 @@
         <div
             class="bg-white dark:bg-gray-800 shadow rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Informazioni di Sistema</h3>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ __('ui.admin_legal_system_info') }}</h3>
             </div>
             <div class="px-6 py-4">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="text-center">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $legalPages->count() }}</div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400">Pagine Totali</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_legal_total_pages') }}</div>
                     </div>
                     <div class="text-center">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
                             {{ $legalPages->sum(function ($page) {return Str::length(strip_tags($page->content));}) }}
                         </div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400">Caratteri Totali</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_legal_total_characters') }}</div>
                     </div>
                     <div class="text-center">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
                             {{ $legalPages->max('updated_at')->format('d/m') }}
                         </div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400">Ultima Modifica</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_legal_last_update') }}</div>
                     </div>
                 </div>
             </div>
@@ -157,18 +157,17 @@
                 </div>
                 <div class="ml-4">
                     <h3 class="text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">
-                        Guida alla Gestione delle Pagine Legali
+                        {{ __('ui.admin_legal_help_title') }}
                     </h3>
                     <div class="text-sm text-blue-800 dark:text-blue-200 space-y-2">
                         <ul class="list-disc list-inside space-y-1">
-                            <li><strong>Modifica:</strong> Clicca per modificare il titolo e il contenuto HTML della
-                                pagina</li>
-                            <li><strong>Anteprima:</strong> Visualizza come apparirà la pagina sul sito pubblico</li>
-                            <li><strong>Contenuto HTML:</strong> Utilizza tag HTML validi per la formattazione del testo
+                            <li><strong>{{ __('ui.admin_legal_help_edit_label') }}:</strong> {{ __('ui.admin_legal_help_edit') }}</li>
+                            <li><strong>{{ __('ui.admin_legal_help_preview_label') }}:</strong> {{ __('ui.admin_legal_help_preview') }}</li>
+                            <li><strong>{{ __('ui.admin_legal_help_html_label') }}:</strong> {{ __('ui.admin_legal_help_html') }}
                             </li>
-                            <li><strong>Aggiornamenti:</strong> Le modifiche sono immediatamente visibili agli utenti
+                            <li><strong>{{ __('ui.admin_legal_help_updates_label') }}:</strong> {{ __('ui.admin_legal_help_updates') }}
                             </li>
-                            <li><strong>Backup:</strong> I contenuti sono automaticamente salvati nel database</li>
+                            <li><strong>{{ __('ui.admin_legal_help_backup_label') }}:</strong> {{ __('ui.admin_legal_help_backup') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -185,3 +184,4 @@
         }
     </style>
 </x-admin-layout>
+

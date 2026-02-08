@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="it" class="dark">
+<html lang="{{ app()->getLocale() }}" class="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ \App\Models\Setting::getValue('site_name') }} - Admin</title>
-    <meta name="description" content="{{ \App\Models\Setting::getValue('site_name') }} - Pannello di Amministrazione">
-    <meta name="keywords" content="admin, amministrazione, {{ \App\Models\Setting::getValue('site_name') }}">
+    <title>{{ \App\Models\Setting::getValue('site_name') }} - {{ __('ui.admin') }}</title>
+    <meta name="description"
+        content="{{ \App\Models\Setting::getValue('site_name') }} - {{ __('ui.admin_panel_description') }}">
+    <meta name="keywords" content="admin, administration, {{ \App\Models\Setting::getValue('site_name') }}">
     <meta name="author" content="{{ \App\Models\Setting::getValue('site_name') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . \App\Models\Setting::getValue('logo')) }}">
-    @vite(['resources/css/app.css', 'resources/css/responsive.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ route('dynamic.styles') }}">
 </head>
 
@@ -31,8 +32,8 @@
 
                 <div class="flex items-center space-x-3">
                     @if (\App\Models\Setting::getValue('logo'))
-                        <img src="{{ asset('storage/' . \App\Models\Setting::getValue('logo')) }}" class="w-8 h-8 rounded-lg"
-                            alt="{{ \App\Models\Setting::getValue('site_name') }}">
+                        <img src="{{ asset('storage/' . \App\Models\Setting::getValue('logo')) }}"
+                            class="w-8 h-8 rounded-lg" alt="{{ \App\Models\Setting::getValue('site_name') }}">
                     @else
                         <div class="w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-md"
                             style="background: linear-gradient(to bottom right, var(--primary-color), var(--primary-color-dark));">
@@ -44,7 +45,7 @@
                         <h1 class="text-lg font-bold text-gray-900 dark:text-white">
                             {{ \App\Models\Setting::getValue('site_name') }}
                         </h1>
-                        <p class="text-xs text-red-600 dark:text-red-400 font-medium">Pannello Amministrazione</p>
+                        <p class="text-xs text-red-600 dark:text-red-400 font-medium">{{ __('ui.admin_panel') }}</p>
                     </div>
                 </div>
             </div>
@@ -54,12 +55,17 @@
                 <!-- Search Bar (condensed) -->
                 <div class="hidden lg:flex items-center">
                     <div class="relative">
-                        <input type="text" placeholder="Ricerca rapida..."
+                        <input type="text" placeholder="{{ __('ui.quick_search') }}..."
                             class="w-64 pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400 dark:text-gray-500"></i>
                         </div>
                     </div>
+                </div>
+
+                <!-- Language Switcher -->
+                <div class="relative">
+                    @livewire('language-switcher')
                 </div>
 
                 <!-- Notifications Bell -->
@@ -70,7 +76,7 @@
                 <!-- Toggle theme -->
                 <button onclick="toggleTheme()"
                     class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer"
-                    title="Cambia tema">
+                    title="{{ __('ui.toggle_theme') }}">
                     <i class="fas fa-sun text-yellow-500" id="sun-icon" style="display: none;"></i>
                     <i class="fas fa-moon text-gray-600 dark:text-gray-400" id="moon-icon"></i>
                 </button>
@@ -134,17 +140,17 @@
 
                             <a href="{{ route('users.profile') }}"
                                 class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i class="fas fa-user w-4 mr-3"></i> Profilo
+                                <i class="fas fa-user w-4 mr-3"></i> {{ __('ui.profile') }}
                             </a>
 
                             <a href="{{ route('admin.settings') }}"
                                 class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i class="fas fa-cog w-4 mr-3"></i> Impostazioni
+                                <i class="fas fa-cog w-4 mr-3"></i> {{ __('ui.settings') }}
                             </a>
 
                             <a href="{{ route('home') }}"
                                 class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i class="fas fa-home w-4 mr-3"></i> Torna al sito
+                                <i class="fas fa-home w-4 mr-3"></i> {{ __('ui.back_to_site') }}
                             </a>
 
                             <hr class="my-2 border-gray-200 dark:border-gray-600">
@@ -153,7 +159,7 @@
                                 @csrf
                                 <button type="submit"
                                     class="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <i class="fas fa-sign-out-alt w-4 mr-3"></i> Esci
+                                    <i class="fas fa-sign-out-alt w-4 mr-3"></i> {{ __('ui.logout') }}
                                 </button>
                             </form>
                         </div>
@@ -181,7 +187,7 @@
                                     @isset($pageHeader['title'])
                                         {{ $pageHeader['title'] }}
                                     @else
-                                        {{ $title ?? 'Amministrazione' }}
+                                        {{ $title ?? __('ui.admin_panel') }}
                                     @endisset
                                 </h2>
                                 @isset($pageHeader['subtitle'])
@@ -325,7 +331,7 @@
 
         // Admin Quick Actions Functions
         function clearCache() {
-            if (confirm('Sei sicuro di voler pulire la cache?')) {
+            if (confirm('{{ __('ui.confirm_clear_cache') }}')) {
                 fetch('/admin/clear-cache', {
                         method: 'POST',
                         headers: {
@@ -336,14 +342,14 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Cache pulita con successo!');
+                            alert('{{ __('ui.cache_cleared_success') }}');
                             location.reload();
                         } else {
-                            alert('Errore durante la pulizia della cache');
+                            alert('{{ __('ui.error_cache_clear') }}');
                         }
                     })
                     .catch(error => {
-                        alert('Errore: ' + error.message);
+                        alert('{{ __('ui.error') }}: ' + error.message);
                     });
             }
         }

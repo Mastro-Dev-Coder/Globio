@@ -5,28 +5,28 @@
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
                     <i class="fas fa-flag mr-2 text-red-600"></i>
-                    Gestione Segnalazioni
+                    {{ __('ui.admin_reports_title') }}
                 </h1>
                 <p class="text-gray-600 dark:text-gray-400">
-                    Visualizza e gestisci tutte le segnalazioni della piattaforma
+                    {{ __('ui.admin_reports_subtitle') }}
                 </p>
             </div>
             <div class="flex items-center gap-3">
                 <button onclick="refreshPage()" 
                         class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                    <i class="fas fa-sync-alt"></i> Aggiorna
+                    <i class="fas fa-sync-alt"></i> {{ __('ui.admin_reports_refresh') }}
                 </button>
                 <a href="{{ route('admin.reports.export') }}" 
                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                    <i class="fas fa-file-export"></i> Esporta
+                    <i class="fas fa-file-export"></i> {{ __('ui.admin_reports_export') }}
                 </a>
                 <a href="{{ route('admin.reports.statistics') }}" 
                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                    <i class="fas fa-chart-bar"></i> Statistiche
+                    <i class="fas fa-chart-bar"></i> {{ __('ui.statistics') }}
                 </a>
                 <a href="{{ route('admin.reports.create-notification') }}" 
                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                    <i class="fas fa-paper-plane"></i> Invia Notifica
+                    <i class="fas fa-paper-plane"></i> {{ __('ui.admin_report_detail_send_notification') }}
                 </a>
             </div>
         </div>
@@ -36,7 +36,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Totali</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_total') }}</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total'] }}</p>
                     </div>
                     <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
@@ -47,7 +47,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">In Attesa</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_in_waiting') }}</p>
                         <p class="text-2xl font-bold text-yellow-600">{{ $stats['pending'] }}</p>
                     </div>
                     <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
@@ -58,7 +58,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Risolte</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_status_resolved') }}</p>
                         <p class="text-2xl font-bold text-green-600">{{ $stats['resolved'] }}</p>
                     </div>
                     <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
@@ -69,7 +69,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Respinte</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_reports_rejected') }}</p>
                         <p class="text-2xl font-bold text-gray-600">{{ $stats['dismissed'] }}</p>
                     </div>
                     <div class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
@@ -83,46 +83,46 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
             <form method="GET" action="{{ route('admin.reports') }}" class="flex flex-wrap gap-4 items-end">
                 <div class="flex-1 min-w-[150px]">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Stato</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('ui.admin_reports_status') }}</label>
                     <select name="status" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
-                        <option value="all" {{ $status == 'all' ? 'selected' : '' }}>Tutti</option>
-                        <option value="pending" {{ $status == 'pending' ? 'selected' : '' }}>In attesa</option>
-                        <option value="reviewed" {{ $status == 'reviewed' ? 'selected' : '' }}>In revisione</option>
-                        <option value="resolved" {{ $status == 'resolved' ? 'selected' : '' }}>Risolto</option>
-                        <option value="escalated" {{ $status == 'escalated' ? 'selected' : '' }}>Escalato</option>
-                        <option value="dismissed" {{ $status == 'dismissed' ? 'selected' : '' }}>Respinto</option>
+                        <option value="all" {{ ($status ?? 'all') == 'all' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_all') }}</option>
+                        <option value="pending" {{ ($status ?? '') == 'pending' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_pending') }}</option>
+                        <option value="reviewed" {{ ($status ?? '') == 'reviewed' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_reviewed') }}</option>
+                        <option value="resolved" {{ ($status ?? '') == 'resolved' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_resolved') }}</option>
+                        <option value="escalated" {{ ($status ?? '') == 'escalated' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_escalated') }}</option>
+                        <option value="dismissed" {{ ($status ?? '') == 'dismissed' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_dismissed') }}</option>
                     </select>
                 </div>
                 <div class="flex-1 min-w-[150px]">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Target</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('ui.admin_reports_target_type') }}</label>
                     <select name="target_type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
-                        <option value="all" {{ ($targetType ?? 'all') == 'all' ? 'selected' : '' }}>Tutti</option>
-                        <option value="video" {{ ($targetType ?? '') == 'video' ? 'selected' : '' }}>Video</option>
-                        <option value="channel" {{ ($targetType ?? '') == 'channel' ? 'selected' : '' }}>Canale</option>
-                        <option value="comment" {{ ($targetType ?? '') == 'comment' ? 'selected' : '' }}>Commento</option>
+                        <option value="all" {{ ($targetType ?? 'all') == 'all' ? 'selected' : '' }}>{{ __('ui.all') }}</option>
+                        <option value="video" {{ ($targetType ?? '') == 'video' ? 'selected' : '' }}>{{ __('ui.admin_reports_video') }}</option>
+                        <option value="channel" {{ ($targetType ?? '') == 'channel' ? 'selected' : '' }}>{{ __('ui.channel') }}</option>
+                        <option value="comment" {{ ($targetType ?? '') == 'comment' ? 'selected' : '' }}>{{ __('ui.comment') }}</option>
                     </select>
                 </div>
                 <div class="flex-1 min-w-[150px]">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priorità</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('ui.admin_reports_priority') }}</label>
                     <select name="priority" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
-                        <option value="all" {{ $priority == 'all' ? 'selected' : '' }}>Tutte</option>
-                        <option value="urgent" {{ $priority == 'urgent' ? 'selected' : '' }}>Urgente</option>
-                        <option value="high" {{ $priority == 'high' ? 'selected' : '' }}>Alta</option>
-                        <option value="medium" {{ $priority == 'medium' ? 'selected' : '' }}>Media</option>
-                        <option value="low" {{ $priority == 'low' ? 'selected' : '' }}>Bassa</option>
+                        <option value="all" {{ ($priority ?? 'all') == 'all' ? 'selected' : '' }}>{{ __('ui.admin_reports_status_all') }}</option>
+                        <option value="urgent" {{ ($priority ?? '') == 'urgent' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_urgent') }}</option>
+                        <option value="high" {{ ($priority ?? '') == 'high' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_high') }}</option>
+                        <option value="medium" {{ ($priority ?? '') == 'medium' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_medium') }}</option>
+                        <option value="low" {{ ($priority ?? '') == 'low' ? 'selected' : '' }}>{{ __('ui.admin_reports_priority_low') }}</option>
                     </select>
                 </div>
                 <div class="flex-1 min-w-[200px]">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cerca</label>
-                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Cerca..." 
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('ui.admin_reports_search') }}</label>
+                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="{{ __('ui.admin_reports_search_placeholder') }}" 
                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
                 </div>
                 <div class="flex gap-2">
                     <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition-colors">
-                        <i class="fas fa-search mr-1"></i> Filtra
+                        <i class="fas fa-search mr-1"></i> {{ __('ui.admin_reports_filter') }}
                     </button>
                     <a href="{{ route('admin.reports') }}" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg text-sm transition-colors">
-                        <i class="fas fa-times mr-1"></i> Reset
+                        <i class="fas fa-times mr-1"></i> {{ __('ui.admin_reports_reset') }}
                     </a>
                 </div>
             </form>
@@ -133,11 +133,11 @@
             <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-900 dark:text-white">
                     <i class="fas fa-list mr-2 text-red-500"></i>
-                    Segnalazioni ({{ $reports->total() }})
+                    {{ __('ui.admin_reports_reports_count', ['count' => $reports->total()]) }}
                 </h2>
                 <div class="flex items-center gap-2">
                     <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
-                    <label for="selectAll" class="text-sm text-gray-700 dark:text-gray-300">Seleziona tutto</label>
+                    <label for="selectAll" class="text-sm text-gray-700 dark:text-gray-300">{{ __('ui.admin_reports_select_all') }}</label>
                 </div>
             </div>
 
@@ -151,15 +151,15 @@
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-10">
                                         <input type="checkbox" id="selectAllTable" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                                     </th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ID</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tipo</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stato</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Priorità</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Segnalato da</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Target</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Assegnato a</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Data</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Azioni</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_id') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_type') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_status') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_priority') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_reporter') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_target') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_assigned') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_date') }}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ __('ui.admin_reports_actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -217,7 +217,7 @@
                                                     {{ Str::limit($report->comment->content, 20) }}
                                                 </span>
                                             @else
-                                                <span class="text-gray-400">N/A</span>
+                                                <span class="text-gray-400">{{ __('ui.admin_reports_na') }}</span>
                                             @endif
                                         </td>
                                         <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
@@ -227,7 +227,7 @@
                                                     {{ $report->admin->name }}
                                                 </span>
                                             @else
-                                                <span class="text-gray-400">Non assegnato</span>
+                                                <span class="text-gray-400">{{ __('ui.admin_reports_not_assigned') }}</span>
                                             @endif
                                         </td>
                                         <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
@@ -236,14 +236,14 @@
                                         <td class="px-4 py-3">
                                             <div class="flex items-center gap-1">
                                                 <a href="{{ route('admin.reports.show', $report) }}" 
-                                                   class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors" title="Visualizza">
+                                                   class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors" title="{{ __('ui.admin_reports_view_details') }}">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 @if(!$report->admin_id)
                                                     <form action="{{ route('admin.reports.assign', $report) }}" method="POST" class="inline">
                                                         @csrf
                                                         <input type="hidden" name="admin_id" value="{{ auth()->id() }}">
-                                                        <button type="submit" class="p-1.5 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded transition-colors" title="Assegna a me">
+                                                        <button type="submit" class="p-1.5 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded transition-colors" title="{{ __('ui.admin_reports_assign_to_me') }}">
                                                             <i class="fas fa-user-plus"></i>
                                                         </button>
                                                     </form>
@@ -259,20 +259,20 @@
                     <!-- Azioni bulk -->
                     <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 flex items-center justify-between">
                         <div class="text-sm text-gray-700 dark:text-gray-300">
-                            <span id="selectedCount" class="font-medium text-red-600">0</span> segnalazioni selezionate
+                            <span id="selectedCount" class="font-medium text-red-600">0</span> {{ __('ui.admin_reports_selected_count', ['count' => '']) }}
                         </div>
                         <div class="flex items-center gap-2">
                             <button type="button" onclick="bulkAction('assign')" class="px-3 py-1.5 text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors" disabled id="btnAssign">
-                                <i class="fas fa-user-check mr-1"></i> Assegna
+                                <i class="fas fa-user-check mr-1"></i> {{ __('ui.admin_reports_bulk_assign') }}
                             </button>
                             <button type="button" onclick="bulkAction('resolve')" class="px-3 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors" disabled id="btnResolve">
-                                <i class="fas fa-check mr-1"></i> Risolvi
+                                <i class="fas fa-check mr-1"></i> {{ __('ui.admin_reports_status_resolved') }}
                             </button>
                             <button type="button" onclick="bulkAction('dismiss')" class="px-3 py-1.5 text-sm bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors" disabled id="btnDismiss">
-                                <i class="fas fa-times mr-1"></i> Respingi
+                                <i class="fas fa-times mr-1"></i> {{ __('ui.admin_reports_dismiss') }}
                             </button>
                             <button type="button" onclick="bulkAction('escalate')" class="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors" disabled id="btnEscalate">
-                                <i class="fas fa-exclamation-triangle mr-1"></i> Escala
+                                <i class="fas fa-exclamation-triangle mr-1"></i> {{ __('ui.admin_reports_status_escalated') }}
                             </button>
                         </div>
                     </div>
@@ -285,7 +285,7 @@
             @else
                 <div class="p-8 text-center">
                     <i class="fas fa-flag text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-500 dark:text-gray-400">Nessuna segnalazione trovata</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('ui.no_reports_found') }}</p>
                 </div>
             @endif
         </div>
@@ -350,15 +350,15 @@
         function bulkAction(action) {
             const checked = document.querySelectorAll('.report-checkbox:checked');
             if (checked.length === 0) {
-                alert('Seleziona almeno una segnalazione');
+                alert('{{ __('ui.admin_reports_select_min_one') }}');
                 return;
             }
 
             const messages = {
-                assign: 'Sei sicuro di voler assegnare le segnalazioni selezionate a te?',
-                resolve: 'Sei sicuro di voler marcare come risolte le segnalazioni selezionate?',
-                dismiss: 'Sei sicuro di voler respingere le segnalazioni selezionate?',
-                escalate: 'Sei sicuro di voler escalare le segnalazioni selezionate?'
+                assign: '{{ __('ui.admin_reports_bulk_assign_confirm') }}',
+                resolve: '{{ __('ui.admin_reports_bulk_resolve_confirm') }}',
+                dismiss: '{{ __('ui.admin_reports_bulk_dismiss_confirm') }}',
+                escalate: '{{ __('ui.admin_reports_bulk_escalate_confirm') }}'
             };
 
             if (confirm(messages[action])) {

@@ -4,10 +4,10 @@
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    <i class="fas fa-history mr-3 text-red-600"></i>Cronologia
+                    <i class="fas fa-history mr-3 text-red-600"></i>{{ __('ui.watch_history') }}
                 </h1>
                 <p class="text-gray-600 dark:text-gray-400">
-                    Video che hai guardato di recente
+                    {{ __('ui.history_subtitle') }}
                 </p>
             </div>
 
@@ -15,10 +15,10 @@
                 <form action="{{ route('history.clear') }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Sei sicuro di voler cancellare tutta la cronologia?')"
+                    <button type="submit" onclick="return confirm('{{ __('ui.clear_history_confirm') }}')"
                         class="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors">
                         <i class="fas fa-trash mr-2"></i>
-                        Cancella cronologia
+                        {{ __('ui.clear_history') }}
                     </button>
                 </form>
             @endif
@@ -98,11 +98,11 @@
                                     class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
                                     <span>
                                         <i class="fas fa-eye mr-1"></i>
-                                        {{ number_format($item->video->views_count) }} visualizzazioni
+                                        {{ number_format($item->video->views_count) }} {{ __('ui.views_count') }}
                                     </span>
                                     <span>
                                         <i class="fas fa-clock mr-1"></i>
-                                        Guardato {{ $item->updated_at->diffForHumans() }}
+                                        {{ __('ui.watched') }} {{ $item->updated_at->diffForHumans() }}
                                     </span>
                                 </div>
 
@@ -129,15 +129,15 @@
                     <i class="fas fa-history text-4xl text-gray-400"></i>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Nessuna cronologia
+                    {{ __('ui.no_history') }}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    I video che guardi appariranno qui
+                    {{ __('ui.history_empty') }}
                 </p>
                 <a href="{{ route('home') }}"
                     class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
                     <i class="fas fa-home mr-2"></i>
-                    Esplora video
+                    {{ __('ui.explore_videos') }}
                 </a>
             </div>
         @endif

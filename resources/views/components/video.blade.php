@@ -1,16 +1,13 @@
 <div class="group cursor-pointer relative p-1 sm:p-2 rounded-xl w-full max-w-full" data-color-wrapper-trending>
-    <a href="{{ route('videos.show', $video) }}" 
-       @if (isset($nextVideo))
-           data-next-video-url="{{ route('videos.show', $nextVideo) }}"
+    <a href="{{ route('videos.show', $video) }}"
+        @if (isset($nextVideo)) data-next-video-url="{{ route('videos.show', $nextVideo) }}"
            data-next-video-poster="{{ $nextVideo->thumbnail_path ? asset('storage/' . $nextVideo->thumbnail_path) : '' }}"
-           data-next-video-title="{{ $nextVideo->title }}"
-       @endif
-    >
+           data-next-video-title="{{ $nextVideo->title }}" @endif>
         <div class="relative overflow-hidden w-full rounded-xl bg-gray-100 dark:bg-gray-800 aspect-video mb-3 transition-all duration-300"
             data-thumbnail-trending style="--hover-bg: rgba(255, 0, 0, 0.35);">
             @if ($video->thumbnail_path)
                 <img src="{{ asset('storage/' . $video->thumbnail_path) }}" alt="{{ $video->title }}"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    class="w-full h-full object-cover transition-transform duration-300">
             @else
                 <div
                     class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
@@ -31,7 +28,7 @@
             </div>
 
             <!-- Reel Badge -->
-            @if($video->is_reel)
+            @if ($video->is_reel)
             @endif
 
             <!-- Hover Play Button -->

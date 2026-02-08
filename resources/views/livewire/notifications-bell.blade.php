@@ -34,12 +34,12 @@
                             @endif
                         </div>
                         <div>
-                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Notifiche</h3>
+                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('ui.notifications_title') }}</h3>
                             <p class="text-xs text-gray-500 dark:text-gray-400">
                                 @if ($unread > 0)
-                                    {{ $unread }} {{ $unread === 1 ? 'non letta' : 'non lette' }}
+                                    {{ $unread }} {{ $unread === 1 ? __('ui.notifications_unread_single') : __('ui.notifications_unread_multiple') }}
                                 @else
-                                    Tutte lette
+                                    {{ __('ui.notifications_all_read') }}
                                 @endif
                             </p>
                         </div>
@@ -49,7 +49,7 @@
                         <button wire:click="markAllAsRead"
                             class="px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 hover:text-white hover:bg-red-200 rounded-md transition-colors duration-200 flex items-center space-x-1 cursor-pointer">
                             <i class="fa-solid fa-check-double text-xs"></i>
-                            <span>Segna tutte</span>
+                            <span>{{ __('ui.notifications_mark_all') }}</span>
                         </button>
                     @endif
                 </div>
@@ -102,7 +102,7 @@
                                                     <span
                                                         class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300 border border-red-200 dark:border-red-800">
                                                         <i class="fa-solid fa-circle text-[6px] mr-1"></i>
-                                                        Nuovo
+                                                        {{ __('ui.notifications_new') }}
                                                     </span>
                                                 @endif
                                             </div>
@@ -134,11 +134,11 @@
                             @endif
                         </div>
                         <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-2 notification-empty-title">
-                            Tutto aggiornato!
+                            {{ __('ui.notifications_all_updated') }}
                         </h3>
                         <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed notification-empty-text">
-                            Al momento non ci sono nuove notifiche.<br>
-                            Quando riceverai attività, appariranno qui.
+                            {{ __('ui.notifications_empty_subtitle') }}<br>
+                            {{ __('ui.notifications_empty_detail') }}
                         </p>
                     </div>
                 @endforelse
@@ -148,7 +148,7 @@
                 <div class="px-6 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                     <a href="{{ route('user.notifications') }}" wire:click.prevent
                         class="group flex items-center justify-center space-x-2 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200">
-                        <span>Visualizza tutte le notifiche</span>
+                        <span>{{ __('ui.notifications_view_all') }}</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
                 </div>

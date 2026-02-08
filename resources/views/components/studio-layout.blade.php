@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ \App\Models\Setting::getValue('site_name') }} - Studio</title>
-    <meta name="description" content="{{ \App\Models\Setting::getValue('site_name') }} - Studio di Creazione Contenuti">
+    <title>{{ \App\Models\Setting::getValue('site_name') }} - {{ __('ui.studio') }}</title>
+    <meta name="description"
+        content="{{ \App\Models\Setting::getValue('site_name') }} - {{ __('ui.studio_description') }}">
     <meta name="keywords"
         content="studio, creazione, contenuti, video, {{ \App\Models\Setting::getValue('site_name') }}">
     <meta name="author" content="{{ \App\Models\Setting::getValue('site_name') }}">
@@ -19,7 +20,7 @@
 <body
     class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-inter antialiased transition-colors duration-300">
 
-    <!-- Studio Header -->
+    <!-- {{ __('ui.studio') }} Header -->
     <header
         class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 h-16 shadow-sm">
         <div class="flex items-center justify-between h-full px-4 lg:px-6">
@@ -38,9 +39,10 @@
                     <div>
                         <h1 class="text-lg font-bold text-gray-900 dark:text-white">
                             {{ \App\Models\Setting::getValue('site_name') }} <span
-                                class="text-red-600 dark:text-red-400">Studio</span>
+                                class="text-red-600 dark:text-red-400">{{ __('ui.studio') }}</span>
                         </h1>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Centro di Creazione</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ __('ui.studio_center') }}
+                        </p>
                     </div>
                 </a>
             </div>
@@ -48,7 +50,7 @@
             <!-- Search Bar -->
             <div class="flex-1 max-w-xl mx-8">
                 <div class="relative">
-                    <input type="text" id="channel-search" placeholder="Cerca nel tuo canale..."
+                    <input type="text" id="channel-search" placeholder="{{ __('ui.studio_search_placeholder') }}"
                         class="w-full pl-12 pr-4 py-2.5 text-sm bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fas fa-search text-gray-400 dark:text-gray-500"></i>
@@ -61,9 +63,10 @@
                     </div>
                 </div>
                 <!-- Search Results Dropdown -->
-                <div id="search-results"
-                    class="hidden absolute top-full mt-2 w-full bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 max-h-96 overflow-y-auto">
-                    <!-- Results will be populated here -->
+                <div class="relative">
+                    <div id="search-results"
+                        class="hidden absolute top-full mt-2 w-full bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 max-h-96 overflow-y-auto">
+                    </div>
                 </div>
             </div>
 
@@ -73,12 +76,12 @@
                 <div class="hidden lg:flex items-center space-x-2">
                     <a href="{{ route('channel.edit', Auth::user()->userProfile->channel_name) }}?tab=content&upload=true"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-                        title="Carica video">
+                        title="{{ __('ui.upload_video') }}">
                         <i class="fas fa-upload text-gray-600 dark:text-gray-400"></i>
                     </a>
                     <a href="{{ route('channel.show', Auth::user()->userProfile && Auth::user()->userProfile->channel_name ? Auth::user()->userProfile->channel_name : (Auth::user()->userProfile ? Auth::user()->userProfile->id : Auth::user()->user->id)) }}"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-                        title="Visualizza canale">
+                        title="{{ __('ui.view_channel') }}">
                         <i class="fas fa-external-link-alt text-gray-600 dark:text-gray-400"></i>
                     </a>
                 </div>
@@ -91,7 +94,7 @@
                 <!-- Toggle theme -->
                 <button onclick="toggleTheme()"
                     class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer"
-                    title="Cambia tema">
+                    title="{{ __('ui.theme') }}">
                     <i class="fas fa-sun text-yellow-500" id="sun-icon" style="display: none;"></i>
                     <i class="fas fa-moon text-gray-600 dark:text-gray-400" id="moon-icon"></i>
                 </button>
@@ -137,7 +140,7 @@
                                 {{ auth()->user()->name }}
                             </p>
                             <p class="text-xs text-red-600 dark:text-red-400 capitalize">
-                                Creator
+                                {{ __('ui.creator') }}
                             </p>
                         </div>
                         <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
@@ -155,17 +158,17 @@
 
                             <a href="{{ route('users.profile') }}"
                                 class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i class="fas fa-user w-4 mr-3"></i> Profilo
+                                <i class="fas fa-user w-4 mr-3"></i> {{ __('ui.profile') }}
                             </a>
 
                             <a href="{{ route('channel.show', Auth::user()->userProfile && Auth::user()->userProfile->channel_name ? Auth::user()->userProfile->channel_name : (Auth::user()->userProfile ? Auth::user()->userProfile->id : Auth::user()->user->id)) }}"
                                 class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i class="fas fa-eye w-4 mr-3"></i> Il mio canale
+                                <i class="fas fa-eye w-4 mr-3"></i> {{ __('ui.my_channel') }}
                             </a>
 
                             <a href="{{ route('home') }}"
                                 class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i class="fas fa-home w-4 mr-3"></i> Torna al sito
+                                <i class="fas fa-home w-4 mr-3"></i> {{ __('ui.go_home') }}
                             </a>
 
                             <hr class="my-2 border-gray-200 dark:border-gray-600">
@@ -174,7 +177,7 @@
                                 @csrf
                                 <button type="submit"
                                     class="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <i class="fas fa-sign-out-alt w-4 mr-3"></i> Esci
+                                    <i class="fas fa-sign-out-alt w-4 mr-3"></i> {{ __('ui.logout') }}
                                 </button>
                             </form>
                         </div>
@@ -196,7 +199,7 @@
                                 @isset($pageHeader['title'])
                                     {{ $pageHeader['title'] }}
                                 @else
-                                    {{ $title ?? 'Studio' }}
+                                    {{ $title ?? __('ui.studio') }}
                                 @endisset
                             </h2>
                             @isset($pageHeader['subtitle'])
@@ -280,56 +283,162 @@
             }
         });
 
-        // Search functionality
+        // {{ __('ui.studio') }} search functionality (local to the current studio page)
         let searchTimeout;
         const searchInput = document.getElementById('channel-search');
         const searchResults = document.getElementById('search-results');
+        let studioSearchIndex = [];
+        const studioTranslations = {
+            studio_results: @json(__('ui.studio_results')),
+            results_found: @json(__('ui.results_found')),
+            search_results_for: @json(__('ui.search_results_for')),
+            no_search_results: @json(__('ui.no_search_results')),
+            use_specific_keywords: @json(__('ui.use_specific_keywords')),
+        };
+
+        function buildStudioSearchIndex() {
+            const main = document.querySelector('main');
+            if (!main) {
+                studioSearchIndex = [];
+                return;
+            }
+
+            const candidates = main.querySelectorAll('[data-studio-search], h2, h3, h4, label, legend');
+            const seen = new Set();
+            studioSearchIndex = [];
+
+            candidates.forEach((el, idx) => {
+                const raw = (el.getAttribute('data-studio-search') || el.textContent || '').trim();
+                const text = raw.replace(/\s+/g, ' ');
+                if (text.length < 3) return;
+
+                const key = text.toLowerCase();
+                if (seen.has(key)) return;
+                seen.add(key);
+
+                if (!el.id) {
+                    const slug = key.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 32);
+                    el.id = `studio-search-${idx}-${slug || 'item'}`;
+                }
+
+                const type = el.getAttribute('data-studio-search-type') || el.tagName.toLowerCase();
+                studioSearchIndex.push({
+                    id: el.id,
+                    text,
+                    type
+                });
+            });
+        }
 
         function performSearch(query) {
-            if (query.length < 2) {
+            const trimmed = query.trim();
+            if (trimmed.length < 2) {
                 hideSearchResults();
                 return;
             }
 
-            fetch(`/api/search?q=${encodeURIComponent(query)}&scope=channel`, {
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    displaySearchResults(data.results || []);
-                })
-                .catch(error => {
-                    console.error('Search error:', error);
-                    hideSearchResults();
-                });
+            const needle = trimmed.toLowerCase();
+            const results = studioSearchIndex
+                .filter(item => item.text.toLowerCase().includes(needle))
+                .slice(0, 12);
+
+            displaySearchResults(results, trimmed);
         }
 
-        function displaySearchResults(results) {
+        function escapeHtml(value) {
+            return value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function escapeRegExp(value) {
+            return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function formatResultType(type) {
+            const map = {
+                h2: '{{ __('ui.section') }}',
+                h3: '{{ __('ui.subsection') }}',
+                h4: '{{ __('ui.detail') }}',
+                label: '{{ __('ui.field') }}',
+                legend: '{{ __('ui.group') }}'
+            };
+            return map[type] || '{{ __('ui.item') }}';
+        }
+
+        function highlightMatch(text, query) {
+            const safeText = escapeHtml(text);
+            if (!query) return safeText;
+            const re = new RegExp(escapeRegExp(query), 'ig');
+            return safeText.replace(re, match => `
+                <span class="text-red-600 dark:text-red-400 font-semibold">${match}</span>
+            `.trim());
+        }
+
+        function displaySearchResults(results, query) {
+            const safeQuery = escapeHtml(query || '');
+            const header = `
+                <div class="px-4 pt-4 pb-3 border-b border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+                            <i class="fas fa-search text-red-500"></i>
+                            <span>${studioTranslations.studio_results}</span>
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">${results.length} ${studioTranslations.results_found}</span>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        ${studioTranslations.search_results_for}: <span class="font-semibold text-gray-700 dark:text-gray-200">${safeQuery}</span>
+                    </p>
+                </div>
+            `;
+
             if (results.length === 0) {
                 searchResults.innerHTML = `
-                    <div class="p-4 text-center text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-search text-2xl mb-2"></i>
-                        <p>Nessun risultato trovato</p>
+                    ${header}
+                    <div class="p-6 text-center text-gray-500 dark:text-gray-400">
+                        <div class="mx-auto mb-3 h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <p class="text-sm font-medium">${studioTranslations.no_search_results.replace(':query', safeQuery)}</p>
+                        <p class="text-xs mt-1">${studioTranslations.use_specific_keywords}</p>
                     </div>
                 `;
             } else {
-                searchResults.innerHTML = results.map(result => `
-                    <a href="${result.url}" class="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-gray-200 dark:bg-gray-600 rounded-lg overflow-hidden flex-shrink-0">
-                                ${result.thumbnail ? `<img src="${result.thumbnail}" alt="" class="w-full h-full object-cover">` : '<i class="fas fa-file-video text-gray-400 m-2"></i>'}
+                const list = results.map(result => {
+                    const label = highlightMatch(result.text, query);
+                    const badge = formatResultType(result.type);
+                    return `
+                        <a href="#${result.id}" data-studio-target="${result.id}"
+                            class="group block px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/60 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-red-50 to-white dark:from-gray-700 dark:to-gray-800 flex items-center justify-center shadow-sm">
+                                    <i class="fas fa-sliders-h text-red-500"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">${label}</p>
+                                    <div class="mt-1 flex items-center gap-2">
+                                        <span class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-gray-400">${badge}</span>
+                                        <span class="text-[11px] text-gray-400">?</span>
+                                        <span class="text-[11px] text-gray-400">{{ __('ui.studio') }}</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-300 group-hover:text-gray-400">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">${result.title}</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">${result.type} • ${result.date}</p>
-                            </div>
-                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                        </div>
-                    </a>
-                `).join('');
+                        </a>
+                    `;
+                }).join('');
+
+                searchResults.innerHTML = `
+                    ${header}
+                    <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                        ${list}
+                    </div>
+                `;
             }
             searchResults.classList.remove('hidden');
         }
@@ -342,10 +451,11 @@
         if (searchInput) {
             searchInput.addEventListener('input', function(e) {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => performSearch(e.target.value), 300);
+                searchTimeout = setTimeout(() => performSearch(e.target.value), 200);
             });
 
             searchInput.addEventListener('focus', function(e) {
+                build{{ __('ui.studio') }}SearchIndex();
                 if (e.target.value.length >= 2) {
                     performSearch(e.target.value);
                 }
@@ -362,6 +472,7 @@
             document.addEventListener('keydown', function(e) {
                 if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                     e.preventDefault();
+                    build{{ __('ui.studio') }}SearchIndex();
                     searchInput.focus();
                     searchInput.select();
                 }
@@ -369,6 +480,60 @@
                     hideSearchResults();
                     searchInput.blur();
                 }
+            });
+        }
+
+        if (searchResults) {
+            searchResults.addEventListener('click', function(e) {
+                const link = e.target.closest('a[data-studio-target]');
+                if (!link) return;
+                e.preventDefault();
+
+                const targetId = link.getAttribute('data-studio-target');
+                const targetEl = document.getElementById(targetId);
+                if (!targetEl) return;
+
+                const hiddenSection = targetEl.closest('.content-section.hidden');
+                if (hiddenSection && typeof window.switchMenu === 'function') {
+                    const sectionId = hiddenSection.getAttribute('id') || '';
+                    if (sectionId.endsWith('-content')) {
+                        const menuName = sectionId.replace('-content', '');
+                        window.switchMenu(menuName);
+                    } else {
+                        hiddenSection.classList.remove('hidden');
+                    }
+                }
+
+                hideSearchResults();
+                setTimeout(() => {
+                    const y = targetEl.getBoundingClientRect().top + window.pageYOffset - 90;
+                    window.scrollTo({
+                        top: y,
+                        behavior: 'smooth'
+                    });
+                }, hiddenSection ? 80 : 0);
+                targetEl.classList.add(
+                    'ring-2',
+                    'ring-red-500',
+                    'ring-offset-2',
+                    'ring-offset-white',
+                    'dark:ring-offset-gray-900',
+                    'bg-yellow-50',
+                    'dark:bg-yellow-900/20',
+                    'transition-colors'
+                );
+                setTimeout(() => {
+                    targetEl.classList.remove(
+                        'ring-2',
+                        'ring-red-500',
+                        'ring-offset-2',
+                        'ring-offset-white',
+                        'dark:ring-offset-gray-900',
+                        'bg-yellow-50',
+                        'dark:bg-yellow-900/20',
+                        'transition-colors'
+                    );
+                }, 2000);
             });
         }
 

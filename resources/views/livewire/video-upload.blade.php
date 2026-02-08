@@ -7,7 +7,8 @@
                 Carica un nuovo video
             </h2>
 
-            <form id="video-upload-form" class="space-y-6" enctype="multipart/form-data" method="POST">
+            <form id="video-upload-form" class="space-y-6" enctype="multipart/form-data" method="POST"
+                action="{{ route('videos.store') }}">
                 @csrf <!-- ATTENZIONE: il token DEVE essere dentro il form -->
 
                 <!-- Video File -->
@@ -190,12 +191,15 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Tipo di Video
                     </label>
-                    <div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg mb-4">
+                    <div
+                        class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg mb-4">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <i id="video-type-icon" class="fas fa-video mr-3 text-blue-600 dark:text-blue-400"></i>
+                                <i id="video-type-icon"
+                                    class="fas fa-video mr-3 text-blue-600 dark:text-blue-400"></i>
                                 <div>
-                                    <p id="video-type-text" class="text-sm font-medium text-blue-800 dark:text-blue-300">
+                                    <p id="video-type-text"
+                                        class="text-sm font-medium text-blue-800 dark:text-blue-300">
                                         Tipo di video: <span id="detected-type">In attesa...</span>
                                     </p>
                                     <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
@@ -205,13 +209,14 @@
                                 </div>
                             </div>
                             <div class="flex items-center">
-                                <span id="auto-detect-indicator" class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-full text-xs font-medium">
+                                <span id="auto-detect-indicator"
+                                    class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-full text-xs font-medium">
                                     Auto
                                 </span>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <label
                             class="flex items-center p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -243,10 +248,11 @@
                             </div>
                         </label>
                     </div>
-                    
+
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
                         <i class="fas fa-info-circle mr-1"></i>
-                        Il tipo di video viene rilevato automaticamente in base alla risoluzione. Puoi modificarlo manualmente se necessario.
+                        Il tipo di video viene rilevato automaticamente in base alla risoluzione. Puoi modificarlo
+                        manualmente se necessario.
                     </p>
                 </div>
 
@@ -422,25 +428,25 @@
             function detectVideoType(file) {
                 const video = document.createElement('video');
                 video.preload = 'metadata';
-                
+
                 video.onloadedmetadata = function() {
                     const width = video.videoWidth;
                     const height = video.videoHeight;
-                    
+
                     // Determina se è un reel basato sulla risoluzione
                     const isReel = height > width || (width / height) <= 0.8;
-                    
+
                     updateVideoTypeUI(isReel, width, height);
-                    
+
                     // Pulisci l'URL dell'oggetto
                     URL.revokeObjectURL(videoUrl);
                 };
-                
+
                 video.onerror = function() {
                     // In caso di errore, mantieni il valore di default
                     updateVideoTypeUI(false, 0, 0);
                 };
-                
+
                 const videoUrl = URL.createObjectURL(file);
                 video.src = videoUrl;
             }
@@ -450,13 +456,14 @@
                 const videoTypeText = document.getElementById('detected-type');
                 const videoTypeIcon = document.getElementById('video-type-icon');
                 const autoDetectIndicator = document.getElementById('auto-detect-indicator');
-                
+
                 if (isReel) {
                     videoTypeText.textContent = 'Reel (Verticale)';
                     videoTypeIcon.className = 'fas fa-mobile-alt mr-3 text-purple-600 dark:text-purple-400';
                     autoDetectIndicator.textContent = 'Auto-Reel';
-                    autoDetectIndicator.className = 'px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400 rounded-full text-xs font-medium';
-                    
+                    autoDetectIndicator.className =
+                        'px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400 rounded-full text-xs font-medium';
+
                     // Seleziona automaticamente il radio button del reel
                     const reelRadio = document.querySelector('input[name="is_reel"][value="1"]');
                     const normalRadio = document.querySelector('input[name="is_reel"][value="0"]');
@@ -468,8 +475,9 @@
                     videoTypeText.textContent = 'Video Normale (Orizzontale)';
                     videoTypeIcon.className = 'fas fa-desktop mr-3 text-blue-600 dark:text-blue-400';
                     autoDetectIndicator.textContent = 'Auto-Normale';
-                    autoDetectIndicator.className = 'px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 rounded-full text-xs font-medium';
-                    
+                    autoDetectIndicator.className =
+                        'px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 rounded-full text-xs font-medium';
+
                     // Seleziona automaticamente il radio button del video normale
                     const reelRadio = document.querySelector('input[name="is_reel"][value="1"]');
                     const normalRadio = document.querySelector('input[name="is_reel"][value="0"]');
@@ -478,7 +486,7 @@
                         reelRadio.checked = false;
                     }
                 }
-                
+
                 // Aggiungi informazioni sulla risoluzione
                 if (width > 0 && height > 0) {
                     const resolutionInfo = document.createElement('span');
@@ -591,7 +599,7 @@
                         resetForm();
                     });
 
-                    xhr.open('POST', '{{ route('channel.edit', Auth::user()->userProfile->channel_name) }}?tab=content&upload=true');
+                    xhr.open('POST', '{{ route('videos.store') }}');
                     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                     if (csrfToken) xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
                     xhr.send(formData);

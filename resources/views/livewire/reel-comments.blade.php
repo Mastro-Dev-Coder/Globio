@@ -1,30 +1,32 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full bg-gray-900">
     <!-- Comments Header -->
-    <div class="flex items-center justify-between p-6 border-b border-gray-700/50">
+    <div class="flex items-center justify-between p-4 border-b border-gray-800 bg-gray-800/30">
         <div class="flex items-center gap-3">
             <div
-                class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                 <i class="fas fa-comments text-white text-sm"></i>
             </div>
-            <h3 class="text-white font-semibold text-lg">Commenti</h3>
-            <span class="px-2 py-1 bg-gray-800/80 text-gray-300 text-xs rounded-full">
-                {{ $comments->total() }}
-            </span>
+            <div>
+                <h3 class="text-white font-semibold">Commenti</h3>
+                <span class="px-2 py-0.5 bg-gray-700/50 text-gray-400 text-xs rounded-full">
+                    {{ $comments->total() }}
+                </span>
+            </div>
         </div>
     </div>
 
     @if ($this->commentsEnabled())
         <!-- Add Comment Form -->
         @auth
-            <div class="p-6 border-b border-gray-700/50">
+            <div class="p-4 border-b border-gray-800 bg-gray-800/20">
                 <div class="flex gap-3">
                     @if (Auth::user()->userProfile?->avatar_url)
                         <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}"
                             alt="{{ Auth::user()->userProfile?->channel_name }}"
-                            class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                            class="w-12 h-12 rounded-full object-cover flex-shrink-0 ring-2 ring-gray-700">
                     @else
                         <div
-                            class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center ring-2 ring-gray-700">
                             <span class="text-white text-lg font-medium">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </span>
@@ -38,24 +40,23 @@
                         @enderror
                         <div class="flex justify-end gap-2 mt-3">
                             <button wire:click="$set('newComment', '')"
-                                class="px-4 py-2 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                                class="px-4 py-2 text-gray-400 hover:text-white transition-colors cursor-pointer rounded-lg hover:bg-gray-700/50">
                                 Annulla
                             </button>
                             <button wire:click="addComment" wire:loading.attr="disabled"
-                                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-all disabled:opacity-50 cursor-pointer">
-                                <span wire:loading.remove wire:target="addComment">Commenta
-                                    <i class="fas fa-paper-plane ml-1"></i>
-                                </span>
+                                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2">
+                                <span wire:loading.remove wire:target="addComment">Commenta</span>
                                 <span wire:loading wire:target="addComment">
                                     <i class="fa-solid fa-spinner fa-spin"></i>
                                 </span>
+                                <i class="fas fa-paper-plane" wire:loading.remove></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         @else
-            <div class="p-6 border-b border-gray-700/50">
+            <div class="p-4 border-b border-gray-800 bg-gray-800/20">
                 <div class="text-center p-4 bg-gray-800/30 rounded-xl">
                     <p class="text-gray-400 mb-3">Accedi per lasciare un commento</p>
                     <a href="{{ route('login') }}"
@@ -68,17 +69,18 @@
         @endauth
 
         <!-- Comments List -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-4">
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-700">
             @forelse($comments as $comment)
-                <div id="comment-{{ $comment->id }}" class="comment-item" wire:key="comment-{{ $comment->id }}">
+                <div id="comment-{{ $comment->id }}" class="comment-item bg-gray-800/20 rounded-xl p-4"
+                    wire:key="comment-{{ $comment->id }}">
                     <div class="flex gap-3">
                         @if ($comment->user->userProfile?->avatar_url)
                             <img src="{{ asset('storage/' . $comment->user->userProfile->avatar_url) }}"
                                 alt="{{ $comment->user->userProfile?->channel_name }}"
-                                class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                                class="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-2 ring-gray-700">
                         @else
                             <div
-                                class="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+                                class="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center ring-2 ring-gray-700">
                                 <span class="text-white text-sm font-medium">
                                     {{ strtoupper(substr($comment->user->name, 0, 1)) }}
                                 </span>
@@ -86,13 +88,13 @@
                         @endif
                         <div class="flex-1 min-w-0">
                             <!-- Comment Header -->
-                            <div class="flex items-center gap-2 mb-1">
+                            <div class="flex items-center gap-2 mb-2">
                                 <span class="text-white font-medium text-sm">
                                     {{ $comment->user->userProfile?->channel_name ?: $comment->user->name }}
                                 </span>
-                                <span class="text-gray-400 text-xs">{{ $comment->created_at->diffForHumans() }}</span>
+                                <span class="text-gray-500 text-xs">{{ $comment->created_at->diffForHumans() }}</span>
                                 @if ($comment->created_at != $comment->updated_at)
-                                    <span class="text-gray-400 text-xs">(modificato)</span>
+                                    <span class="text-gray-500 text-xs">(modificato)</span>
                                 @endif
                             </div>
 
@@ -106,7 +108,7 @@
                                     @enderror
                                     <div class="flex justify-end gap-2 mt-2">
                                         <button wire:click="cancelEdit"
-                                            class="px-4 py-1.5 text-gray-400 hover:text-white text-sm">
+                                            class="px-4 py-1.5 text-gray-400 hover:text-white text-sm rounded-lg hover:bg-gray-700/50">
                                             Annulla
                                         </button>
                                         <button wire:click="updateComment"
@@ -123,7 +125,7 @@
                             <div class="flex items-center gap-4 mt-3">
                                 <!-- Like Button -->
                                 <button wire:click="toggleLike({{ $comment->id }})"
-                                    class="flex items-center gap-1.5 text-sm transition-colors {{ ($userReactions[$comment->id] ?? null) === 'like' ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}">
+                                    class="flex items-center gap-1.5 text-sm transition-all duration-200 hover:scale-110 {{ ($userReactions[$comment->id] ?? null) === 'like' ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}">
                                     <i class="fa-solid fa-thumbs-up"></i>
                                     @if ($comment->likes_count > 0)
                                         <span>{{ $comment->likes_count }}</span>
@@ -132,7 +134,7 @@
 
                                 <!-- Dislike Button -->
                                 <button wire:click="toggleDislike({{ $comment->id }})"
-                                    class="flex items-center gap-1.5 text-sm transition-colors {{ ($userReactions[$comment->id] ?? null) === 'dislike' ? 'text-blue-500' : 'text-gray-400 hover:text-blue-400' }}">
+                                    class="flex items-center gap-1.5 text-sm transition-all duration-200 hover:scale-110 {{ ($userReactions[$comment->id] ?? null) === 'dislike' ? 'text-blue-500' : 'text-gray-400 hover:text-blue-400' }}">
                                     <i class="fa-solid fa-thumbs-down"></i>
                                     @if ($comment->dislikes_count > 0)
                                         <span>{{ $comment->dislikes_count }}</span>
@@ -151,14 +153,14 @@
                                 @auth
                                     @if (auth()->id() === $comment->user_id)
                                         <button wire:click="startEdit({{ $comment->id }})"
-                                            class="text-sm text-gray-400 hover:text-white transition-colors">
+                                            class="text-gray-400 hover:text-white transition-colors">
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
                                     @endif
                                     @if (auth()->id() === $comment->user_id || auth()->id() === $video->user_id)
                                         <button wire:click="deleteComment({{ $comment->id }})"
                                             wire:confirm="Sei sicuro di voler eliminare questo commento?"
-                                            class="text-sm text-gray-400 hover:text-red-500 transition-colors">
+                                            class="text-gray-400 hover:text-red-500 transition-colors">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     @endif
@@ -167,7 +169,7 @@
 
                             <!-- Reply Form -->
                             @if ($replyingTo === $comment->id)
-                                <div class="mt-4 flex gap-3">
+                                <div class="mt-4 flex gap-3 bg-gray-800/30 rounded-xl p-3">
                                     @if (Auth::user()->userProfile?->avatar_url)
                                         <img src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}"
                                             alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover">
@@ -187,7 +189,7 @@
                                         @enderror
                                         <div class="flex justify-end gap-2 mt-2">
                                             <button wire:click="cancelReply"
-                                                class="px-3 py-1.5 text-gray-400 hover:text-white text-sm">
+                                                class="px-3 py-1.5 text-gray-400 hover:text-white text-sm rounded-lg hover:bg-gray-700/50">
                                                 Annulla
                                             </button>
                                             <button wire:click="addReply"
@@ -201,9 +203,10 @@
 
                             <!-- Replies -->
                             @if ($comment->replies->count() > 0)
-                                <div class="mt-4 space-y-4 pl-4 border-l-2 border-gray-700/50">
+                                <div class="mt-4 space-y-3 pl-4 border-l-2 border-gray-700/50">
                                     @foreach ($comment->replies as $reply)
-                                        <div class="flex gap-3" wire:key="reply-{{ $reply->id }}">
+                                        <div class="flex gap-3 bg-gray-800/10 rounded-lg p-3"
+                                            wire:key="reply-{{ $reply->id }}">
                                             @if ($reply->user->userProfile?->avatar_url)
                                                 <img src="{{ asset('storage/' . $reply->user->userProfile->avatar_url) }}"
                                                     alt="{{ $reply->user->name }}"
@@ -222,7 +225,7 @@
                                                         {{ $reply->user->userProfile?->channel_name ?: $reply->user->name }}
                                                     </span>
                                                     <span
-                                                        class="text-gray-400 text-xs">{{ $reply->created_at->diffForHumans() }}</span>
+                                                        class="text-gray-500 text-xs">{{ $reply->created_at->diffForHumans() }}</span>
                                                 </div>
 
                                                 @if ($editingComment === $reply->id)
@@ -231,7 +234,7 @@
                                                             class="w-full bg-gray-800/50 border border-gray-600/50 rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"></textarea>
                                                         <div class="flex justify-end gap-2 mt-2">
                                                             <button wire:click="cancelEdit"
-                                                                class="px-3 py-1 text-gray-400 hover:text-white text-xs">
+                                                                class="px-3 py-1 text-gray-400 hover:text-white text-xs rounded-lg hover:bg-gray-700/50">
                                                                 Annulla
                                                             </button>
                                                             <button wire:click="updateComment"
@@ -264,14 +267,14 @@
                                                     @auth
                                                         @if (auth()->id() === $reply->user_id)
                                                             <button wire:click="startEdit({{ $reply->id }})"
-                                                                class="text-xs text-gray-400 hover:text-white">
+                                                                class="text-gray-400 hover:text-white text-xs">
                                                                 <i class="fa-solid fa-pen"></i>
                                                             </button>
                                                         @endif
                                                         @if (auth()->id() === $reply->user_id || auth()->id() === $video->user_id)
                                                             <button wire:click="deleteComment({{ $reply->id }})"
                                                                 wire:confirm="Sei sicuro di voler eliminare questa risposta?"
-                                                                class="text-xs text-gray-400 hover:text-red-500">
+                                                                class="text-gray-400 hover:text-red-500 text-xs">
                                                                 <i class="fa-solid fa-trash"></i>
                                                             </button>
                                                         @endif
@@ -288,7 +291,7 @@
             @empty
                 <div class="text-center py-12">
                     <div class="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-comment text-gray-400 text-xl"></i>
+                        <i class="fas fa-comment-slash text-gray-400 text-xl"></i>
                     </div>
                     <p class="text-gray-400 font-medium">Nessun commento ancora</p>
                     <p class="text-gray-500 text-sm mt-1">Sii il primo a commentare!</p>
@@ -306,20 +309,20 @@
 
     <!-- Pagination -->
     @if ($comments->hasPages())
-        <div class="p-6 border-t border-gray-700/50">
+        <div class="p-4 border-t border-gray-800 bg-gray-800/20">
             {{ $comments->links() }}
         </div>
     @endif
 
     <!-- Error Display -->
     @if (session()->has('error'))
-        <div class="mx-6 mb-4 px-4 py-2 bg-red-600/20 border border-red-500/30 rounded-lg">
+        <div class="mx-4 mb-4 px-4 py-2 bg-red-600/20 border border-red-500/30 rounded-lg">
             <p class="text-red-400 text-sm">{{ session('error') }}</p>
         </div>
     @endif
 
     @if (session()->has('success'))
-        <div class="mx-6 mb-4 px-4 py-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+        <div class="mx-4 mb-4 px-4 py-2 bg-green-600/20 border border-green-500/30 rounded-lg">
             <p class="text-green-400 text-sm">{{ session('success') }}</p>
         </div>
     @endif

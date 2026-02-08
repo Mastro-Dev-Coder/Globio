@@ -7,21 +7,21 @@
                 </div>
 
                 <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-                    Nessuna connessione
+                    {{ __('ui.connection_no_connection') }}
                 </h1>
 
                 <p class="text-lg mb-8 text-gray-600 dark:text-gray-300">
-                    Controlla la tua connessione internet e riprova.
+                    {{ __('ui.connection_check_internet') }}
                 </p>
 
                 <div class="space-y-4">
                     <button onclick="window.location.reload()"
                         class="w-full px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors text-lg cursor-pointer">
-                        Riprova
+                        {{ __('ui.connection_retry') }}
                     </button>
                     
                     <div class="text-sm text-gray-500 dark:text-gray-400">
-                        Oppure attendi che la connessione venga ripristinata automaticamente.
+                        {{ __('ui.connection_wait_auto') }}
                     </div>
                 </div>
             </div>
@@ -32,10 +32,10 @@
                 <i class="fas fa-exclamation-triangle text-yellow-500 text-xl"></i>
                 <div>
                     <p class="font-medium text-yellow-800 dark:text-yellow-200">
-                        Connessione lenta
+                        {{ __('ui.connection_slow') }}
                     </p>
                     <p class="text-sm text-yellow-700 dark:text-yellow-300">
-                        Potrebbero verificarsi ritardi nel caricamento.
+                        {{ __('ui.connection_delay_warning') }}
                     </p>
                 </div>
                 <button onclick="this.parentElement.parentElement.remove()" 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\VideoAdsController;
 use App\Http\Controllers\Api\WatchLaterController;
 use App\Http\Controllers\Api\PlaylistController;
+use App\Http\Controllers\Api\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,7 @@ Route::middleware('api')->group(function () {
     Route::post('/ad-analytics', function () {
         return response()->json(['success' => true]);
     });
+
+    // Global Search API
+    Route::get('/search', [SearchController::class, 'globalSearch'])->name('api.global.search');
 });

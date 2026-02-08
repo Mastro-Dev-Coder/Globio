@@ -6,7 +6,7 @@
                 <i class="fas fa-thumbs-up mr-3 text-red-600"></i>Contenuti che mi piacciono
             </h1>
             <p class="text-gray-600 dark:text-gray-400">
-                Video e reels a cui hai messo mi piace
+                {{ __('ui.liked_videos_subtitle') }}
             </p>
         </div>
 
@@ -31,15 +31,15 @@
                     <i class="fas fa-thumbs-up text-4xl text-gray-400"></i>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Nessun contenuto piaciuto
+                    {{ __('ui.no_liked_content') }}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    I video e reels a cui metti mi piace appariranno qui
+                    {{ __('ui.liked_content_empty') }}
                 </p>
                 <a href="{{ route('home') }}"
                     class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
                     <i class="fas fa-home mr-2"></i>
-                    Esplora video
+                    {{ __('ui.explore_videos') }}
                 </a>
             </div>
         @endif

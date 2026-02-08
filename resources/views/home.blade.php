@@ -6,7 +6,7 @@
         <div class="mb-6 md:mb-8">
             <div class="flex items-center justify-between mb-3 sm:mb-4">
                 <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                    Per te
+                    {{ __('ui.home') }}
                 </h2>
             </div>
 
@@ -14,7 +14,7 @@
                 <div id="filtersContainer"
                     class="flex items-center space-x-2 sm:space-x-3 overflow-x-auto scrollbar-hide pb-2 px-1"
                     style="scroll-behavior: smooth;">
-                    @foreach (['Tutti', 'Video', 'Reels', 'Musica', 'Gaming', 'Trending', 'Live'] as $filter)
+                    @foreach (['Tutti', __('ui.video'), __('ui.reels'), __('ui.music'), __('ui.gaming'), __('ui.trending_page'), __('ui.live')] as $filter)
                         <button onclick="filterVideos('{{ strtolower($filter) }}')"
                             data-filter="{{ strtolower($filter) }}"
                             class="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 text-xs sm:text-sm font-medium whitespace-nowrap filter-btn">
@@ -24,6 +24,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Video Advertisement Section -->
         <div class="mb-6 md:mb-8">
@@ -43,8 +44,8 @@
                 @if ($integratedContent->count() > 0)
                     @php
                         $videoCount = 0;
-                        $reelsPerCarousel = 6;
-                        $videosBeforeReels = 12;
+                        $reelsPerCarousel = 8;
+                        $videosBeforeReels = 8;
                         $allReels = collect();
                         $displayedReelIds = collect();
                         $isReelsCategory = request()->get('category') === 'reels';
@@ -68,7 +69,7 @@
                             class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
                             @foreach ($integratedContent as $index => $item)
                                 @if ($item['type'] === 'video' && !$item['content']->is_reel)
-                                    @if ($videoCount > 0 && $videoCount % $videosBeforeReels === 0)
+                                    @if ($videoCount === 3 || ($videoCount > 3 && $videoCount % $videosBeforeReels === 0))
                                         @php
                                             $remainingReels = $integratedContent
                                                 ->where('type', 'video')
@@ -96,53 +97,56 @@
                                                     <div class="mb-4 md:mb-6">
                                                         <h2
                                                             class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                                                            Reels in evidenza
+                                                            <i class="fa-solid fa-circle-play w-4 h-4"></i>
+                                                            Reels
                                                         </h2>
                                                     </div>
 
-                                                    <div class="relative">
+                                                    <div class="relative group">
                                                         <div class="flex space-x-3 sm:space-x-4 overflow-x-auto scrollbar-hide pb-4 px-1"
                                                             style="scroll-behavior: smooth;"
-                                                            id="reels-container-{{ $videoCount }}">
+                                                            id="reels-container-{{ $videoCount }}"
+                                                            data-reels-carousel>
                                                             @foreach ($remainingReels as $reel)
-                                                                <div class="flex-shrink-0 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 cursor-pointer"
-                                                                    onclick="window.location.href='{{ route('videos.show', $reel) }}'">
-                                                                    <div
-                                                                        class="relative aspect-[9/16] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-2 sm:mb-3">
-                                                                        @if ($reel->thumbnail_path)
-                                                                            <img src="{{ asset('storage/' . $reel->thumbnail_path) }}"
-                                                                                alt="{{ $reel->title }}"
-                                                                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-200">
-                                                                        @else
-                                                                            <div
-                                                                                class="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-                                                                                <i
-                                                                                    class="fas fa-play text-sm sm:text-base text-gray-400"></i>
-                                                                            </div>
-                                                                        @endif
+                                                                <div
+                                                                    class="flex-shrink-0 w-36 sm:w-40 md:w-[20%] md:min-w-[20%] xl:w-[20%] xl:min-w-[30%] cursor-pointer">
+                                                                    <div class="group cursor-pointer relative p-1 sm:p-2 rounded-xl w-full max-w-full"
+                                                                        data-color-wrapper-trending
+                                                                        onclick="window.location.href='{{ route('videos.show', $reel) }}'">
+                                                                        <div class="relative aspect-[9/16] bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden mb-2 sm:mb-3"
+                                                                            data-thumbnail-trending
+                                                                            style="--hover-bg: rgba(255, 0, 0, 0.35);">
+                                                                            @if ($reel->thumbnail_path)
+                                                                                <img src="{{ asset('storage/' . $reel->thumbnail_path) }}"
+                                                                                    alt="{{ $reel->title }}"
+                                                                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-200">
+                                                                            @else
+                                                                                <div
+                                                                                    class="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
+                                                                                    <i
+                                                                                        class="fas fa-play text-sm sm:text-base text-gray-400"></i>
+                                                                                </div>
+                                                                            @endif
 
-                                                                        @if ($reel->duration)
-                                                                            <div
-                                                                                class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-xs px-1 py-0.5 rounded font-medium">
-                                                                                {{ gmdate('i:s', $reel->duration) }}
-                                                                            </div>
-                                                                        @endif
-
-                                                                        <div
-                                                                            class="absolute top-1.5 left-1.5 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded font-medium">
-                                                                            Reel
+                                                                            @if ($reel->duration)
+                                                                                <div
+                                                                                    class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-xs px-1 py-0.5 rounded font-medium">
+                                                                                    {{ gmdate('i:s', $reel->duration) }}
+                                                                                </div>
+                                                                            @endif
                                                                         </div>
-                                                                    </div>
 
-                                                                    <div class="space-y-0.5 sm:space-y-1 px-1">
-                                                                        <h3
-                                                                            class="font-medium text-gray-900 dark:text-white line-clamp-2 text-xs sm:text-sm leading-tight">
-                                                                            {{ $reel->title }}
-                                                                        </h3>
-                                                                        <div
-                                                                            class="text-xs text-gray-600 dark:text-gray-400">
-                                                                            {{ number_format($reel->views_count) }}
-                                                                            visualizzazioni
+                                                                        <div class="space-y-0.5 sm:space-y-1 px-1">
+                                                                            <h3
+                                                                                class="font-medium text-gray-900 dark:text-white line-clamp-2 text-xs sm:text-sm leading-tight">
+                                                                                {{ $reel->title }}
+                                                                            </h3>
+                                                                            <div
+                                                                                class="text-xs text-gray-600 dark:text-gray-400">
+                                                                                {{ number_format($reel->views_count) }}
+                                                                                {{ __('ui.views') }}
+                                                                                visualizzazioni
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -151,12 +155,14 @@
 
                                                         <button
                                                             onclick="scrollReels('prev', 'reels-container-{{ $videoCount }}')"
+                                                            data-reels-prev="reels-container-{{ $videoCount }}"
                                                             class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-2 sm:-translate-x-4 w-6 h-6 sm:w-8 sm:h-8 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity z-10 hover:bg-gray-50 dark:hover:bg-gray-700 hidden sm:flex">
                                                             <i
                                                                 class="fas fa-chevron-left text-xs sm:text-sm text-gray-600 dark:text-gray-400"></i>
                                                         </button>
                                                         <button
                                                             onclick="scrollReels('next', 'reels-container-{{ $videoCount }}')"
+                                                            data-reels-next="reels-container-{{ $videoCount }}"
                                                             class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-2 sm:translate-x-4 w-6 h-6 sm:w-8 sm:h-8 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity z-10 hover:bg-gray-50 dark:hover:bg-gray-700 hidden sm:flex">
                                                             <i
                                                                 class="fas fa-chevron-right text-xs sm:text-sm text-gray-600 dark:text-gray-400"></i>
@@ -207,10 +213,10 @@
                             <i class="fas fa-video text-xl sm:text-2xl text-gray-400"></i>
                         </div>
                         <h3 class="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">
-                            Nessun video disponibile
+                            {{ __('ui.no_videos_to_show') }}
                         </h3>
                         <p class="text-sm text-gray-600 dark:text-gray-400">
-                            Torna presto per scoprire nuovi contenuti
+                            {{ __('ui.try_searching') }}
                         </p>
                     </div>
                 @endif
@@ -220,60 +226,6 @@
         </div>
     </div>
 
-    <style>
-        /* Mobile-first responsive adjustments */
-        @media (max-width: 640px) {
-            .aspect-\[9\/16\] {
-                aspect-ratio: 9/16;
-            }
-
-            /* Touch-friendly scrolling for mobile */
-            #filtersContainer {
-                -webkit-overflow-scrolling: touch;
-            }
-
-            /* Improve touch targets */
-            button,
-            [role="button"] {
-                min-height: 44px;
-                min-width: 44px;
-            }
-        }
-
-        @media (min-width: 640px) and (max-width: 767px) {
-
-            /* Small tablets */
-            .grid-cols-2 {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 1023px) {
-
-            /* Tablets */
-            .grid-cols-3 {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-        }
-
-        /* Custom breakpoint for extra small devices */
-        @media (min-width: 475px) and (max-width: 639px) {
-            .xs\:grid-cols-3 {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-        }
-
-        /* Hide scrollbar but keep functionality */
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
-    
     <script>
         // Global variables for modals
         window.currentVideoId = null;
@@ -324,7 +276,7 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                showToast('Playlist creata con successo!', 'success');
+                                showToast('{{ __('ui.playlist_created_success') }}', 'success');
                                 closeCreatePlaylistModal();
 
                                 // If we have a video to add, add it to the new playlist
@@ -599,8 +551,8 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll("[data-thumbnail]").forEach(card => {
-                const wrapper = card.closest("[data-color-wrapper]");
+            document.querySelectorAll("[data-thumbnail], [data-thumbnail-trending]").forEach(card => {
+                const wrapper = card.closest("[data-color-wrapper], [data-color-wrapper-trending]");
                 const img = card.querySelector("img");
 
                 if (!img || !wrapper) return;
@@ -920,8 +872,8 @@
 
         // Ri-inizializza l'estrazione del colore per i nuovi elementi
         function reinitializeColorExtraction() {
-            document.querySelectorAll("[data-thumbnail]").forEach(card => {
-                const wrapper = card.closest("[data-color-wrapper]");
+            document.querySelectorAll("[data-thumbnail], [data-thumbnail-trending]").forEach(card => {
+                const wrapper = card.closest("[data-color-wrapper], [data-color-wrapper-trending]");
                 const img = card.querySelector("img");
 
                 if (!img || !wrapper) return;
@@ -957,5 +909,37 @@
                 });
             }
         }
+
+        function updateReelsArrows(container) {
+            if (!container) return;
+            const id = container.getAttribute('id');
+            const prevBtn = document.querySelector(`[data-reels-prev="${id}"]`);
+            const nextBtn = document.querySelector(`[data-reels-next="${id}"]`);
+            const maxScroll = container.scrollWidth - container.clientWidth;
+            const atStart = container.scrollLeft <= 0;
+            const atEnd = container.scrollLeft >= maxScroll - 1;
+
+            if (prevBtn) {
+                prevBtn.classList.toggle('reels-arrow-disabled', atStart);
+            }
+            if (nextBtn) {
+                nextBtn.classList.toggle('reels-arrow-disabled', atEnd);
+            }
+        }
+
+        function bindReelsArrows() {
+            document.querySelectorAll('[data-reels-carousel]').forEach(container => {
+                updateReelsArrows(container);
+                container.addEventListener('scroll', () => updateReelsArrows(container));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            bindReelsArrows();
+            window.addEventListener('resize', () => {
+                document.querySelectorAll('[data-reels-carousel]').forEach(container => updateReelsArrows(
+                    container));
+            });
+        });
     </script>
 </x-layout>

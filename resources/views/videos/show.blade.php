@@ -1,8 +1,6 @@
 <x-layout>
     {!! \App\Helpers\AdvertisementHelper::generateClickTrackingScript() !!}
     <div id="pageContent" class="min-h-screen transition-all duration-500">
-        <!-- MiniPlayer Component -->
-        <livewire:mini-player />
         <div class="w-full">
             <div class="mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div id="mainContainer">
@@ -34,9 +32,7 @@
                                     class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pt-2 border-b border-gray-800 pb-4">
                                     <!-- Video Stats -->
                                     <div class="flex items-center gap-4 text-sm text-gray-400">
-                                        <span class="font-medium text-gray-300">
-                                            {{ number_format($video->views_count) }} visualizzazioni
-                                        </span>
+                                        {{ number_format($video->views_count) }} {{ __('ui.views') }}
                                         <span>•</span>
                                         <span class="flex items-center gap-1">
                                             {{ $video->created_at->format('d M Y') }}
@@ -53,24 +49,21 @@
                                             onclick="navigator.clipboard.writeText('{{ route('videos.show', $video) }}').then(()=>{ showToast('Link copiato negli appunti!') })"
                                             class="flex items-center gap-2 px-4 py-2.5 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group border border-gray-600/50 hover:border-gray-500 backdrop-blur-sm cursor-pointer">
                                             <i class="fas fa-share text-gray-300 group-hover:text-white"></i>
-                                            <span
-                                                class="text-gray-300 text-sm font-medium group-hover:text-white">Condividi</span>
+                                            {{ __('ui.share') }}
                                         </button>
 
                                         <a href="{{ route('videos.download', ['video' => $video->video_url]) }}"
                                             download="{{ $video->video_path }}"
                                             class="flex items-center gap-2 px-4 py-2.5 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group border border-gray-600/50 hover:border-gray-500 backdrop-blur-sm cursor-pointer">
                                             <i class="fas fa-download text-gray-300 group-hover:text-white"></i>
-                                            <span
-                                                class="text-gray-300 text-sm font-medium group-hover:text-white">Scarica</span>
+                                            {{ __('ui.download') }}
                                         </a>
 
                                         <button
                                             onclick="openReportModal('video', {{ $video->id }}, '{{ addslashes($video->title) }}')"
                                             class="flex items-center gap-2 px-4 py-2.5 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group border border-gray-600/50 hover:border-gray-500 backdrop-blur-sm cursor-pointer">
                                             <i class="fas fa-flag text-gray-300 group-hover:text-red-400"></i>
-                                            <span
-                                                class="text-gray-300 text-sm font-medium group-hover:text-red-400">Segnala</span>
+                                            {{ __('ui.report') }}
                                         </button>
                                     </div>
                                 </div>
@@ -104,7 +97,8 @@
                                                     </a>
                                                 </h3>
                                                 <p class="text-gray-400 text-xs">
-                                                    {{ number_format($video->user->subscribers()->count()) }} iscritti
+                                                    {{ number_format($video->user->subscribers()->count()) }}
+                                                    {{ __('ui.subscribers') }}
                                                 </p>
                                             </div>
 
@@ -116,10 +110,7 @@
                                                         style="max-height: 3rem;">
                                                         {{ $video->description }}
                                                     </div>
-                                                    <button id="showMoreBtn"
-                                                        class="text-gray-400 hover:text-gray-300 text-sm font-medium mt-1 transition-colors duration-200">
-                                                        Mostra di più
-                                                    </button>
+                                                    {{ __('ui.show_more') }}
                                                 </div>
                                             @endif
                                         </div>
@@ -189,7 +180,7 @@
                                                 </p>
                                                 <div class="flex items-center gap-1 text-xs text-gray-400">
                                                     <span>{{ number_format($relatedVideo->views_count) }}
-                                                        visualizzazioni</span>
+                                                        {{ __('ui.views') }}</span>
                                                     <span>•</span>
                                                     <span>{{ $relatedVideo->created_at->diffForHumans() }}</span>
                                                 </div>
@@ -218,7 +209,7 @@
                                             class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pt-2 border-b border-gray-800 pb-4">
                                             <div class="flex items-center gap-4 text-sm text-gray-400">
                                                 <span class="font-medium text-gray-300">
-                                                    {{ number_format($video->views_count) }} visualizzazioni
+                                                    {{ number_format($video->views_count) }} {{ __('ui.views') }}
                                                 </span>
                                                 <span>•</span>
                                                 <span class="flex items-center gap-1">
@@ -294,7 +285,7 @@
                                                         </h3>
                                                         <p class="text-gray-400 text-xs">
                                                             {{ number_format($video->user->subscribers()->count()) }}
-                                                            iscritti
+                                                            {{ __('ui.subscribers') }}
                                                         </p>
                                                     </div>
 
@@ -371,7 +362,7 @@
                                                         </p>
                                                         <div class="flex items-center gap-1 text-xs text-gray-400">
                                                             <span>{{ number_format($relatedVideo->views_count) }}
-                                                                visualizzazioni</span>
+                                                                {{ __('ui.views') }}</span>
                                                             <span>•</span>
                                                             <span>{{ $relatedVideo->created_at->diffForHumans() }}</span>
                                                         </div>
@@ -414,19 +405,27 @@
         function openReportModal(type, id, title) {
             // Check if user is authenticated
             @auth
-                // Dispatch event to Livewire component
-                if (typeof Livewire !== 'undefined') {
-                    Livewire.dispatch('openReportModal', { type, id, title });
-                } else {
-                    // Fallback: dispatch custom event
-                    window.dispatchEvent(new CustomEvent('open-report-modal', {
-                        detail: { type, id, title }
-                    }));
-                }
-            @else
-                showToast('Devi essere autenticato per segnalare contenuti');
-                window.location.href = '{{ route('login') }}';
-            @endauth
+            // Dispatch event to Livewire component
+            if (typeof Livewire !== 'undefined') {
+                Livewire.dispatch('openReportModal', {
+                    type,
+                    id,
+                    title
+                });
+            } else {
+                // Fallback: dispatch custom event
+                window.dispatchEvent(new CustomEvent('open-report-modal', {
+                    detail: {
+                        type,
+                        id,
+                        title
+                    }
+                }));
+            }
+        @else
+            showToast('Devi essere autenticato per segnalare contenuti');
+            window.location.href = '{{ route('login') }}';
+        @endauth
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -469,10 +468,10 @@
                     showMoreBtn.addEventListener('click', function() {
                         if (description.style.maxHeight === '3rem') {
                             description.style.maxHeight = 'none';
-                            showMoreBtn.textContent = 'Mostra meno';
+                            showMoreBtn.textContent = '{{ __('ui.show_less') }}';
                         } else {
                             description.style.maxHeight = '3rem';
-                            showMoreBtn.textContent = 'Mostra di più';
+                            showMoreBtn.textContent = '{{ __('ui.show_more') }}';
                         }
                     });
                 } else {

@@ -1,17 +1,17 @@
-<x-admin-layout>
+﻿<x-admin-layout>
     <div class="max-w-4xl mx-auto space-y-6">
         <!-- Page Header -->
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Modifica Pubblicità</h1>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('ui.admin_ads_edit_title') }}</h1>
                 <p class="text-gray-600 dark:text-gray-400 mt-1">
-                    Modifica la pubblicità "{{ $advertisement->name }}"
+                    Modifica la pubblicitÃ  "{{ $advertisement->name }}"
                 </p>
             </div>
             <a href="{{ route('admin.advertisements') }}"
                 class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors">
                 <i class="fas fa-arrow-left w-4 h-4 mr-2"></i>
-                Torna alla lista
+                {{ __('ui.admin_ads_back_list') }}
             </a>
         </div>
 
@@ -24,16 +24,16 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     <i class="fas fa-info-circle mr-2"></i>
-                    Informazioni Base
+                    {{ __('ui.admin_ads_basic_info') }}
                 </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Nome Pubblicità <span class="text-red-500">*</span>
+                            {{ __('ui.admin_ads_name_label') }} <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="name" value="{{ old('name', $advertisement->name) }}" required
-                            placeholder="es: Banner Header Principale"
+                            placeholder="{{ __('ui.admin_ads_name_placeholder') }}"
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
                         @error('name')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -42,19 +42,19 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Tipo Pubblicità <span class="text-red-500">*</span>
+                            {{ __('ui.admin_ads_type_label') }} <span class="text-red-500">*</span>
                         </label>
                         <select name="type" id="type-select" required
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                            <option value="">Seleziona tipo</option>
+                            <option value="">{{ __('ui.admin_ads_type_select') }}</option>
                             <option value="banner" {{ old('type', $advertisement->type) === 'banner' ? 'selected' : '' }}>
-                                Banner (Immagine statica)
+                                {{ __('ui.admin_ads_type_banner_label') }}
                             </option>
                             <option value="adsense" {{ old('type', $advertisement->type) === 'adsense' ? 'selected' : '' }}>
-                                Google AdSense
+                                {{ __('ui.admin_ads_type_adsense_label') }}
                             </option>
                             <option value="video" {{ old('type', $advertisement->type) === 'video' ? 'selected' : '' }}>
-                                Video Advertisement
+                                {{ __('ui.admin_ads_type_video_label') }}
                             </option>
                         </select>
                         @error('type')
@@ -64,25 +64,25 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Posizione <span class="text-red-500">*</span>
+                            {{ __('ui.admin_ads_position_label') }} <span class="text-red-500">*</span>
                         </label>
                         <select name="position" required
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                            <option value="">Seleziona posizione</option>
+                            <option value="">{{ __('ui.admin_ads_position_select') }}</option>
                             <option value="header" {{ old('position', $advertisement->position) === 'header' ? 'selected' : '' }}>
-                                Header (Intestazione)
+                                {{ __('ui.admin_ads_position_header_label') }}
                             </option>
                             <option value="sidebar" {{ old('position', $advertisement->position) === 'sidebar' ? 'selected' : '' }}>
-                                Sidebar (Barra laterale)
+                                {{ __('ui.admin_ads_position_sidebar_label') }}
                             </option>
                             <option value="footer" {{ old('position', $advertisement->position) === 'footer' ? 'selected' : '' }}>
-                                Footer (Piè di pagina)
+                                {{ __('ui.admin_ads_position_footer_label') }}
                             </option>
                             <option value="between_videos" {{ old('position', $advertisement->position) === 'between_videos' ? 'selected' : '' }}>
-                                Tra i Video
+                                {{ __('ui.admin_ads_position_between_videos') }}
                             </option>
                             <option value="video_overlay" {{ old('position', $advertisement->position) === 'video_overlay' ? 'selected' : '' }}>
-                                Overlay Video
+                                {{ __('ui.admin_ads_position_video_overlay') }}
                             </option>
                         </select>
                         @error('position')
@@ -92,13 +92,13 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Priorità (0-100)
+                            {{ __('ui.admin_ads_priority_label') }}
                         </label>
                         <input type="number" name="priority" min="0" max="100"
                             value="{{ old('priority', $advertisement->priority) }}"
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            Maggiore è il numero, maggiore sarà la priorità di visualizzazione
+                            {{ __('ui.admin_ads_priority_help') }}
                         </p>
                         @error('priority')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -110,7 +110,7 @@
                             {{ old('is_active', $advertisement->is_active) ? 'checked' : '' }}
                             class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
                         <label for="is_active" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                            Pubblicità attiva
+                            {{ __('ui.admin_ads_active_label') }}
                         </label>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     <i class="fas fa-edit mr-2"></i>
-                    Contenuto Pubblicitario
+                    {{ __('ui.admin_ads_content_title') }}
                 </h3>
 
                 <div class="space-y-6">
@@ -128,19 +128,19 @@
                     <div id="banner-fields" class="space-y-4" style="display: none;">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Immagine Banner
+                                {{ __('ui.admin_ads_banner_image_label') }}
                             </label>
                             @if ($advertisement->image_url)
                                 <div class="mb-4">
-                                    <img src="{{ asset('storage/' . $advertisement->image_url) }}" alt="Banner attuale"
+                                    <img src="{{ asset('storage/' . $advertisement->image_url) }}" alt="{{ __('ui.admin_ads_current_image_alt') }}"
                                         class="max-w-xs h-auto rounded border">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Immagine attuale</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('ui.admin_ads_current_image_label') }}</p>
                                 </div>
                             @endif
                             <input type="file" name="image" accept="image/*"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Formati supportati: JPG, PNG, GIF. Dimensione massima: 2MB. Lascia vuoto per mantenere l'immagine attuale.
+                                {{ __('ui.admin_ads_supported_formats_keep') }}
                             </p>
                             @error('image')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -149,7 +149,7 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Link di destinazione
+                                {{ __('ui.admin_ads_link_label') }}
                             </label>
                             <input type="url" name="link_url" value="{{ old('link_url', $advertisement->link_url) }}"
                                 placeholder="https://example.com"
@@ -161,9 +161,9 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Testo alternativo (per accessibilità)
+                                {{ __('ui.admin_ads_alt_text_label') }}
                             </label>
-                            <textarea name="content" rows="3" placeholder="Descrizione del banner..."
+                            <textarea name="content" rows="3" placeholder="{{ __('ui.admin_ads_alt_text_placeholder') }}"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">{{ old('content', $advertisement->content) }}</textarea>
                             @error('content')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -175,12 +175,12 @@
                     <div id="adsense-fields" class="space-y-4" style="display: none;">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Codice AdSense
+                                {{ __('ui.admin_ads_adsense_code_label') }}
                             </label>
-                            <textarea name="code" rows="8" placeholder="Incolla qui il codice AdSense..."
+                            <textarea name="code" rows="8" placeholder="{{ __('ui.admin_ads_adsense_code_placeholder') }}"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono text-sm">{{ old('code', $advertisement->code) }}</textarea>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Incolla il codice completo fornito da Google AdSense
+                                {{ __('ui.admin_ads_adsense_code_help') }}
                             </p>
                             @error('code')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -192,12 +192,12 @@
                     <div id="video-fields" class="space-y-4" style="display: none;">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Codice Video Advertisement
+                                {{ __('ui.admin_ads_video_code_label') }}
                             </label>
-                            <textarea name="code" rows="8" placeholder="Codice HTML5 video o iframe..."
+                            <textarea name="code" rows="8" placeholder="{{ __('ui.admin_ads_video_code_placeholder') }}"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono text-sm">{{ old('code', $advertisement->code) }}</textarea>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Codice HTML per video advertisement (es. YouTube, Vimeo, etc.)
+                                {{ __('ui.admin_ads_video_code_help') }}
                             </p>
                             @error('code')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -206,14 +206,14 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Durata video (in secondi)
+                                {{ __('ui.admin_ads_video_duration_label') }}
                             </label>
                             <input type="number" name="video_duration" min="5" max="300"
                                 value="{{ old('video_duration', $advertisement->content ? json_decode($advertisement->content, true)['duration'] ?? '' : '') }}"
-                                placeholder="es: 30"
+                                placeholder="{{ __('ui.admin_ads_video_duration_placeholder') }}"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Durata del video advertisement in secondi
+                                {{ __('ui.admin_ads_video_duration_help') }}
                             </p>
                         </div>
                     </div>
@@ -224,19 +224,19 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     <i class="fas fa-calendar mr-2"></i>
-                    Programmazione
+                    {{ __('ui.admin_ads_schedule_title') }}
                 </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Data di inizio
+                            {{ __('ui.admin_ads_start_date_label') }}
                         </label>
                         <input type="datetime-local" name="start_date"
                             value="{{ old('start_date', $advertisement->start_date ? $advertisement->start_date->format('Y-m-d\TH:i') : '') }}"
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            Lascia vuoto per attivazione immediata
+                            {{ __('ui.admin_ads_start_date_help') }}
                         </p>
                         @error('start_date')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -245,13 +245,13 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Data di fine
+                            {{ __('ui.admin_ads_end_date_label') }}
                         </label>
                         <input type="datetime-local" name="end_date"
                             value="{{ old('end_date', $advertisement->end_date ? $advertisement->end_date->format('Y-m-d\TH:i') : '') }}"
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent">
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            Lascia vuoto per nessuna scadenza
+                            {{ __('ui.admin_ads_end_date_help') }}
                         </p>
                         @error('end_date')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -264,12 +264,12 @@
             <div class="flex items-center justify-end space-x-4">
                 <a href="{{ route('admin.advertisements') }}"
                     class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                    Annulla
+                    {{ __('ui.admin_ads_cancel') }}
                 </a>
                 <button type="submit"
                     class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
                     <i class="fas fa-save w-4 h-4 mr-2"></i>
-                    Aggiorna Pubblicità
+                    {{ __('ui.admin_ads_update') }} {{ __('ui.admin_ads_table_ad') }}
                 </button>
             </div>
         </form>

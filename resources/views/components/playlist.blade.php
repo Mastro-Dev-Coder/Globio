@@ -8,7 +8,7 @@
                     <span
                         class="bg-blue-600 text-white text-xs px-2.5 py-1 rounded-lg font-medium shadow-lg flex items-center gap-1">
                         <i class="fas fa-folder-open"></i>
-                        Le tue playlist
+                        {{ __('ui.my_playlists') }}
                     </span>
                 </div>
             @endif
@@ -28,7 +28,7 @@
                                 class="w-16 h-16 mx-auto mb-2 bg-white/30 dark:bg-black/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                                 <i class="fas fa-folder text-2xl text-gray-500 dark:text-gray-400"></i>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Playlist</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ __('ui.playlist') }}</p>
                         </div>
                     </div>
                 @endif
@@ -40,7 +40,7 @@
                             class="w-16 h-16 mx-auto mb-2 bg-white/30 dark:bg-black/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                             <i class="fas fa-folder text-2xl text-gray-500 dark:text-gray-400"></i>
                         </div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Playlist</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ __('ui.playlist') }}</p>
                     </div>
                 </div>
             @endif
@@ -50,7 +50,7 @@
             @if ($videoCount > 0)
             <div
                 class="absolute bottom-3 left-3 bg-black/80 backdrop-blur-sm text-white text-xs px-2.5 py-1.5 rounded-lg font-medium border border-white/10">
-                <i class="fas fa-video mr-1"></i>{{ $videoCount }} {{ $videoCount == 1 ? 'video' : 'video' }}
+                <i class="fas fa-video mr-1"></i>{{ $videoCount }} {{ __('ui.video') }}
             </div>
             @endif
 

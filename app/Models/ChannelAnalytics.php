@@ -196,7 +196,7 @@ class ChannelAnalytics extends Model
         $startDate = $startDate ?? now()->subDays(30)->toDateString();
         $endDate = $endDate ?? now()->toDateString();
 
-        return self::where('user_id', $userId)
+        $analyticsStats = self::where('user_id', $userId)
             ->whereBetween('date', [$startDate, $endDate])
             ->selectRaw('
                 SUM(views) as total_views,
@@ -207,6 +207,38 @@ class ChannelAnalytics extends Model
                 AVG(average_watch_duration) as avg_watch_duration
             ')
             ->first();
+
+        // Fallback: usa i dati aggregati dai video se la tabella analytics è vuota
+        if (!$analyticsStats || ($analyticsStats->total_views ?? 0) == 0) {
+            $videoStats = Video::where('user_id', $userId)
+                ->published()
+                ->selectRaw('
+                    SUM(views_count) as total_views,
+                    SUM(likes_count) as total_likes
+                ')
+                ->first();
+
+            // Calcola commenti totali dai video
+            $commentsCount = Comment::whereHas('video', function ($query) use ($userId) {
+                    $query->where('user_id', $userId)->published();
+                })
+                ->where('status', 'approved')
+                ->count();
+
+            // Stima delle ore di visione (5 minuti per visualizzazione in media)
+            $estimatedWatchTimeMinutes = ($videoStats->total_views ?? 0) * 5;
+
+            return (object) [
+                'total_views' => $videoStats->total_views ?? 0,
+                'total_likes' => $videoStats->total_likes ?? 0,
+                'total_comments' => $commentsCount,
+                'total_shares' => 0,
+                'total_watch_time' => $estimatedWatchTimeMinutes,
+                'avg_watch_duration' => 5
+            ];
+        }
+
+        return $analyticsStats;
     }
 
     public static function getVideoStats($videoId, $startDate = null, $endDate = null)
@@ -234,7 +266,7 @@ class ChannelAnalytics extends Model
         $startDate = $startDate ?? now()->subDays(30)->toDateString();
         $endDate = $endDate ?? now()->toDateString();
 
-        return self::where('user_id', $userId)
+        $topVideos = self::where('user_id', $userId)
             ->whereBetween('date', [$startDate, $endDate])
             ->with('video')
             ->selectRaw('
@@ -248,6 +280,30 @@ class ChannelAnalytics extends Model
             ->orderBy('total_views', 'desc')
             ->limit($limit)
             ->get();
+
+        // Fallback: usa i dati dai video se non ci sono dati analytics
+        if ($topVideos->isEmpty()) {
+            return Video::where('user_id', $userId)
+                ->published()
+                ->orderBy('views_count', 'desc')
+                ->limit($limit)
+                ->get()
+                ->map(function ($video) {
+                    return (object) [
+                        'video_id' => $video->id,
+                        'title' => $video->title,
+                        'views_count' => $video->views_count,
+                        'likes_count' => $video->likes_count,
+                        'total_views' => $video->views_count,
+                        'total_likes' => $video->likes_count,
+                        'total_comments' => 0,
+                        'total_watch_time' => 0,
+                        'video' => $video
+                    ];
+                });
+        }
+
+        return $topVideos;
     }
 
     public static function getTrafficSources($userId, $startDate = null, $endDate = null)

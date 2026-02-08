@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl font-semibold text-white">
-            {{ $comments->total() }} Commenti
+            {{ $comments->total() }} {{ __('ui.comments') }}
         </h3>
     </div>
 
@@ -24,7 +24,7 @@
                         </div>
                     @endif
                     <div class="flex-1">
-                        <textarea wire:model="newComment" placeholder="Aggiungi un commento..." rows="2"
+                        <textarea wire:model="newComment" placeholder="{{ __('ui.add_comment') }}" rows="2"
                             class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 resize-none transition-all"></textarea>
                         @error('newComment')
                             <span class="text-red-400 text-sm mt-1">{{ $message }}</span>
@@ -32,11 +32,11 @@
                         <div class="flex justify-end gap-2 mt-3">
                             <button wire:click="$set('newComment', '')"
                                 class="px-4 py-2 text-white/70 hover:text-white transition-colors cursor-pointer">
-                                Annulla
+                                {{ __('ui.cancel') }}
                             </button>
                             <button wire:click="addComment" wire:loading.attr="disabled"
                                 class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full font-medium transition-all disabled:opacity-50 cursor-pointer">
-                                <span wire:loading.remove wire:target="addComment">Commenta
+                                <span wire:loading.remove wire:target="addComment">{{ __('ui.comment') }}
                                     <i class="fas fa-paper-plane"></i>
                                 </span>
 
@@ -51,8 +51,9 @@
         @else
             <div class="mb-8 p-4 bg-white/5 rounded-xl border border-white/10 text-center">
                 <p class="text-white/70">
-                    <a href="{{ route('login') }}" class="text-red-500 hover:text-red-400">Accedi</a> per lasciare un
-                    commento
+                    <a href="{{ route('login') }}" class="text-red-500 hover:text-red-400">{{ __('ui.login') }}</a>
+                    {{ __('ui.sign_in_to_comment') }}
+                    {{ __('ui.comment') }}
                 </p>
             </div>
         @endauth
@@ -83,7 +84,7 @@
                                 </a>
                                 <span class="text-white/50 text-sm">{{ $comment->created_at->diffForHumans() }}</span>
                                 @if ($comment->created_at != $comment->updated_at)
-                                    <span class="text-white/40 text-xs">(modificato)</span>
+                                    <span class="text-white/40 text-xs">({{ __('ui.edited') }})</span>
                                 @endif
                             </div>
 
@@ -98,11 +99,11 @@
                                     <div class="flex justify-end gap-2 mt-2">
                                         <button wire:click="cancelEdit"
                                             class="px-4 py-1.5 text-white/70 hover:text-white text-sm">
-                                            Annulla
+                                            {{ __('ui.cancel') }}
                                         </button>
                                         <button wire:click="updateComment"
                                             class="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-full text-sm">
-                                            Salva
+                                            {{ __('ui.save') }}
                                         </button>
                                     </div>
                                 </div>
@@ -130,7 +131,7 @@
                                 @auth
                                     <button wire:click="startReply({{ $comment->id }})"
                                         class="text-sm text-white/60 hover:text-white transition-colors">
-                                        Rispondi
+                                        {{ __('ui.reply') }}
                                     </button>
                                 @endauth
 
@@ -150,7 +151,7 @@
                                         </button>
                                     @endif
                                     @if (auth()->id() !== $comment->user_id)
-                                        <button 
+                                        <button
                                             onclick="openReportModal('comment', {{ $comment->id }}, '{{ str_replace(["'", '"'], '', Str::limit($comment->content, 50)) }}')"
                                             class="text-sm text-white/60 hover:text-yellow-500 transition-colors"
                                             title="Segnala questo commento">
@@ -184,11 +185,11 @@
                                         <div class="flex justify-end gap-2 mt-2">
                                             <button wire:click="cancelReply"
                                                 class="px-3 py-1.5 text-white/70 hover:text-white text-sm">
-                                                Annulla
+                                                {{ __('ui.cancel') }}
                                             </button>
                                             <button wire:click="addReply"
                                                 class="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-full text-sm">
-                                                Rispondi
+                                                {{ __('ui.reply') }}
                                             </button>
                                         </div>
                                     </div>
@@ -229,11 +230,11 @@
                                                         <div class="flex justify-end gap-2 mt-2">
                                                             <button wire:click="cancelEdit"
                                                                 class="px-3 py-1 text-white/70 hover:text-white text-xs">
-                                                                Annulla
+                                                                {{ __('ui.cancel') }}
                                                             </button>
                                                             <button wire:click="updateComment"
                                                                 class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-full text-xs">
-                                                                Salva
+                                                                {{ __('ui.save') }}
                                                             </button>
                                                         </div>
                                                     </div>
@@ -281,14 +282,14 @@
             @empty
                 <div class="text-center py-12">
                     <i class="fa-regular fa-comments text-4xl text-white/30 mb-4"></i>
-                    <p class="text-white/50">Nessun commento ancora. Sii il primo a commentare!</p>
+                    <p class="text-white/50">{{ __('ui.no_comments_yet') }}</p>
                 </div>
             @endforelse
         </div>
     @else
         <div class="text-center py-12">
             <i class="fa-solid fa-comment-slash text-4xl text-white/30 mb-4"></i>
-            <p class="text-white/50">I commenti sono disabilitati per questo video.</p>
+            <p class="text-white/50">{{ __('ui.comments_disabled') }}</p>
         </div>
     @endif
     <!-- Pagination -->

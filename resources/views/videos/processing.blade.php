@@ -124,7 +124,8 @@
                                                 fill="currentColor" />
                                         </svg>
                                         <div class="flex-1">
-                                            <h4 class="text-red-400 font-semibold text-lg mb-2">Video Rifiutato</h4>
+                                            <h4 class="text-red-400 font-semibold text-lg mb-2">
+                                                {{ __('ui.video_rejected_page') }}</h4>
                                             <p class="text-red-300/80 text-sm leading-relaxed mb-3">
                                                 Questo video è stato rifiutato durante il processo di elaborazione.
                                                 @if ($video->moderation_reason)

@@ -32,6 +32,7 @@ if (Features::enabled(Features::registration())) {
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->middleware(['guest'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware(['guest']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware(['auth'])->name('logout');
+Route::get('/lang/{lang}', [HomeController::class, 'setLanguage'])->name('setLocale');
 
 // Route for generating dynamic CSS 
 Route::get('/dynamic-styles.css', [DynamicStyleController::class, 'generateDynamicCSS'])->name('dynamic.styles');
@@ -247,6 +248,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 // Public API Routes
 Route::prefix('api')->group(function () {
+    // Translations API
+    Route::get('/translations/{locale}', [\App\Http\Controllers\Api\TranslationsController::class, 'getTranslations'])->name('api.translations');
+
     Route::get('/reels/all', [VideoController::class, 'getAllReels'])->name('api.reels.all');
 
     // Video Streaming API per precaricamento fluido
@@ -273,7 +277,7 @@ Route::get('/test-ads', function () {
 })->name('test-ads');
 
 // Test route for miniplayer
-Route::get('/test-miniplayer', [App\Http\Controllers\TestMiniPlayerController::class, 'index'])->name('test-miniplayer');
+// Route::get('/test-miniplayer', [App\Http\Controllers\TestMiniPlayerController::class, 'index'])->name('test-miniplayer');
 
 // Ping route for connection check
 Route::get('/ping', function () {
@@ -282,8 +286,8 @@ Route::get('/ping', function () {
 
 // Protected API Routes
 Route::middleware(['auth'])->prefix('api')->group(function () {
-    // Channel Search API
-    Route::get('/search', [UserController::class, 'channelSearch'])->name('api.search');
+    // Channel Search API - protected, searches user's own content
+    Route::get('/channel/search', [UserController::class, 'channelSearch'])->name('api.channel.search');
 
     // Profile Data API
     Route::get('/user/profile-data', [UserController::class, 'getProfileData'])->name('api.user.profile-data');

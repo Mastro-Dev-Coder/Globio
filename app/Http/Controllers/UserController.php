@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ChannelAnalytics;
+use App\Models\Comment;
+use App\Models\Like;
+use App\Models\Report;
 use App\Models\Subscription;
 use App\Models\User;
-use App\Models\UserProfile;
 use App\Models\UserPreference;
+use App\Models\UserProfile;
 use App\Models\Video;
 use App\Models\WatchHistory;
-use App\Models\ChannelAnalytics;
 use App\Models\WatchLater;
-use App\Models\Like;
-use App\Models\Comment;
+use App\Models\CreatorFeedback;
 use App\Notifications\NewSubscriberNotification;
 use App\Services\VideoService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +25,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -146,47 +148,72 @@ class UserController extends Controller
             ->limit(20)
             ->get();
 
-        // Dati Analytics Avanzati
+        $latestVideo = $recentVideos->first();
+
         $period = request('period', '30');
         $startDate = now()->subDays($period)->toDateString();
         $endDate = now()->toDateString();
 
-        // Statistiche del canale
-        $channelStats = \App\Models\ChannelAnalytics::getChannelStats($user->id, $startDate, $endDate);
-        
-        // Statistiche giornaliere per grafico
-        $dailyStats = $this->getDailyStatsForChart($user->id, $startDate, $endDate);
-        
-        // Video più performanti
-        $topVideos = \App\Models\ChannelAnalytics::getTopVideos($user->id, 5, $startDate, $endDate);
-        
-        // Fonti di traffico
-        $trafficSources = \App\Models\ChannelAnalytics::getTrafficSources($user->id, $startDate, $endDate);
-        
-        // Dati demografici
-        $demographics = \App\Models\ChannelAnalytics::getDemographics($user->id, $startDate, $endDate);
+        $channelStats = ChannelAnalytics::getChannelStats($user->id, $startDate, $endDate);
 
-        // Dati Community
+        $dailyStats = $this->getDailyStatsForChart($user->id, $startDate, $endDate);
+
+        $topVideos = ChannelAnalytics::getTopVideos($user->id, 5, $startDate, $endDate);
+
+        $trafficSources = ChannelAnalytics::getTrafficSources($user->id, $startDate, $endDate);
+
+        $demographics = ChannelAnalytics::getDemographics($user->id, $startDate, $endDate);
+
+        $topVideosFallback = $user->videos()->published()->orderBy('views_count', 'desc')->limit(5)->get();
         $recentSubscribers = $this->getRecentSubscribers($user->id);
         $recentComments = $this->getRecentComments($user->id);
         $communityStats = $this->getCommunityStats($user->id);
 
+        $creatorReports = Report::where('reported_user_id', Auth::id())
+            ->orWhere('channel_id', Auth::id())
+            ->with(['reporter', 'video', 'comment'])
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $creator = CreatorFeedback::where('creator_id', Auth::id())
+            ->with(['admin', 'report'])
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $totalReports = Report::where('reported_user_id', Auth::id())
+            ->orWhere('channel_id', Auth::id())
+            ->count();
+        $pendingReports = Report::where('reported_user_id', Auth::id())
+            ->orWhere('channel_id', Auth::id())
+            ->where('status', 'pending')
+            ->count();
+        $unread = CreatorFeedback::where('creator_id', Auth::id())
+            ->where('is_read', false)
+            ->count();
+
         return view('users.channel-edit', compact(
-            'userProfile', 
-            'user', 
-            'stats', 
+            'userProfile',
+            'user',
+            'stats',
             'recentVideos',
-            // Analytics data
+            'latestVideo',
             'channelStats',
             'dailyStats',
             'topVideos',
             'trafficSources',
             'demographics',
             'period',
-            // Community data
+            'topVideosFallback',
             'recentSubscribers',
             'recentComments',
-            'communityStats'
+            'communityStats',
+            'creatorReports',
+            'creator',
+            'totalReports',
+            'pendingReports',
+            'unread'
         ));
     }
 
@@ -301,36 +328,23 @@ class UserController extends Controller
                 }
             } else {
                 Log::info('UserProfile esiste (ID: ' . $userProfile->id . '), procedo con aggiornamento');
-                // Aggiorna solo se ci sono dati da aggiornare
                 if (!empty($updateData)) {
-                    Log::info('Aggiorno UserProfile con dati: ', $updateData);
                     $result = $userProfile->update($updateData);
-                    Log::info('Update eseguito, risultato: ' . ($result ? 'successo' : 'fallito'));
                 } else {
-                    Log::info('Nessun dato da aggiornare');
                 }
-                $userProfile->refresh(); // Aggiorna i dati dal database
-                Log::info('UserProfile aggiornato e ricaricato dal database');
+                $userProfile->refresh();
             }
 
-            // Se channel_name è stato aggiornato, determina il redirect URL
             $newChannelName = $userProfile->channel_name;
             $redirectUrl = null;
 
-            Log::info('Nuovo channel_name: ' . ($newChannelName ?: 'null'));
-
             if ($newChannelName && $newChannelName !== $oldChannelName) {
                 $redirectUrl = route('channel.show', $newChannelName);
-                Log::info('Redirect a show channel: ' . $redirectUrl);
             } elseif ($newChannelName) {
                 $redirectUrl = route('channel.edit', $newChannelName);
-                Log::info('Redirect a edit channel: ' . $redirectUrl);
             } else {
                 $redirectUrl = route('channel.edit');
-                Log::info('Redirect a edit generico: ' . $redirectUrl);
             }
-
-            Log::info('=== SALVATAGGIO COMPLETATO CON SUCCESSO ===');
 
             // Se la request è AJAX, restituisci JSON
             if ($request->expectsJson() || $request->ajax()) {
@@ -348,7 +362,6 @@ class UserController extends Controller
                 ]);
             }
 
-            // Altrimenti redirect normale
             return redirect($redirectUrl)->with('success', 'Canale aggiornato con successo!');
         } catch (\Exception $e) {
             Log::error('Errore durante l\'aggiornamento del canale: ' . $e->getMessage());
@@ -1063,8 +1076,8 @@ class UserController extends Controller
 
         while ($current->lte($end)) {
             $dateString = $current->toDateString();
-            
-            $stats = \App\Models\ChannelAnalytics::where('user_id', $userId)
+
+            $stats = ChannelAnalytics::where('user_id', $userId)
                 ->where('date', $dateString)
                 ->selectRaw('
                     SUM(views) as views,
@@ -1102,7 +1115,7 @@ class UserController extends Controller
                 return [
                     'id' => $subscription->subscriber->id,
                     'name' => $subscription->subscriber->name,
-                    'avatar_url' => $subscription->subscriber->userProfile?->avatar_url ? 
+                    'avatar_url' => $subscription->subscriber->userProfile?->avatar_url ?
                         asset('storage/' . $subscription->subscriber->userProfile->avatar_url) : null,
                     'subscribed_at' => $subscription->created_at,
                     'time_ago' => $subscription->created_at->diffForHumans()
@@ -1115,9 +1128,9 @@ class UserController extends Controller
      */
     private function getRecentComments($userId, $limit = 10)
     {
-        return \App\Models\Comment::whereHas('video', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
+        return Comment::whereHas('video', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
             ->with(['user.userProfile', 'video'])
             ->where('status', 'approved')
             ->orderBy('created_at', 'desc')
@@ -1128,7 +1141,7 @@ class UserController extends Controller
                     'id' => $comment->id,
                     'content' => Str::limit($comment->content, 100),
                     'user_name' => $comment->user->name,
-                    'user_avatar' => $comment->user->userProfile?->avatar_url ? 
+                    'user_avatar' => $comment->user->userProfile?->avatar_url ?
                         asset('storage/' . $comment->user->userProfile->avatar_url) : null,
                     'video_title' => $comment->video->title,
                     'video_id' => $comment->video->id,
@@ -1147,16 +1160,16 @@ class UserController extends Controller
         $newSubscribersThisMonth = Subscription::where('channel_id', $userId)
             ->where('created_at', '>=', now()->startOfMonth())
             ->count();
-        
-        $totalComments = \App\Models\Comment::whereHas('video', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
+
+        $totalComments = Comment::whereHas('video', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
             ->where('status', 'approved')
             ->count();
-            
-        $commentsThisMonth = \App\Models\Comment::whereHas('video', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
+
+        $commentsThisMonth = Comment::whereHas('video', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
             ->where('status', 'approved')
             ->where('created_at', '>=', now()->startOfMonth())
             ->count();
@@ -1166,9 +1179,9 @@ class UserController extends Controller
             'new_subscribers_this_month' => $newSubscribersThisMonth,
             'total_comments' => $totalComments,
             'comments_this_month' => $commentsThisMonth,
-            'subscriber_growth_rate' => $totalSubscribers > 0 ? 
+            'subscriber_growth_rate' => $totalSubscribers > 0 ?
                 round(($newSubscribersThisMonth / $totalSubscribers) * 100, 1) : 0,
-            'comment_engagement_rate' => $totalSubscribers > 0 ? 
+            'comment_engagement_rate' => $totalSubscribers > 0 ?
                 round(($totalComments / $totalSubscribers) * 100, 1) : 0
         ];
     }

@@ -4,8 +4,8 @@
             
             <!-- Header -->
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Impostazioni Account</h1>
-                <p class="text-gray-600 dark:text-gray-400">Gestisci le tue informazioni personali e le preferenze dell'account</p>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ __('ui.user_settings_title') }}</h1>
+                <p class="text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_subtitle') }}</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -16,27 +16,27 @@
                         <a href="#profile" onclick="showSection('profile')" 
                            class="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-medium">
                             <i class="fas fa-user w-5"></i>
-                            <span>Profilo</span>
+                            <span>{{ __('ui.user_settings_profile') }}</span>
                         </a>
                         <a href="#account" onclick="showSection('account')"
                            class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                             <i class="fas fa-cog w-5"></i>
-                            <span>Account</span>
+                            <span>{{ __('ui.user_settings_account') }}</span>
                         </a>
                         <a href="#notifications" onclick="showSection('notifications')"
                            class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                             <i class="fas fa-bell w-5"></i>
-                            <span>Notifiche</span>
+                            <span>{{ __('ui.user_settings_notifications') }}</span>
                         </a>
                         <a href="#privacy" onclick="showSection('privacy')"
                            class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                             <i class="fas fa-shield-alt w-5"></i>
-                            <span>Privacy</span>
+                            <span>{{ __('ui.user_settings_privacy') }}</span>
                         </a>
                         <a href="#security" onclick="showSection('security')"
                            class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                             <i class="fas fa-lock w-5"></i>
-                            <span>Sicurezza</span>
+                            <span>{{ __('ui.user_settings_security') }}</span>
                         </a>
                     </nav>
                 </div>
@@ -47,8 +47,8 @@
                     <!-- Profilo Section -->
                     <div id="profile-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Informazioni Profilo</h2>
-                            <p class="text-gray-600 dark:text-gray-400 mt-1">Aggiorna le tue informazioni personali di base</p>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('ui.user_settings_profile_info') }}</h2>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">{{ __('ui.user_settings_profile_info_subtitle') }}</p>
                         </div>
                         
                         <form class="p-6 space-y-6" method="POST" action="{{ route('users.update-profile') }}" enctype="multipart/form-data">
@@ -60,7 +60,7 @@
                                     <div class="w-24 h-24 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 border-4 border-white dark:border-gray-600 shadow-lg">
                                         @if (Auth::user()->userProfile && Auth::user()->userProfile->avatar_url)
                                             <img id="avatarPreview" src="{{ asset('storage/' . Auth::user()->userProfile->avatar_url) }}" 
-                                                 alt="Avatar" class="w-full h-full object-cover">
+                                                 alt="{{ __('ui.avatar') }}" class="w-full h-full object-cover">
                                         @else
                                             <div class="w-full h-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
                                                 <span class="text-white font-bold text-2xl">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
@@ -73,15 +73,15 @@
                                     </label>
                                 </div>
                                 <div>
-                                    <h3 class="font-medium text-gray-900 dark:text-white">Foto Profilo</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">JPG, PNG o GIF. Max 2MB.</p>
+                                    <h3 class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_profile_photo') }}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_photo_hint') }}</p>
                                 </div>
                             </div>
 
                             <!-- Nome -->
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Nome completo
+                                    {{ __('ui.user_settings_full_name') }}
                                 </label>
                                 <input type="text" id="name" name="name" value="{{ old('name', Auth::user()->name) }}"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -93,7 +93,7 @@
                             <!-- Email -->
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Email
+                                    {{ __('ui.user_settings_email') }}
                                 </label>
                                 <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -105,12 +105,12 @@
                             <!-- Username -->
                             <div>
                                 <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Username
+                                    {{ __('ui.username') }}
                                 </label>
                                 <input type="text" id="username" name="username" 
                                        value="{{ old('username', Auth::user()->userProfile->username ?? '') }}"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Questo sarà il nome del tuo canale</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ __('ui.user_settings_username_hint') }}</p>
                                 @error('username')
                                     <p class="text-red-600 dark:text-red-400 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -119,12 +119,12 @@
                             <!-- Bio -->
                             <div>
                                 <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Biografia
+                                    {{ __('ui.user_settings_bio') }}
                                 </label>
                                 <textarea id="bio" name="bio" rows="4" 
                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
-                                          placeholder="Racconta qualcosa su di te...">{{ old('bio', Auth::user()->userProfile->bio ?? '') }}</textarea>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Max 160 caratteri</p>
+                                          placeholder="{{ __('ui.user_settings_bio_placeholder') }}">{{ old('bio', Auth::user()->userProfile->bio ?? '') }}</textarea>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ __('ui.user_settings_bio_limit', ['count' => 160]) }}</p>
                                 @error('bio')
                                     <p class="text-red-600 dark:text-red-400 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -133,7 +133,7 @@
                             <div class="flex justify-end">
                                 <button type="submit" 
                                         class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                                    Salva Modifiche
+                                    {{ __('ui.user_settings_save_changes') }}
                                 </button>
                             </div>
                         </form>
@@ -142,8 +142,8 @@
                     <!-- Account Section -->
                     <div id="account-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hidden">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Impostazioni Account</h2>
-                            <p class="text-gray-600 dark:text-gray-400 mt-1">Gestisci le preferenze del tuo account</p>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('ui.user_settings_account_settings') }}</h2>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">{{ __('ui.user_settings_account_settings_subtitle') }}</p>
                         </div>
                         
                         <form class="p-6 space-y-6" method="POST" action="{{ route('users.update-preferences') }}">
@@ -153,46 +153,46 @@
                             <!-- Lingua -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Lingua
+                                    {{ __('ui.user_settings_language') }}
                                 </label>
                                 <select name="language" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    <option value="it">Italiano</option>
-                                    <option value="en">English</option>
-                                    <option value="es">Español</option>
-                                    <option value="fr">Français</option>
+                                    <option value="it">{{ __('ui.user_settings_lang_it') }}</option>
+                                    <option value="en">{{ __('ui.user_settings_lang_en') }}</option>
+                                    <option value="es">{{ __('ui.user_settings_lang_es') }}</option>
+                                    <option value="fr">{{ __('ui.user_settings_lang_fr') }}</option>
                                 </select>
                             </div>
 
                             <!-- Fuso Orario -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Fuso Orario
+                                    {{ __('ui.user_settings_timezone') }}
                                 </label>
                                 <select name="timezone" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    <option value="Europe/Rome">Europa/Roma (UTC+1)</option>
-                                    <option value="Europe/London">Europa/Londra (UTC+0)</option>
-                                    <option value="America/New_York">America/New York (UTC-5)</option>
+                                    <option value="Europe/Rome">{{ __('ui.user_settings_tz_rome') }}</option>
+                                    <option value="Europe/London">{{ __('ui.user_settings_tz_london') }}</option>
+                                    <option value="America/New_York">{{ __('ui.user_settings_tz_new_york') }}</option>
                                 </select>
                             </div>
 
                             <!-- Tema -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                                    Tema
+                                    {{ __('ui.user_settings_theme') }}
                                 </label>
                                 <div class="grid grid-cols-2 gap-4">
                                     <label class="flex items-center p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                         <input type="radio" name="theme" value="light" class="sr-only">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 bg-white border border-gray-300 rounded"></div>
-                                            <span class="text-gray-900 dark:text-white">Chiaro</span>
+                                            <span class="text-gray-900 dark:text-white">{{ __('ui.user_settings_theme_light') }}</span>
                                         </div>
                                     </label>
                                     <label class="flex items-center p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                         <input type="radio" name="theme" value="dark" class="sr-only" checked>
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 bg-gray-800 border border-gray-600 rounded"></div>
-                                            <span class="text-gray-900 dark:text-white">Scuro</span>
+                                            <span class="text-gray-900 dark:text-white">{{ __('ui.user_settings_theme_dark') }}</span>
                                         </div>
                                     </label>
                                 </div>
@@ -201,7 +201,7 @@
                             <div class="flex justify-end">
                                 <button type="submit" 
                                         class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                                    Salva Preferenze
+                                    {{ __('ui.user_settings_save_preferences') }}
                                 </button>
                             </div>
                         </form>
@@ -210,8 +210,8 @@
                     <!-- Notifiche Section -->
                     <div id="notifications-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hidden">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Preferenze Notifiche</h2>
-                            <p class="text-gray-600 dark:text-gray-400 mt-1">Scegli quali notifiche ricevere</p>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('ui.user_settings_notifications_title') }}</h2>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">{{ __('ui.user_settings_notifications_subtitle') }}</p>
                         </div>
                         
                         <form class="p-6 space-y-6" method="POST" action="{{ route('users.update-notifications') }}">
@@ -220,28 +220,28 @@
                             
                             <!-- Notifiche Email -->
                             <div class="space-y-4">
-                                <h3 class="font-medium text-gray-900 dark:text-white">Notifiche Email</h3>
+                                <h3 class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_email_notifications') }}</h3>
                                 
                                 <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div>
-                                        <span class="font-medium text-gray-900 dark:text-white">Nuovi iscritti</span>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Ricevi email quando qualcuno si iscrive al tuo canale</p>
+                                        <span class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_new_subscribers') }}</span>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_new_subscribers_hint') }}</p>
                                     </div>
                                     <input type="checkbox" name="email_new_subscribers" class="toggle-checkbox" checked>
                                 </label>
 
                                 <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div>
-                                        <span class="font-medium text-gray-900 dark:text-white">Commenti sui video</span>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Ricevi email per nuovi commenti sui tuoi video</p>
+                                        <span class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_video_comments') }}</span>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_video_comments_hint') }}</p>
                                     </div>
                                     <input type="checkbox" name="email_video_comments" class="toggle-checkbox" checked>
                                 </label>
 
                                 <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div>
-                                        <span class="font-medium text-gray-900 dark:text-white">Aggiornamenti piattaforma</span>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Ricevi aggiornamenti su nuove funzionalità</p>
+                                        <span class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_platform_updates') }}</span>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_platform_updates_hint') }}</p>
                                     </div>
                                     <input type="checkbox" name="email_platform_updates" class="toggle-checkbox">
                                 </label>
@@ -249,12 +249,12 @@
 
                             <!-- Notifiche Push -->
                             <div class="space-y-4">
-                                <h3 class="font-medium text-gray-900 dark:text-white">Notifiche Push</h3>
+                                <h3 class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_push_notifications') }}</h3>
                                 
                                 <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div>
-                                        <span class="font-medium text-gray-900 dark:text-white">Notifiche in tempo reale</span>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Ricevi notifiche push nel browser</p>
+                                        <span class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_realtime_notifications') }}</span>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_realtime_notifications_hint') }}</p>
                                     </div>
                                     <input type="checkbox" name="push_realtime_notifications" class="toggle-checkbox" checked>
                                 </label>
@@ -263,7 +263,7 @@
                             <div class="flex justify-end">
                                 <button type="submit" 
                                         class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                                    Salva Notifiche
+                                    {{ __('ui.user_settings_save_notifications') }}
                                 </button>
                             </div>
                         </form>
@@ -272,8 +272,8 @@
                     <!-- Privacy Section -->
                     <div id="privacy-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hidden">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Impostazioni Privacy</h2>
-                            <p class="text-gray-600 dark:text-gray-400 mt-1">Controlla chi può vedere i tuoi contenuti</p>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('ui.user_settings_privacy_title') }}</h2>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">{{ __('ui.user_settings_privacy_subtitle') }}</p>
                         </div>
                         
                         <form class="p-6 space-y-6" method="POST" action="{{ route('users.update-privacy') }}">
@@ -282,20 +282,20 @@
                             
                             <!-- Visibilità Profilo -->
                             <div class="space-y-4">
-                                <h3 class="font-medium text-gray-900 dark:text-white">Visibilità Profilo</h3>
+                                <h3 class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_profile_visibility') }}</h3>
                                 
                                 <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div>
-                                        <span class="font-medium text-gray-900 dark:text-white">Profilo pubblico</span>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Il tuo profilo può essere trovato dagli altri utenti</p>
+                                        <span class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_public_profile') }}</span>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_public_profile_hint') }}</p>
                                     </div>
                                     <input type="checkbox" name="profile_public" class="toggle-checkbox" checked>
                                 </label>
 
                                 <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div>
-                                        <span class="font-medium text-gray-900 dark:text-white">Mostra attività</span>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Mostra i video che guardi nel tuo feed pubblico</p>
+                                        <span class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_show_activity') }}</span>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_show_activity_hint') }}</p>
                                     </div>
                                     <input type="checkbox" name="show_activity" class="toggle-checkbox">
                                 </label>
@@ -303,12 +303,12 @@
 
                             <!-- Condivisione Dati -->
                             <div class="space-y-4">
-                                <h3 class="font-medium text-gray-900 dark:text-white">Condivisione Dati</h3>
+                                <h3 class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_data_sharing') }}</h3>
                                 
                                 <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div>
-                                        <span class="font-medium text-gray-900 dark:text-white">Analisi anonymous</span>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Aiuta a migliorare la piattaforma con dati anonimi</p>
+                                        <span class="font-medium text-gray-900 dark:text-white">{{ __('ui.user_settings_anonymous_analytics') }}</span>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.user_settings_anonymous_analytics_hint') }}</p>
                                     </div>
                                     <input type="checkbox" name="analytics_privacy" class="toggle-checkbox" checked>
                                 </label>
@@ -317,7 +317,7 @@
                             <div class="flex justify-end">
                                 <button type="submit" 
                                         class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                                    Salva Privacy
+                                    {{ __('ui.user_settings_save_privacy') }}
                                 </button>
                             </div>
                         </form>
@@ -326,8 +326,8 @@
                     <!-- Sicurezza Section -->
                     <div id="security-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hidden">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Sicurezza Account</h2>
-                            <p class="text-gray-600 dark:text-gray-400 mt-1">Gestisci password e sicurezza</p>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ __('ui.user_settings_security_title') }}</h2>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">{{ __('ui.user_settings_security_subtitle') }}</p>
                         </div>
                         
                         <form class="p-6 space-y-6" method="POST" action="{{ route('users.update-password') }}">
@@ -336,7 +336,7 @@
                             <!-- Password Attuale -->
                             <div>
                                 <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Password attuale
+                                    {{ __('ui.user_settings_current_password') }}
                                 </label>
                                 <input type="password" id="current_password" name="current_password"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -348,11 +348,11 @@
                             <!-- Nuova Password -->
                             <div>
                                 <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Nuova password
+                                    {{ __('ui.user_settings_new_password') }}
                                 </label>
                                 <input type="password" id="password" name="password"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Minimo 8 caratteri</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ __('ui.user_settings_password_min') }}</p>
                                 @error('password')
                                     <p class="text-red-600 dark:text-red-400 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -361,7 +361,7 @@
                             <!-- Conferma Password -->
                             <div>
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Conferma nuova password
+                                    {{ __('ui.user_settings_confirm_password') }}
                                 </label>
                                 <input type="password" id="password_confirmation" name="password_confirmation"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -370,7 +370,7 @@
                             <div class="flex justify-end">
                                 <button type="submit" 
                                         class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                                    Aggiorna Password
+                                    {{ __('ui.user_settings_update_password') }}
                                 </button>
                             </div>
                         </form>

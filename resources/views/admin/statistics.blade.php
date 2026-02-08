@@ -1,15 +1,15 @@
-<x-admin-layout>
+﻿<x-admin-layout>
     <div class="space-y-6">
         <!-- Period Summary -->
         <div class="bg-gradient-to-r from-red-500 to-red-600 rounded-xl p-6 text-white">
-            <h3 class="text-lg font-semibold mb-2">Periodo Analizzato</h3>
+            <h3 class="text-lg font-semibold mb-2">{{ __('ui.admin_statistics_period_title') }}</h3>
             <p class="text-red-100">
                 @if($period === 'week')
-                    Ultimi 7 giorni
+                    {{ __('ui.admin_statistics_period_week') }}
                 @elseif($period === 'month')
-                    Ultimi 30 giorni
+                    {{ __('ui.admin_statistics_period_month') }}
                 @else
-                    Ultimi 365 giorni
+                    {{ __('ui.admin_statistics_period_year') }}
                 @endif
             </p>
         </div>
@@ -19,20 +19,20 @@
             <!-- Users Stats -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Utenti</h4>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('ui.admin_statistics_users_title') }}</h4>
                     <div class="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
                         <i class="fas fa-users text-blue-600 dark:text-blue-400"></i>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Totali</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_total') }}</span>
                         <span class="font-semibold text-gray-900 dark:text-white">
                             {{ number_format($stats['users']['total']) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Nuovi</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_new') }}</span>
                         <span class="font-semibold text-green-600 dark:text-green-400">
                             +{{ number_format($stats['users']['new']) }}
                         </span>
@@ -51,26 +51,26 @@
             <!-- Videos Stats -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Video</h4>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('ui.admin_statistics_videos_title') }}</h4>
                     <div class="p-2 bg-red-100 dark:bg-red-900/20 rounded-lg">
                         <i class="fas fa-video text-red-600 dark:text-red-400"></i>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Totali</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_total') }}</span>
                         <span class="font-semibold text-gray-900 dark:text-white">
                             {{ number_format($stats['videos']['total']) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Pubblicati</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_published') }}</span>
                         <span class="font-semibold text-green-600 dark:text-green-400">
                             {{ number_format($stats['videos']['published']) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Nuovi</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_new') }}</span>
                         <span class="font-semibold text-blue-600 dark:text-blue-400">
                             +{{ number_format($stats['videos']['new']) }}
                         </span>
@@ -81,26 +81,26 @@
             <!-- Views Stats -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Visualizzazioni</h4>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('ui.admin_statistics_views_title') }}</h4>
                     <div class="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
                         <i class="fas fa-eye text-green-600 dark:text-green-400"></i>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Totali</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_total') }}</span>
                         <span class="font-semibold text-gray-900 dark:text-white">
                             {{ number_format($stats['views']['total']) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Periodo</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_period') }}</span>
                         <span class="font-semibold text-green-600 dark:text-green-400">
                             {{ number_format($stats['views']['new']) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Media/Video</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_avg_per_video') }}</span>
                         <span class="font-semibold text-purple-600 dark:text-purple-400">
                             @if($stats['videos']['published'] > 0)
                                 {{ number_format($stats['views']['total'] / $stats['videos']['published'], 1) }}
@@ -115,26 +115,26 @@
             <!-- Comments Stats -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Commenti</h4>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('ui.admin_statistics_comments_title') }}</h4>
                     <div class="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
                         <i class="fas fa-comments text-purple-600 dark:text-purple-400"></i>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Totali</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_total') }}</span>
                         <span class="font-semibold text-gray-900 dark:text-white">
                             {{ number_format($stats['comments']['total']) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Periodo</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_period') }}</span>
                         <span class="font-semibold text-green-600 dark:text-green-400">
                             +{{ number_format($stats['comments']['new']) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">Engagement</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_engagement') }}</span>
                         <span class="font-semibold text-orange-600 dark:text-orange-400">
                             @if($stats['views']['total'] > 0)
                                 {{ number_format(($stats['comments']['total'] / $stats['views']['total']) * 100, 2) }}%
@@ -152,18 +152,18 @@
             <!-- Growth Chart Placeholder -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Crescita Utenti
+                    {{ __('ui.admin_statistics_user_growth') }}
                 </h4>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <div>
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Nuovi Utenti</p>
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_new_users') }}</p>
                             <p class="text-2xl font-bold text-gray-900 dark:text-white">
                                 {{ $stats['users']['new'] }}
                             </p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-green-600 dark:text-green-400">↗ Crescita</p>
+                            <p class="text-sm text-green-600 dark:text-green-400">{{ __('ui.admin_statistics_growth') }}</p>
                             <p class="text-sm font-medium text-gray-900 dark:text-white">
                                 {{ $stats['users']['total'] > 0 ? round(($stats['users']['new'] / $stats['users']['total']) * 100, 1) : 0 }}%
                             </p>
@@ -175,12 +175,12 @@
             <!-- Video Performance -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Performance Video
+                    {{ __('ui.admin_statistics_video_performance') }}
                 </h4>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <div>
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Tasso di Pubblicazione</p>
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_publish_rate') }}</p>
                             <p class="text-2xl font-bold text-gray-900 dark:text-white">
                                 @if($stats['videos']['total'] > 0)
                                     {{ round(($stats['videos']['published'] / $stats['videos']['total']) * 100, 1) }}%
@@ -190,7 +190,7 @@
                             </p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-blue-600 dark:text-blue-400">Status</p>
+                            <p class="text-sm text-blue-600 dark:text-blue-400">{{ __('ui.admin_statistics_status') }}</p>
                             <p class="text-sm font-medium text-gray-900 dark:text-white">
                                 {{ $stats['videos']['published'] }}/{{ $stats['videos']['total'] }}
                             </p>
@@ -199,15 +199,15 @@
                     
                     <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <div>
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">In Elaborazione</p>
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('ui.admin_statistics_processing') }}</p>
                             <p class="text-2xl font-bold text-orange-600 dark:text-orange-400">
                                 {{ $stats['videos']['pending'] }}
                             </p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-orange-600 dark:text-orange-400">Pending</p>
+                            <p class="text-sm text-orange-600 dark:text-orange-400">{{ __('ui.admin_statistics_pending') }}</p>
                             <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                Video in attesa
+                                {{ __('ui.admin_statistics_videos_pending') }}
                             </p>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
         <!-- Additional Metrics -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
             <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Metriche Aggiuntive
+                {{ __('ui.admin_statistics_additional_metrics') }}
             </h4>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -227,9 +227,9 @@
                     <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
                         <i class="fas fa-star text-white text-xl"></i>
                     </div>
-                    <h5 class="font-medium text-gray-900 dark:text-white mb-2">Qualità Contenuti</h5>
+                    <h5 class="font-medium text-gray-900 dark:text-white mb-2">{{ __('ui.admin_statistics_content_quality') }}</h5>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        Alto tasso di approvazione video
+                        {{ __('ui.admin_statistics_content_quality_help') }}
                     </p>
                     <p class="text-lg font-semibold text-green-600 dark:text-green-400">
                         @if($stats['videos']['total'] > 0)
@@ -245,9 +245,9 @@
                     <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                         <i class="fas fa-heart text-white text-xl"></i>
                     </div>
-                    <h5 class="font-medium text-gray-900 dark:text-white mb-2">Engagement Utenti</h5>
+                    <h5 class="font-medium text-gray-900 dark:text-white mb-2">{{ __('ui.admin_statistics_user_engagement') }}</h5>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        Commenti per visualizzazione
+                        {{ __('ui.admin_statistics_comments_per_view') }}
                     </p>
                     <p class="text-lg font-semibold text-blue-600 dark:text-blue-400">
                         @if($stats['views']['total'] > 0)
@@ -263,15 +263,16 @@
                     <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
                         <i class="fas fa-chart-line text-white text-xl"></i>
                     </div>
-                    <h5 class="font-medium text-gray-900 dark:text-white mb-2">Salute Piattaforma</h5>
+                    <h5 class="font-medium text-gray-900 dark:text-white mb-2">{{ __('ui.admin_statistics_platform_health') }}</h5>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        Crescita complessiva
+                        {{ __('ui.admin_statistics_growth') }} complessiva
                     </p>
                     <p class="text-lg font-semibold text-purple-600 dark:text-purple-400">
-                        Positiva
+                        {{ __('ui.admin_statistics_positive') }}
                     </p>
                 </div>
             </div>
         </div>
     </div>
 </x-admin-layout>
+

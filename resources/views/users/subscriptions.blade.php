@@ -3,10 +3,10 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                <i class="fas fa-heart mr-3 text-red-600"></i>Iscrizioni
+                <i class="fas fa-heart mr-3 text-red-600"></i>{{ __('ui.subscriptions_title') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400">
-                Canali a cui sei iscritto
+                {{ __('ui.subscriptions_subtitle') }}
             </p>
         </div>
 
@@ -36,7 +36,7 @@
                                     {{ $channel->name }}
                                 </h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    {{ $channel->subscribers()->count() }} iscritti
+                                    {{ $channel->subscribers()->count() }} {{ __('ui.subscribers_count') }}
                                 </p>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                                 href="{{ route('channel.show', $channel) }}"
                                 class="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-center"
                             >
-                                <i class="fas fa-user mr-2"></i>Canale
+                                <i class="fas fa-user mr-2"></i>{{ __('ui.channel') }}
                             </a>
                             <button 
                                 class="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors text-sm"
@@ -61,7 +61,7 @@
             <!-- Latest Videos from Subscriptions -->
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                    Ultimi video
+                    {{ __('ui.latest_videos') }}
                 </h2>
 
                 @if(isset($latestVideos) && $latestVideos->count() > 0)
@@ -118,7 +118,7 @@
                     </div>
                 @else
                     <p class="text-center text-gray-600 dark:text-gray-400 py-8">
-                        Nessun nuovo video dai canali a cui sei iscritto
+                        {{ __('ui.no_new_videos') }}
                     </p>
                 @endif
             </div>
@@ -129,17 +129,17 @@
                     <i class="fas fa-heart text-4xl text-gray-400"></i>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Nessuna iscrizione
+                    {{ __('ui.no_subscriptions') }}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    Iscriviti ai canali per vedere i loro video qui
+                    {{ __('ui.subscribe_channels') }}
                 </p>
                 <a 
                     href="{{ route('explore') }}"
                     class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                 >
                     <i class="fas fa-compass mr-2"></i>
-                    Esplora canali
+                    {{ __('ui.explore_channels') }}
                 </a>
             </div>
         @endif

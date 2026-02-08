@@ -4,7 +4,7 @@
         <div class="flex items-center gap-2 text-sm text-gray-400">
             <i class="fas fa-user-lock"></i>
             <a href="{{ route('login') }}" class="text-red-400 hover:text-red-300 transition-colors">
-                Accedi per iscriverti
+                {{ __('ui.login_to_subscribe') }}
             </a>
         </div>
     @else
@@ -14,13 +14,13 @@
                 <a href="{{ route('videos.edit', $video) }}"
                     class="flex items-center gap-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group border border-gray-600/50 hover:border-gray-500">
                     <i class="fas fa-edit text-gray-400 group-hover:text-white transition-colors"></i>
-                    <span class="text-gray-300 group-hover:text-white text-sm font-medium">Modifica</span>
+                    <span class="text-gray-300 group-hover:text-white text-sm font-medium">{{ __('ui.edit') }}</span>
                 </a>
 
                 <a href="{{ route('channel.edit', $video->user->userProfile?->channel_name) }}?tab=analytics"
                     class="flex items-center gap-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group border border-gray-600/50 hover:border-gray-500">
                     <i class="fas fa-chart-bar text-gray-400 group-hover:text-white transition-colors"></i>
-                    <span class="text-gray-300 group-hover:text-white text-sm font-medium">Analitica</span>
+                    <span class="text-gray-300 group-hover:text-white text-sm font-medium">{{ __('ui.analytics') }}</span>
                 </a>
             </div>
         @else
@@ -45,7 +45,7 @@
                     <span
                         class="text-sm font-medium transition-colors
                         {{ $isSubscribed ? 'text-gray-300' : 'text-white' }}">
-                        {{ $isSubscribed ? 'Iscritto' : 'Iscriviti' }}
+                        {{ $isSubscribed ? __('ui.subscribed') : __('ui.subscribe') }}
                     </span>
                 </div>
             </button>

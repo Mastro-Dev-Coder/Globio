@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Video;
+use App\Http\Controllers\Controller;
 use App\Models\Playlist;
+use App\Models\User;
+use App\Models\Video;
+use App\Services\AutomatedPlaylistService;
 use App\Services\VideoRecommendationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -96,7 +101,19 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
-        // Recupera playlist consigliate
+        // Recupera le playlist automatiche dell'utente (personalizzate)
+        $autoPlaylists = collect();
+        if (Auth::check()) {
+            $autoPlaylistService = new AutomatedPlaylistService();
+            $autoPlaylists = $autoPlaylistService->getUserAutoPlaylists(Auth::id());
+
+            // Se non ci sono playlist automatiche, generane qualcune
+            if ($autoPlaylists->isEmpty()) {
+                $autoPlaylists = $autoPlaylistService->generateAutomaticPlaylists(Auth::id(), 5);
+            }
+        }
+
+        // Recupera playlist consigliate (esistenti)
         $playlistRecommendations = collect();
         if (Auth::check()) {
             $recommendationService = new VideoRecommendationService();
@@ -117,6 +134,7 @@ class HomeController extends Controller
         $userPlaylists = collect();
         if (Auth::check()) {
             $userPlaylists = Playlist::where('user_id', Auth::id())
+                ->where('is_automatic', false) // Solo playlist manuali
                 ->with('videos')
                 ->withCount('videos')
                 ->orderBy('views_count', 'desc')
@@ -130,14 +148,14 @@ class HomeController extends Controller
         $playlistCount = 0;
         $userPlaylistCount = 0;
         $userPlaylistsArray = $userPlaylists->toArray();
-        
+
         foreach ($videos as $index => $video) {
             $integratedContent->push([
                 'type' => 'video',
                 'content' => $video
             ]);
             $videoCount++;
-            
+
             // Inserisce una playlist consigliata ogni 6 video
             if ($videoCount % 6 == 0 && $playlistCount < $playlistRecommendations->count()) {
                 $integratedContent->push([
@@ -147,7 +165,7 @@ class HomeController extends Controller
                 ]);
                 $playlistCount++;
             }
-            
+
             // Inserisce una playlist dell'utente ogni 8 video (se l'utente ha playlist)
             if (Auth::check() && $videoCount % 8 == 0 && $userPlaylistCount < count($userPlaylistsArray)) {
                 $integratedContent->push([
@@ -158,7 +176,7 @@ class HomeController extends Controller
                 $userPlaylistCount++;
             }
         }
-        
+
         // Aggiunge playlist rimanenti alla fine se ci sono spazi
         while ($playlistCount < $playlistRecommendations->count()) {
             $integratedContent->push([
@@ -169,7 +187,7 @@ class HomeController extends Controller
             $playlistCount++;
         }
 
-        return view('home', compact('integratedContent', 'trendingVideos', 'suggestedVideos', 'videos', 'userPlaylists'));
+        return view('home', compact('integratedContent', 'trendingVideos', 'suggestedVideos', 'videos', 'userPlaylists', 'autoPlaylists'));
     }
 
     /**
@@ -490,7 +508,7 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
-        $videos = Video::with(['user', 'user.userProfile'])
+        $videoQuery = Video::with(['user', 'user.userProfile'])
             ->published()
             ->where('is_reel', false)
             ->where(function ($q) use ($query) {
@@ -499,24 +517,54 @@ class HomeController extends Controller
                     ->orWhereJsonContains('tags', $query);
             });
 
-        switch ($sortBy) {
-            case 'upload_date':
-                $videos->orderBy('published_at', 'desc');
-                break;
-            case 'view_count':
-                $videos->orderBy('views_count', 'desc');
-                break;
-            case 'rating':
-                $videos->orderBy('likes_count', 'desc');
-                break;
-            default:
-                $videos->orderBy('views_count', 'desc')
-                    ->orderBy('published_at', 'desc');
-        }
+        $reelQuery = Video::with(['user', 'user.userProfile'])
+            ->published()
+            ->where('is_reel', true)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', '%' . $query . '%')
+                    ->orWhere('description', 'like', '%' . $query . '%')
+                    ->orWhereJsonContains('tags', $query);
+            });
 
-        $results = $videos->paginate(20);
+        $applySort = function ($queryBuilder) use ($sortBy) {
+            switch ($sortBy) {
+                case 'upload_date':
+                    $queryBuilder->orderBy('published_at', 'desc');
+                    break;
+                case 'view_count':
+                    $queryBuilder->orderBy('views_count', 'desc');
+                    break;
+                case 'rating':
+                    $queryBuilder->orderBy('likes_count', 'desc');
+                    break;
+                default:
+                    $queryBuilder->orderBy('views_count', 'desc')
+                        ->orderBy('published_at', 'desc');
+            }
+        };
 
-        return view('search', compact('results', 'query', 'sortBy'));
+        $applySort($videoQuery);
+        $applySort($reelQuery);
+
+        $videoResults = $videoQuery->paginate(20, ['*'], 'videos_page');
+        $reelResults = $reelQuery->paginate(12, ['*'], 'reels_page');
+
+        $userQuery = User::with('userProfile')
+            ->when(Auth::id(), function ($q) {
+                $q->where('id', '!=', Auth::id());
+            })
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%')
+                    ->orWhereHas('userProfile', function ($profileQuery) use ($query) {
+                        $profileQuery->where('channel_name', 'like', '%' . $query . '%')
+                            ->orWhere('username', 'like', '%' . $query . '%');
+                    });
+            })
+            ->orderBy('name', 'asc');
+
+        $userResults = $userQuery->paginate(12, ['*'], 'users_page');
+
+        return view('search', compact('videoResults', 'reelResults', 'userResults', 'query', 'sortBy'));
     }
 
     /**
@@ -546,5 +594,13 @@ class HomeController extends Controller
             ->paginate(24);
 
         return view('latest', compact('videos'));
+    }
+
+    public function setLanguage($lang)
+    {
+        Session::put('locale', $lang);
+
+        $cookie = Cookie::make('locale', $lang, 525600);
+        return redirect()->back()->withCookie($cookie);
     }
 }

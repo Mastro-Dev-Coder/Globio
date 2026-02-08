@@ -36,7 +36,7 @@
 
             <!-- Content Area -->
             <div class="flex-1 lg:ml-0">
-                <div class="max-w-7xl mx-auto">
+                <div class="max-w-full mx-auto">
                     {{ $slot }}
                 </div>
             </div>
@@ -54,10 +54,6 @@
     <!-- Connection Status Component -->
     <livewire:connection-status />
 
-    <!-- MiniPlayer -->
-    @if (!request()->routeIs('videos.show'))
-        <x-miniplayer />
-    @endif
 </body>
 
 </html>

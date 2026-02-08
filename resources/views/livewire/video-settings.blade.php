@@ -1,9 +1,9 @@
 <div>
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold text-gray-900">Impostazioni Video</h3>
+            <h3 class="text-lg font-semibold text-gray-900">{{ __('ui.video_settings') }}</h3>
             <div class="text-sm text-gray-500">
-                Ultima modifica: {{ $video->updated_at->diffForHumans() }}
+                {{ __('ui.last_modified') }} {{ $video->updated_at->diffForHumans() }}
             </div>
         </div>
 
@@ -14,7 +14,7 @@
                         <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                     </svg>
                     <p class="text-sm text-yellow-700">
-                        Solo il proprietario del video può modificare queste impostazioni.
+                        {{ __('ui.only_owner_edit') }}
                     </p>
                 </div>
             </div>
@@ -25,8 +25,8 @@
             <div class="border-b border-gray-200 pb-6">
                 <div class="flex items-center justify-between mb-4">
                     <div>
-                        <h4 class="text-base font-medium text-gray-900">Commenti</h4>
-                        <p class="text-sm text-gray-500">Consenti agli spettatori di commentare questo video</p>
+                        <h4 class="text-base font-medium text-gray-900">{{ __('ui.comments_settings') }}</h4>
+                        <p class="text-sm text-gray-500">{{ __('ui.allow_comments_desc') }}</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" 
@@ -41,8 +41,8 @@
                     <div class="ml-4 pl-4 border-l-2 border-gray-200">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h5 class="text-sm font-medium text-gray-900">Richiedi approvazione</h5>
-                                <p class="text-xs text-gray-500">I commenti dovranno essere approvati prima di essere pubblicati</p>
+                                <h5 class="text-sm font-medium text-gray-900">{{ __('ui.require_approval') }}</h5>
+                                <p class="text-xs text-gray-500">{{ __('ui.approval_required_desc') }}</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" 
@@ -60,8 +60,8 @@
             <div class="border-b border-gray-200 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h4 class="text-base font-medium text-gray-900">Like e Dislike</h4>
-                        <p class="text-sm text-gray-500">Consenti agli spettatori di mettere like e dislike</p>
+                        <h4 class="text-base font-medium text-gray-900">{{ __('ui.likes_dislikes_settings') }}</h4>
+                        <p class="text-sm text-gray-500">{{ __('ui.allow_likes_desc') }}</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" 
@@ -76,7 +76,7 @@
             <!-- Configurazioni Rapide -->
             @if($canEdit)
                 <div class="bg-gray-50 rounded-lg p-4">
-                    <h4 class="text-sm font-medium text-gray-900 mb-3">Configurazioni Rapide</h4>
+                    <h4 class="text-sm font-medium text-gray-900 mb-3">{{ __('ui.quick_config') }}</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <button type="button" 
                                 wire:click="enableAllWithoutApproval"
@@ -84,7 +84,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Abilita Tutto
+                            {{ __('ui.enable_all') }}
                         </button>
 
                         <button type="button" 
@@ -93,7 +93,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                             </svg>
-                            Commenti + Approvazione
+                            {{ __('ui.comments_approval') }}
                         </button>
 
                         <button type="button" 
@@ -102,7 +102,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636"></path>
                             </svg>
-                            Disabilita Tutto
+                            {{ __('ui.disable_all') }}
                         </button>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
-                        Ripristina Predefiniti
+                        {{ __('ui.reset_defaults') }}
                     </button>
 
                     <button type="submit" 
@@ -127,8 +127,8 @@
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span wire:loading.remove>Salva Impostazioni</span>
-                        <span wire:loading>Salvataggio...</span>
+                        <span wire:loading.remove>{{ __('ui.save_settings') }}</span>
+                        <span wire:loading>{{ __('ui.saving') }}</span>
                     </button>
                 </div>
             @endif
@@ -136,7 +136,7 @@
 
         <!-- Status Correnti -->
         <div class="mt-6 pt-6 border-t border-gray-200">
-            <h4 class="text-sm font-medium text-gray-900 mb-3">Stato Corrente</h4>
+            <h4 class="text-sm font-medium text-gray-900 mb-3">{{ __('ui.current_status') }}</h4>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -150,8 +150,8 @@
                             </svg>
                         @endif
                     </div>
-                    <span class="ml-2 text-gray-600">
-                        Commenti: <span class="{{ $commentsEnabled ? 'text-green-600' : 'text-red-600' }}">{{ $commentsEnabled ? 'Abilitati' : 'Disabilitati' }}</span>
+                    <span class="ml-2">
+                        <span class="{{ $commentsEnabled ? 'text-green-600' : 'text-red-600' }}">{{ $commentsEnabled ? __('ui.comments_enabled') : __('ui.comments_disabled_status') }}</span>
                     </span>
                 </div>
 
@@ -167,8 +167,8 @@
                             </svg>
                         @endif
                     </div>
-                    <span class="ml-2 text-gray-600">
-                        Like: <span class="{{ $likesEnabled ? 'text-green-600' : 'text-red-600' }}">{{ $likesEnabled ? 'Abilitati' : 'Disabilitati' }}</span>
+                    <span class="ml-2">
+                        <span class="{{ $likesEnabled ? 'text-green-600' : 'text-red-600' }}">{{ $likesEnabled ? __('ui.likes_enabled') : __('ui.likes_disabled') }}</span>
                     </span>
                 </div>
 
@@ -184,8 +184,8 @@
                             </svg>
                         @endif
                     </div>
-                    <span class="ml-2 text-gray-600">
-                        Approvazione: <span class="{{ $commentsRequireApproval ? 'text-orange-600' : 'text-green-600' }}">{{ $commentsRequireApproval ? 'Richiesta' : 'Non Richiesta' }}</span>
+                    <span class="ml-2">
+                        <span class="{{ $commentsRequireApproval ? 'text-orange-600' : 'text-green-600' }}">{{ $commentsRequireApproval ? __('ui.approval_required_status') : __('ui.approval_not_required') }}</span>
                     </span>
                 </div>
             </div>
@@ -207,7 +207,7 @@
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                     </svg>
-                    <span>Impostazioni aggiornate con successo!</span>
+                    <span>{{ __('ui.settings_updated_success') }}</span>
                 </div>
             </div>
         </div>

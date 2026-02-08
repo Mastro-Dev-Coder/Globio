@@ -1,9 +1,9 @@
-<x-admin-layout>
+﻿<x-admin-layout>
     <div class="space-y-6">
         <!-- Page Header -->
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Statistiche Pubblicità</h1>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('ui.admin_ads_stats_title') }}</h1>
                 <p class="text-gray-600 dark:text-gray-400 mt-1">
                     Analytics dettagliate per "{{ $advertisement->name }}"
                 </p>
@@ -11,7 +11,7 @@
             <a href="{{ route('admin.advertisements') }}"
                 class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors">
                 <i class="fas fa-arrow-left w-4 h-4 mr-2"></i>
-                Torna alla lista
+                {{ __('ui.admin_ads_back_list') }}
             </a>
         </div>
 
@@ -45,19 +45,19 @@
                             @if($advertisement->isCurrentlyActive())
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                                     <i class="fas fa-circle w-2 h-2 mr-1"></i>
-                                    Attiva
+                                    {{ __('ui.admin_ads_status_active_badge') }}
                                 </span>
                             @else
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
                                     <i class="fas fa-circle w-2 h-2 mr-1"></i>
-                                    Inattiva
+                                    {{ __('ui.admin_ads_status_inactive_badge') }}
                                 </span>
                             @endif
                         </div>
                     </div>
                 </div>
                 <div class="text-right">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Creata il</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_stats_created_at') }}</p>
                     <p class="font-medium text-gray-900 dark:text-white">
                         {{ $advertisement->created_at->format('d/m/Y H:i') }}
                     </p>
@@ -73,7 +73,7 @@
                         <i class="fas fa-eye text-2xl text-blue-600"></i>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Visualizzazioni</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_stats_views') }}</p>
                         <p class="text-2xl font-semibold text-gray-900 dark:text-white">
                             {{ number_format($advertisement->views) }}
                         </p>
@@ -87,7 +87,7 @@
                         <i class="fas fa-mouse-pointer text-2xl text-green-600"></i>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Click</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_stats_clicks') }}</p>
                         <p class="text-2xl font-semibold text-gray-900 dark:text-white">
                             {{ number_format($advertisement->clicks) }}
                         </p>
@@ -115,7 +115,7 @@
                         <i class="fas fa-star text-2xl text-yellow-600"></i>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Priorità</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_stats_priority') }}</p>
                         <p class="text-2xl font-semibold text-gray-900 dark:text-white">
                             {{ $advertisement->priority }}
                         </p>
@@ -128,13 +128,13 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 <i class="fas fa-chart-line mr-2"></i>
-                Andamento nel tempo
+                {{ __('ui.admin_ads_stats_trend_title') }}
             </h3>
             <div class="h-64 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div class="text-center text-gray-500 dark:text-gray-400">
                     <i class="fas fa-chart-line text-4xl mb-4"></i>
-                    <p class="text-lg font-medium">Grafico performance</p>
-                    <p class="text-sm">I dati verranno raccolti nel tempo</p>
+                    <p class="text-lg font-medium">{{ __('ui.admin_ads_stats_chart_placeholder_title') }}</p>
+                    <p class="text-sm">{{ __('ui.admin_ads_stats_chart_placeholder_subtitle') }}</p>
                 </div>
             </div>
         </div>
@@ -145,26 +145,26 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     <i class="fas fa-calendar mr-2"></i>
-                    Periodo di validità
+                    {{ __('ui.admin_ads_stats_validity_period') }}
                 </h3>
                 <div class="space-y-4">
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Data di inizio</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_start_date_label') }}</p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                             @if($advertisement->start_date)
                                 {{ $advertisement->start_date->format('d/m/Y H:i') }}
                             @else
-                                <span class="text-green-600 dark:text-green-400">Immediata</span>
+                                <span class="text-green-600 dark:text-green-400">{{ __('ui.admin_ads_stats_immediate') }}</span>
                             @endif
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Data di fine</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_end_date_label') }}</p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                             @if($advertisement->end_date)
                                 {{ $advertisement->end_date->format('d/m/Y H:i') }}
                             @else
-                                <span class="text-gray-500 dark:text-gray-400">Nessuna scadenza</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_stats_no_expiry') }}</span>
                             @endif
                         </p>
                     </div>
@@ -175,13 +175,13 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     <i class="fas fa-tools mr-2"></i>
-                    Azioni rapide
+                    {{ __('ui.admin_ads_stats_quick_actions') }}
                 </h3>
                 <div class="space-y-3">
                     <a href="{{ route('admin.advertisements.edit', $advertisement) }}"
                         class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
                         <i class="fas fa-edit w-4 h-4 mr-2"></i>
-                        Modifica Pubblicità
+                        {{ __('ui.admin_ads_stats_edit') }}
                     </a>
                     
                     <form method="POST" action="{{ route('admin.advertisements.toggle-status', $advertisement) }}">
@@ -192,7 +192,7 @@
                             {{ $advertisement->is_active ? 'bg-orange-600 hover:bg-orange-700' : 'bg-green-600 hover:bg-green-700' }} 
                             text-white font-medium rounded-lg transition-colors">
                             <i class="fas {{ $advertisement->is_active ? 'fa-pause' : 'fa-play' }} w-4 h-4 mr-2"></i>
-                            {{ $advertisement->is_active ? 'Disattiva' : 'Attiva' }} Pubblicità
+                            {{ $advertisement->is_active ? __('ui.admin_ads_action_deactivate') : __('ui.admin_ads_action_activate') }} {{ __('ui.admin_ads_table_ad') }}
                         </button>
                     </form>
 
@@ -200,7 +200,7 @@
                         <a href="{{ $advertisement->link_url }}" target="_blank"
                             class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
                             <i class="fas fa-external-link-alt w-4 h-4 mr-2"></i>
-                            Apri Link di destinazione
+                            {{ __('ui.admin_ads_stats_open_link') }}
                         </a>
                     @endif
                 </div>
@@ -211,7 +211,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 <i class="fas fa-eye mr-2"></i>
-                Anteprima contenuto
+                {{ __('ui.admin_ads_stats_content_preview') }}
             </h3>
             
             @if($advertisement->type === 'banner')
@@ -232,7 +232,7 @@
             @elseif($advertisement->type === 'adsense' || $advertisement->type === 'video')
                 @if($advertisement->code)
                     <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
-                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Codice {{ $advertisement->type_label }}:</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ __('ui.admin_ads_stats_code_label', ['type' => $advertisement->type_label]) }}:</div>
                         <pre class="bg-gray-800 text-green-400 p-4 rounded text-xs overflow-x-auto">{{ $advertisement->code }}</pre>
                     </div>
                 @endif
@@ -240,7 +240,7 @@
 
             @if($advertisement->content)
                 <div class="mt-4">
-                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Contenuto aggiuntivo:</p>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('ui.admin_ads_stats_additional_content') }}:</p>
                     <p class="text-gray-900 dark:text-white">{{ $advertisement->content }}</p>
                 </div>
             @endif

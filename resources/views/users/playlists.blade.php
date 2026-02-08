@@ -26,7 +26,7 @@
                 <i class="fas fa-list mr-3 text-red-600"></i>Le mie playlist
             </h1>
             <p class="text-gray-600 dark:text-gray-400">
-                Organizza i tuoi video preferiti in playlist
+                {{ __('ui.playlists_subtitle') }}
             </p>
         </div>
 
@@ -35,7 +35,7 @@
             <button onclick="openCreatePlaylistModal()"
                 class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
                 <i class="fas fa-plus mr-2"></i>
-                Crea nuova playlist
+                {{ __('ui.create_playlist') }}
             </button>
         </div>
 
@@ -65,11 +65,11 @@
                                 <div class="text-white text-center">
                                     @if ($playlist->videos->count() === 0)
                                         <i class="fas fa-list text-5xl mb-2"></i>
-                                        <p class="text-sm">Playlist vuota</p>
+                                        <p class="text-sm">{{ __('ui.empty_playlist') }}</p>
                                     @else
                                         <a href="{{ route('playlists.show', $playlist->id) }}" class="block">
                                             <i class="fas fa-play-circle text-5xl mb-2"></i>
-                                            <p class="text-sm">{{ $playlist->videos->count() }} video</p>
+                                            <p class="text-sm">{{ trans_choice('ui.video_count', $playlist->videos->count(), ['count' => $playlist->videos->count()]) }}</p>
                                         </a>
                                     @endif
                                 </div>
@@ -94,19 +94,19 @@
                             <div class="flex items-center justify-between text-sm">
                                 <span class="text-gray-500 dark:text-gray-400">
                                     <i class="fas fa-video mr-1"></i>
-                                    {{ $playlist->videos->count() }} video
+                                    {{ trans_choice('ui.video_count', $playlist->videos->count(), ['count' => $playlist->videos->count()]) }}
                                 </span>
 
                                 <div class="flex gap-2">
                                     <button
                                         class="p-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500 transition-colors"
-                                        onclick="editPlaylist({{ $playlist->id }})" title="Modifica playlist">
+                                        onclick="editPlaylist({{ $playlist->id }})" title="{{ __('ui.edit_playlist') }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button
                                         class="p-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500 transition-colors"
                                         onclick="deletePlaylist({{ $playlist->id }}, '{{ $playlist->title }}')"
-                                        title="Elimina playlist">
+                                        title="{{ __('ui.delete_playlist') }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -123,15 +123,15 @@
                     <i class="fas fa-list text-4xl text-gray-400"></i>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Nessuna playlist
+                    {{ __('ui.no_playlists') }}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    Crea playlist per organizzare i tuoi video preferiti
+                    {{ __('ui.create_playlists') }}
                 </p>
                 <button onclick="openCreatePlaylistModal()"
                     class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
                     <i class="fas fa-plus mr-2"></i>
-                    Crea la tua prima playlist
+                    {{ __('ui.create_first_playlist') }}
                 </button>
             </div>
         @endif
@@ -144,7 +144,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         <i class="fas fa-edit mr-2 text-red-600"></i>
-                        Modifica playlist
+                        {{ __('ui.edit_playlist') }}
                     </h3>
                     <button onclick="closeEditPlaylistModal()"
                         class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -160,7 +160,7 @@
                     <div class="mb-4">
                         <label for="editPlaylistTitle"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Titolo playlist *
+                            {{ __('ui.playlist_title_required') }}
                         </label>
                         <input type="text" id="editPlaylistTitle" name="title" required
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:text-white">
@@ -169,7 +169,7 @@
                     <div class="mb-6">
                         <label for="editPlaylistDescription"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Descrizione (opzionale)
+                            {{ __('ui.playlist_description_optional') }}
                         </label>
                         <textarea id="editPlaylistDescription" name="description" rows="3"
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:text-white"></textarea>
@@ -179,12 +179,12 @@
                         <button type="button" onclick="closeEditPlaylistModal()"
                             class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             <i class="fas fa-close"></i>
-                            Annulla
+                            {{ __('ui.cancel') }}
                         </button>
                         <button type="submit"
                             class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                             <i class="fas fa-edit"></i>
-                            Salva modifiche
+                            {{ __('ui.save_changes') }}
                         </button>
                     </div>
                 </form>
@@ -199,7 +199,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         <i class="fas fa-exclamation-triangle mr-2 text-red-600"></i>
-                        Conferma eliminazione
+                        {{ __('ui.confirm_delete') }}
                     </h3>
                     <button onclick="closeDeletePlaylistModal()"
                         class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -209,7 +209,7 @@
 
                 <div class="mb-6">
                     <p class="text-gray-600 dark:text-gray-400">
-                        Sei sicuro di voler eliminare questa playlist? Questa azione non può essere annullata.
+                        {{ __('ui.confirm_delete_playlist') }}
                     </p>
                     <p id="deletePlaylistName" class="font-semibold text-gray-900 dark:text-white mt-2">
                         <!-- Nome playlist caricato via JavaScript -->
@@ -220,12 +220,12 @@
                     <button type="button" onclick="closeDeletePlaylistModal()"
                         class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         <i class="fas fa-close"></i>
-                        Annulla
+                        {{ __('ui.cancel') }}
                     </button>
                     <button type="button" onclick="confirmDeletePlaylist()"
                         class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                         <i class="fas fa-trash"></i>
-                        Elimina
+                        {{ __('ui.delete') }}
                     </button>
                 </div>
             </div>
@@ -239,7 +239,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         <i class="fas fa-plus mr-2 text-red-600"></i>
-                        Crea nuova playlist
+                        {{ __('ui.create_playlist') }}
                     </h3>
                     <button onclick="closeCreatePlaylistModal()"
                         class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -252,33 +252,33 @@
                     <div class="mb-4">
                         <label for="createPlaylistTitle"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Titolo playlist *
+                            {{ __('ui.playlist_title_required') }}
                         </label>
                         <input type="text" id="createPlaylistTitle" name="title" required
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:text-white"
-                            placeholder="Inserisci il titolo della playlist">
+                            placeholder="{{ __('ui.enter_playlist_name') }}">
                     </div>
 
                     <div class="mb-6">
                         <label for="createPlaylistDescription"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Descrizione (opzionale)
+                            {{ __('ui.playlist_description_optional') }}
                         </label>
                         <textarea id="createPlaylistDescription" name="description" rows="3"
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:text-white"
-                            placeholder="Aggiungi una descrizione alla playlist"></textarea>
+                            placeholder="{{ __('ui.add_description_to_playlist') }}"></textarea>
                     </div>
 
                     <div class="flex gap-3">
                         <button type="button" onclick="closeCreatePlaylistModal()"
                             class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             <i class="fas fa-close"></i>
-                            Annulla
+                            {{ __('ui.cancel') }}
                         </button>
                         <button type="submit"
                             class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                             <i class="fas fa-save"></i>
-                            Crea playlist
+                            {{ __('ui.create_playlist') }}
                         </button>
                     </div>
                 </form>
@@ -288,6 +288,11 @@
 </x-layout>
 
 <script>
+    const playlistTranslations = {
+        playlist_not_found: @json(__('ui.video_not_found')) ,
+        error_loading_playlist: @json(__('ui.error_loading_playlist')) ,
+    };
+
     // Create Playlist Modal Functions
     function openCreatePlaylistModal() {
         document.getElementById('createPlaylistModal').classList.remove('hidden');
@@ -313,12 +318,12 @@
                 if (data.success && data.playlists.length > 0) {
                     showEditPlaylistModal(data.playlists[0]);
                 } else {
-                    alert('Playlist non trovata');
+                    alert(playlistTranslations.playlist_not_found);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Errore nel caricamento della playlist');
+                alert(playlistTranslations.error_loading_playlist);
             });
     }
 

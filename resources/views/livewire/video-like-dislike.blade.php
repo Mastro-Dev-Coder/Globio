@@ -3,7 +3,7 @@
         <!-- Like Button -->
         <button wire:click="toggleLike" wire:loading.attr="disabled"
             class="flex items-center gap-2 px-4 py-2.5 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group {{ $userReaction === 'like' ? 'bg-blue-600/20 border-blue-500/30' : 'border-gray-600/50 hover:border-gray-500' }} border backdrop-blur-sm cursor-pointer"
-            title="{{ $userReaction === 'like' ? 'Rimuovi like' : 'Mi piace' }}">
+            title="{{ $userReaction === 'like' ? __('ui.remove_like') : __('ui.like') }}">
             <div class="flex items-center gap-1.5">
                 <i
                     class="fa-solid fa-thumbs-up text-lg transition-colors {{ $userReaction === 'like' ? 'text-blue-500' : 'text-gray-400 group-hover:text-white' }}"></i>
@@ -27,7 +27,7 @@
         <!-- Dislike Button -->
         <button wire:click="toggleDislike" wire:loading.attr="disabled"
             class="flex items-center gap-2 px-4 py-2.5 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-all duration-200 group {{ $userReaction === 'dislike' ? 'bg-red-600/20 border-red-500/30' : 'border-gray-600/50 hover:border-gray-500' }} border backdrop-blur-sm cursor-pointer"
-            title="{{ $userReaction === 'dislike' ? 'Rimuovi dislike' : 'Non mi piace' }}">
+            title="{{ $userReaction === 'dislike' ? __('ui.remove_dislike') : __('ui.dislike') }}">
             <div class="flex items-center gap-1.5">
                 <i
                     class="fa-solid fa-thumbs-down text-lg transition-colors {{ $userReaction === 'dislike' ? 'text-red-500' : 'text-gray-400 group-hover:text-white' }}"></i>
@@ -50,7 +50,7 @@
             <div class="ml-4 flex items-center gap-2 text-sm text-gray-400">
                 <i class="fa-solid fa-user-lock"></i>
                 <a href="{{ route('login') }}" class="text-red-400 hover:text-blue-300 transition-colors">
-                    Accedi per interagire
+                    {{ __('ui.login_to_interact') }}
                 </a>
             </div>
         @endguest
