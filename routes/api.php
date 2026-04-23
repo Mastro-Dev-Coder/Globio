@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AccountController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ContentController;
 use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\StudioController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\VideoUploadController;
 use App\Http\Controllers\Api\WatchLaterController;
@@ -81,6 +82,8 @@ Route::middleware('api')->group(function () {
             Route::post('/videos/{video}/comments', [ContentController::class, 'addComment']);
             Route::post('/videos/{video}/reaction', [ContentController::class, 'reactToVideo']);
             Route::post('/creators/{creator}/subscribe', [ContentController::class, 'toggleCreatorSubscription']);
+            Route::get('/reports/reasons', [StudioController::class, 'reportReasons']);
+            Route::post('/reports', [StudioController::class, 'createReport']);
 
             // Authenticated - user library
             Route::get('/me/watch-later', [AccountController::class, 'watchLater']);
@@ -116,6 +119,18 @@ Route::middleware('api')->group(function () {
             Route::get('/me/settings', [UserController::class, 'settings']);
             Route::put('/me/settings', [UserController::class, 'updateSettings']);
 
+            // Studio
+            Route::get('/me/studio/summary', [StudioController::class, 'summary']);
+            Route::get('/me/studio/analytics', [StudioController::class, 'analytics']);
+            Route::get('/me/studio/analytics/videos/{video}', [StudioController::class, 'videoAnalytics']);
+            Route::get('/me/studio/community', [StudioController::class, 'community']);
+            Route::post('/me/studio/community/comments/{comment}/approve', [StudioController::class, 'approveComment']);
+            Route::post('/me/studio/community/comments/{comment}/reject', [StudioController::class, 'rejectComment']);
+            Route::post('/me/studio/community/comments/{comment}/hide', [StudioController::class, 'hideComment']);
+            Route::get('/me/studio/reports', [StudioController::class, 'reports']);
+            Route::get('/me/studio/feedback', [StudioController::class, 'feedback']);
+            Route::post('/me/studio/feedback/{feedback}/read', [StudioController::class, 'markFeedbackAsRead']);
+
             // Video Upload
             Route::post('/videos/upload', [VideoUploadController::class, 'uploadVideo']);
             Route::post('/reels/upload', [VideoUploadController::class, 'uploadReel']);
@@ -130,7 +145,17 @@ Route::middleware('api')->group(function () {
             Route::delete('/comments/{comment}', [UserController::class, 'deleteComment']);
 
             // Share
-            Route::post('/videos/{video}/share', function (Video $video) {
+            Route::post('/videos/{video}/share', function (string $video) {
+                $video = Video::where('status', 'published')
+                    ->where('is_public', true)
+                    ->where(function ($query) use ($video) {
+                        $query->where('video_url', $video);
+                        if (is_numeric($video)) {
+                            $query->orWhere('id', (int) $video);
+                        }
+                    })
+                    ->firstOrFail();
+
                 return response()->json([
                     'share_url' => route('videos.show', $video),
                     'share_title' => $video->title,

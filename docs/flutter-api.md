@@ -55,9 +55,29 @@ Auth: `Authorization: Bearer <token>`
 - `POST /me/notifications/read-all`
 - `POST /me/notifications/{id}/read`
 
+Returns notifications from both the Laravel `notifications` table and the legacy `app_notifications` table. Each item includes `id`, `source`, `title`, `message`, `type`, `action_url`, `data`, `read_at`, `created_at`.
+
+## Reports
+
+- `GET /reports/reasons?target_type=user|video|comment|channel` (auth)
+- `POST /reports` (auth)
+  - body: `target_type`, `target_id`, `reason`, `type?`, `description?`
+
+## Studio
+
+- `GET /me/studio/summary`
+- `GET /me/studio/analytics?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD&limit=10`
+- `GET /me/studio/analytics/videos/{id_or_slug}?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD`
+- `GET /me/studio/community?status=all|approved|pending|rejected|hidden&per_page=20`
+- `POST /me/studio/community/comments/{id}/approve`
+- `POST /me/studio/community/comments/{id}/reject`
+- `POST /me/studio/community/comments/{id}/hide`
+- `GET /me/studio/reports?view=received|submitted&status=all|pending|reviewed|resolved|dismissed|escalated`
+- `GET /me/studio/feedback?status=all|read|unread`
+- `POST /me/studio/feedback/{id}/read`
+
 ## Notes
 
 - Video lookup supports both numeric `id` and `video_url` slug.
 - Creator lookup supports numeric `id`, `username`, and channel-name slug.
 - Media URLs are returned as absolute URLs and already client-ready.
-

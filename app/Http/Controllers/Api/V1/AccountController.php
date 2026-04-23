@@ -9,6 +9,7 @@ use App\Models\Video;
 use App\Models\WatchHistory;
 use App\Models\WatchLater;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -216,32 +217,56 @@ class AccountController extends Controller
 
     public function notifications()
     {
-        $notifications = Notification::where('user_id', Auth::id())
+        $user = Auth::user();
+
+        $databaseNotifications = $user->notifications()
             ->latest()
             ->limit(100)
             ->get()
-            ->map(function (Notification $notification) {
-                return [
-                    'id' => $notification->id,
-                    'title' => $notification->title,
-                    'message' => $notification->message,
-                    'type' => $notification->type,
-                    'action_url' => $notification->action_url,
-                    'read_at' => optional($notification->read_at)?->toIso8601String(),
-                    'created_at' => optional($notification->created_at)?->toIso8601String(),
-                ];
-            });
+            ->map(fn (DatabaseNotification $notification) => $this->serializeDatabaseNotification($notification));
+
+        $appNotifications = Notification::where('user_id', $user->id)
+            ->latest()
+            ->limit(100)
+            ->get()
+            ->map(fn (Notification $notification) => $this->serializeAppNotification($notification));
+
+        $notifications = $databaseNotifications
+            ->concat($appNotifications)
+            ->sortByDesc('created_at')
+            ->take(100)
+            ->values();
 
         return response()->json([
             'data' => $notifications,
-            'unread_count' => Notification::where('user_id', Auth::id())->whereNull('read_at')->count(),
+            'unread_count' => $user->unreadNotifications()->count()
+                + Notification::where('user_id', $user->id)->whereNull('read_at')->count(),
         ]);
     }
 
-    public function readNotification(int $id)
+    public function readNotification(string $id)
     {
-        $notification = Notification::where('user_id', Auth::id())->where('id', $id)->firstOrFail();
-        $notification->markAsRead();
+        $user = Auth::user();
+
+        if (str_starts_with($id, 'app:')) {
+            $id = substr($id, 4);
+        }
+
+        if (str_starts_with($id, 'db:')) {
+            $id = substr($id, 3);
+        }
+
+        $databaseNotification = $user->notifications()->where('id', $id)->first();
+        if ($databaseNotification) {
+            $databaseNotification->markAsRead();
+
+            return response()->json([
+                'message' => 'Notification marked as read.',
+            ]);
+        }
+
+        $appNotification = Notification::where('user_id', $user->id)->where('id', $id)->firstOrFail();
+        $appNotification->markAsRead();
 
         return response()->json([
             'message' => 'Notification marked as read.',
@@ -250,13 +275,66 @@ class AccountController extends Controller
 
     public function readAllNotifications()
     {
-        Notification::where('user_id', Auth::id())
+        $user = Auth::user();
+
+        $user->unreadNotifications()->update(['read_at' => now()]);
+
+        Notification::where('user_id', $user->id)
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
         return response()->json([
             'message' => 'All notifications marked as read.',
         ]);
+    }
+
+    private function serializeDatabaseNotification(DatabaseNotification $notification): array
+    {
+        $data = $notification->data ?? [];
+        $type = $data['type'] ?? class_basename($notification->type);
+        $title = $data['title'] ?? $data['post_title'] ?? $this->notificationTitle($type);
+        $message = $data['message'] ?? $data['excerpt'] ?? null;
+        $actionUrl = $notification->url ?? $data['url'] ?? $data['action_url'] ?? $data['__action_url'] ?? null;
+
+        return [
+            'id' => (string) $notification->id,
+            'source' => 'database',
+            'title' => $title,
+            'message' => $message,
+            'type' => $type,
+            'action_url' => $actionUrl,
+            'data' => $data,
+            'read_at' => optional($notification->read_at)?->toIso8601String(),
+            'created_at' => optional($notification->created_at)?->toIso8601String(),
+        ];
+    }
+
+    private function serializeAppNotification(Notification $notification): array
+    {
+        return [
+            'id' => (string) $notification->id,
+            'source' => 'app',
+            'title' => $notification->title,
+            'message' => $notification->message,
+            'type' => $notification->type,
+            'action_url' => $notification->action_url,
+            'data' => [],
+            'read_at' => optional($notification->read_at)?->toIso8601String(),
+            'created_at' => optional($notification->created_at)?->toIso8601String(),
+        ];
+    }
+
+    private function notificationTitle(string $type): string
+    {
+        return match ($type) {
+            'new_comment' => 'New comment',
+            'new_like' => 'New like',
+            'new_subscriber' => 'New subscriber',
+            'new_video_share' => 'New share',
+            'report_assigned' => 'Report assigned',
+            'creator_feedback' => 'Creator feedback',
+            default => Str::headline($type),
+        };
     }
 
     private function resolveVideo(string $video): ?Video

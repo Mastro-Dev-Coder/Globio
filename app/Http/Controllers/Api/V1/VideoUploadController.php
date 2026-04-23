@@ -141,11 +141,10 @@ class VideoUploadController extends Controller
         }
     }
 
-    public function updateVideo(Request $request, Video $video)
+    public function updateVideo(Request $request, string $video)
     {
-        if ($video->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
+        $video = $this->resolveOwnedVideo($video);
+        abort_if(!$video, 404, 'Video not found.');
 
         $validated = $request->validate([
             'title' => ['nullable', 'string', 'max:255'],
@@ -191,11 +190,10 @@ class VideoUploadController extends Controller
         ]);
     }
 
-    public function deleteVideo(Video $video)
+    public function deleteVideo(string $video)
     {
-        if ($video->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
+        $video = $this->resolveOwnedVideo($video);
+        abort_if(!$video, 404, 'Video not found.');
 
         try {
             $this->videoService->deleteVideo($video);
@@ -205,11 +203,10 @@ class VideoUploadController extends Controller
         }
     }
 
-    public function checkVideoStatus(Video $video)
+    public function checkVideoStatus(string $video)
     {
-        if ($video->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
+        $video = $this->resolveOwnedVideo($video);
+        abort_if(!$video, 404, 'Video not found.');
 
         return response()->json([
             'status' => $video->status,
@@ -273,5 +270,17 @@ class VideoUploadController extends Controller
                 'message' => 'Error during operation: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    private function resolveOwnedVideo(string $video): ?Video
+    {
+        return Video::where('user_id', Auth::id())
+            ->where(function ($query) use ($video) {
+                $query->where('video_url', $video);
+                if (is_numeric($video)) {
+                    $query->orWhere('id', (int) $video);
+                }
+            })
+            ->first();
     }
 }
