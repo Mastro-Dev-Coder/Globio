@@ -19,6 +19,9 @@ class ContentController extends Controller
 {
     public function appConfig()
     {
+        $billing = app(\App\Services\StripeBillingService::class);
+        $premiumPlan = $billing->premiumPlan();
+
         return response()->json([
             'app_name' => config('app.name'),
             'app_url' => config('app.url'),
@@ -31,6 +34,12 @@ class ContentController extends Controller
                 'likes' => true,
                 'watch_later' => true,
                 'subscriptions' => true,
+                'premium' => true,
+                'playlist_management' => true,
+            ],
+            'premium' => [
+                'plan' => $premiumPlan,
+                'customer_portal_enabled' => $billing->isConfigured(),
             ],
         ]);
     }
@@ -519,6 +528,13 @@ class ContentController extends Controller
             'user_state' => [
                 'is_in_watch_later' => $isInWatchLater,
                 'reaction' => $userReaction,
+            ],
+            'premium_features' => [
+                'ad_free_supported' => true,
+                'background_playback_supported' => true,
+                'picture_in_picture_supported' => true,
+                'higher_quality_streaming_supported' => !$video->is_reel,
+                'enhanced_reels_controls_supported' => (bool) $video->is_reel,
             ],
         ];
 

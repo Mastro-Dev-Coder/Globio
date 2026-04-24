@@ -410,6 +410,104 @@
             </form>
         </div>
 
+        <!-- Stripe Billing Settings -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                    <i class="fab fa-stripe mr-3 text-gray-500"></i>
+                    Stripe Premium
+                </h3>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    Configura checkout mensile, webhook e customer portal dal pannello admin senza usare variabili `.env`.
+                </p>
+            </div>
+
+            <form method="POST" action="{{ route('admin.settings.update') }}" class="p-6 space-y-6">
+                @csrf
+                @method('PUT')
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="stripe_public_key" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Stripe Public Key
+                        </label>
+                        <input type="text" id="stripe_public_key" name="stripe_public_key"
+                            value="{{ old('stripe_public_key', $settings['stripe_public_key']) }}"
+                            placeholder="pk_live_... oppure pk_test_..."
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+
+                    <div>
+                        <label for="stripe_secret_key" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Stripe Secret Key
+                        </label>
+                        <input type="password" id="stripe_secret_key" name="stripe_secret_key"
+                            value="{{ old('stripe_secret_key', $settings['stripe_secret_key']) }}"
+                            placeholder="sk_live_... oppure sk_test_..."
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="stripe_webhook_secret" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Stripe Webhook Secret
+                        </label>
+                        <input type="password" id="stripe_webhook_secret" name="stripe_webhook_secret"
+                            value="{{ old('stripe_webhook_secret', $settings['stripe_webhook_secret']) }}"
+                            placeholder="whsec_..."
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+
+                    <div>
+                        <label for="stripe_premium_price_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Premium Price ID
+                        </label>
+                        <input type="text" id="stripe_premium_price_id" name="stripe_premium_price_id"
+                            value="{{ old('stripe_premium_price_id', $settings['stripe_premium_price_id']) }}"
+                            placeholder="price_..."
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="stripe_premium_amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Prezzo Premium in centesimi
+                        </label>
+                        <input type="number" id="stripe_premium_amount" name="stripe_premium_amount"
+                            value="{{ old('stripe_premium_amount', $settings['stripe_premium_amount']) }}"
+                            min="100" step="1"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Esempio: `1199` = 11.99 EUR.</p>
+                    </div>
+
+                    <div>
+                        <label for="stripe_premium_currency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Valuta Premium
+                        </label>
+                        <input type="text" id="stripe_premium_currency" name="stripe_premium_currency"
+                            value="{{ old('stripe_premium_currency', $settings['stripe_premium_currency']) }}"
+                            maxlength="3" placeholder="eur"
+                            class="w-full px-3 py-2 uppercase border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                </div>
+
+                <div class="rounded-lg bg-gray-50 p-4 text-sm text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                    <p class="font-medium text-gray-900 dark:text-white">Webhook da configurare in Stripe</p>
+                    <p class="mt-2 font-mono text-xs break-all">{{ url('/billing/stripe/webhook') }}</p>
+                    <p class="mt-2">Eventi consigliati: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`, `invoice.paid`.</p>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit"
+                        class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                        <i class="fas fa-save mr-2"></i>Salva Stripe Premium
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <!-- FFmpeg Settings Summary -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
             <div class="p-6 border-b border-gray-200 dark:border-gray-700">

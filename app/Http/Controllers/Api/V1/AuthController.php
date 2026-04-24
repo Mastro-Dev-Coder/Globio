@@ -127,6 +127,11 @@ class AuthController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
+            'premium' => [
+                'active' => $user->hasActivePremium(),
+                'premium_access_ends_at' => optional($user->premium_access_ends_at)?->toIso8601String(),
+                'features' => $user->premiumCapabilities(),
+            ],
             'profile' => [
                 'username' => $profile?->username,
                 'channel_name' => $profile?->channel_name ?? $user->name,
@@ -159,4 +164,3 @@ class AuthController extends Controller
         return asset('storage/' . $cleanPath);
     }
 }
-

@@ -11,6 +11,7 @@ use App\Http\Controllers\AdvancedAnalyticsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\DynamicStyleController;
 use App\Http\Controllers\PlaylistController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\AdminLegalController;
 use App\Http\Controllers\CommentModerationController;
@@ -54,6 +55,16 @@ Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
 Route::post('/contact/send', [LegalController::class, 'sendContact'])->name('send.contact');
 Route::view('/api-docs', 'api-docs')->name('api.docs');
+Route::post('/billing/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('billing.stripe.webhook');
+Route::get('/premium/success', function () {
+    return response('<h1>Pagamento completato</h1><p>Puoi tornare nell\'app e sincronizzare lo stato premium.</p>');
+})->name('billing.premium.success');
+Route::get('/premium/cancel', function () {
+    return response('<h1>Pagamento annullato</h1><p>Nessun addebito completato.</p>');
+})->name('billing.premium.cancel');
+Route::get('/premium/portal-return', function () {
+    return response('<h1>Portale abbonamento chiuso</h1><p>Puoi tornare nell\'app.</p>');
+})->name('billing.premium.portal-return');
 
 // Video Routes
 Route::get('/videos/{video:video_url}', [VideoController::class, 'show'])->name('videos.show');

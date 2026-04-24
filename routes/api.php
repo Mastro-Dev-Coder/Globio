@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\V1\AccountController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ContentController;
+use App\Http\Controllers\Api\V1\PlaylistManagementController;
+use App\Http\Controllers\Api\V1\PremiumSubscriptionController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\V1\StudioController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -61,6 +63,7 @@ Route::middleware('api')->group(function () {
         Route::get('/creators/{creator}', [ContentController::class, 'showCreator']);
         Route::get('/creators/{creator}/videos', [ContentController::class, 'creatorVideos']);
         Route::get('/search', [ContentController::class, 'search']);
+        Route::get('/premium/plans', [PremiumSubscriptionController::class, 'plans']);
 
         // App Settings - Public
         Route::get('/settings', [SettingsController::class, 'appSettings']);
@@ -94,6 +97,18 @@ Route::middleware('api')->group(function () {
             Route::post('/me/history/{video}', [AccountController::class, 'upsertWatchHistory']);
 
             Route::get('/me/playlists', [AccountController::class, 'playlists']);
+            Route::post('/me/playlists', [PlaylistManagementController::class, 'store']);
+            Route::get('/me/playlists/{playlist}', [PlaylistManagementController::class, 'show']);
+            Route::put('/me/playlists/{playlist}', [PlaylistManagementController::class, 'update']);
+            Route::delete('/me/playlists/{playlist}', [PlaylistManagementController::class, 'destroy']);
+            Route::post('/me/playlists/{playlist}/videos', [PlaylistManagementController::class, 'addVideo']);
+            Route::delete('/me/playlists/{playlist}/videos/{video}', [PlaylistManagementController::class, 'removeVideo']);
+
+            // Premium
+            Route::get('/me/premium', [PremiumSubscriptionController::class, 'status']);
+            Route::post('/me/premium/checkout', [PremiumSubscriptionController::class, 'checkout']);
+            Route::post('/me/premium/confirm', [PremiumSubscriptionController::class, 'confirm']);
+            Route::post('/me/premium/portal', [PremiumSubscriptionController::class, 'portal']);
 
             // Authenticated - notifications
             Route::get('/me/notifications', [AccountController::class, 'notifications']);

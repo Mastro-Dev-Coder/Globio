@@ -17,14 +17,31 @@ class AccountController extends Controller
 {
     public function me(Request $request)
     {
-        $user = $request->user()->load('userProfile');
+        $user = $request->user()->load(['userProfile', 'premiumSubscriptions']);
         $profile = $user->userProfile;
+        $premiumSubscription = $user->activePremiumSubscription();
 
         return response()->json([
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
+            'premium' => [
+                'active' => $user->hasActivePremium(),
+                'premium_access_ends_at' => optional($user->premium_access_ends_at)?->toIso8601String(),
+                'plan' => $premiumSubscription ? [
+                    'id' => $premiumSubscription->id,
+                    'plan_code' => $premiumSubscription->plan_code,
+                    'plan_name' => $premiumSubscription->plan_name,
+                    'status' => $premiumSubscription->status,
+                    'billing_interval' => $premiumSubscription->billing_interval,
+                    'amount' => (int) $premiumSubscription->amount,
+                    'currency' => $premiumSubscription->currency,
+                    'current_period_end' => optional($premiumSubscription->current_period_end)?->toIso8601String(),
+                    'cancel_at_period_end' => (bool) $premiumSubscription->cancel_at_period_end,
+                ] : null,
+                'features' => $user->premiumCapabilities(),
+            ],
             'profile' => [
                 'username' => $profile?->username,
                 'channel_name' => $profile?->channel_name ?? $user->name,
@@ -204,7 +221,7 @@ class AccountController extends Controller
                     'id' => $playlist->id,
                     'title' => $playlist->title,
                     'description' => $playlist->description,
-                    'thumbnail_url' => $this->mediaUrl($playlist->thumbnail_path),
+                    'thumbnail_url' => $playlist->dynamic_thumbnail_url,
                     'is_public' => (bool) $playlist->is_public,
                     'video_count' => (int) $playlist->videos_count,
                     'views_count' => (int) $playlist->views_count,

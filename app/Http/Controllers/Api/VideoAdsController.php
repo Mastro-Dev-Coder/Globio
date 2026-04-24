@@ -32,6 +32,17 @@ class VideoAdsController extends Controller
     public function getVideoAds(Request $request, $videoId)
     {
         try {
+            if ($request->user()?->hasActivePremium()) {
+                return response()->json([
+                    'success' => true,
+                    'ads' => [],
+                    'settings' => [
+                        'disabled_for_premium' => true,
+                    ],
+                    'language' => $request->get('lang', 'it')
+                ]);
+            }
+
             $video = Video::findOrFail($videoId);
             $language = $request->get('lang', 'it');
 

@@ -72,6 +72,12 @@ class AdminSettingsController extends Controller
             'smtp_password' => Setting::getValue('smtp_password', env('MAIL_PASSWORD')),
             'smtp_encryption' => Setting::getValue('smtp_encryption', env('MAIL_ENCRYPTION', 'tls')),
             'from_address' => Setting::getValue('from_address', env('MAIL_FROM_ADDRESS')),
+            'stripe_public_key' => Setting::getValue('stripe_public_key'),
+            'stripe_secret_key' => Setting::getValue('stripe_secret_key'),
+            'stripe_webhook_secret' => Setting::getValue('stripe_webhook_secret'),
+            'stripe_premium_price_id' => Setting::getValue('stripe_premium_price_id'),
+            'stripe_premium_amount' => Setting::getValue('stripe_premium_amount', 1199),
+            'stripe_premium_currency' => Setting::getValue('stripe_premium_currency', 'eur'),
 
             'logo' => Setting::getValue('logo'),
         ];
@@ -81,48 +87,112 @@ class AdminSettingsController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
-            'site_name' => 'nullable|string|max:255',
-            'max_upload_size' => 'required|integer|min:50|max:2000',
-            'require_approval' => 'boolean',
-            'primary_color' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
-            'primary_color_light' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
-            'primary_color_dark' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
-            'accent_color' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
-            'accent_color_light' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
-            'accent_color_dark' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
-            'custom_logo' => 'sometimes|file|mimes:jpg,jpeg,png,svg|max:2048',
-            'smtp_host' => 'nullable|string|max:255',
-            'smtp_port' => 'nullable|integer|min:1|max:65535',
-            'smtp_username' => 'nullable|string|max:255',
-            'smtp_password' => 'nullable|string',
-            'smtp_encryption' => 'nullable|string|in:tls,ssl,null',
-            'from_address' => 'nullable|email',
-        ]);
-
-        $generalSettings = [
-            'site_name' => $request->site_name,
-            'max_upload_size' => $request->max_upload_size,
-            'require_approval' => $request->boolean('require_approval'),
+        $generalKeys = [
+            'site_name',
+            'max_upload_size',
+            'require_approval',
+            'primary_color',
+            'primary_color_light',
+            'primary_color_dark',
+            'accent_color',
+            'accent_color_light',
+            'accent_color_dark',
+            'custom_logo',
+            'remove_logo',
+        ];
+        $smtpKeys = [
+            'smtp_host',
+            'smtp_port',
+            'smtp_username',
+            'smtp_password',
+            'smtp_encryption',
+            'from_address',
+        ];
+        $billingKeys = [
+            'stripe_public_key',
+            'stripe_secret_key',
+            'stripe_webhook_secret',
+            'stripe_premium_price_id',
+            'stripe_premium_amount',
+            'stripe_premium_currency',
         ];
 
-        $colorSettings = [
-            'primary_color' => $request->primary_color,
-            'primary_color_light' => $request->primary_color_light,
-            'primary_color_dark' => $request->primary_color_dark,
-            'accent_color' => $request->accent_color,
-            'accent_color_light' => $request->accent_color_light,
-            'accent_color_dark' => $request->accent_color_dark,
-        ];
+        $hasGeneralInput = $request->hasAny($generalKeys) || $request->hasFile('custom_logo');
+        $hasSmtpInput = $request->hasAny($smtpKeys);
+        $hasBillingInput = $request->hasAny($billingKeys);
+
+        $rules = [];
+
+        if ($hasGeneralInput) {
+            $rules = array_merge($rules, [
+                'site_name' => 'nullable|string|max:255',
+                'max_upload_size' => 'required|integer|min:50|max:2000',
+                'require_approval' => 'boolean',
+                'primary_color' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
+                'primary_color_light' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
+                'primary_color_dark' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
+                'accent_color' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
+                'accent_color_light' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
+                'accent_color_dark' => 'nullable|string|regex:/^#[a-fA-F0-9]{6}$/',
+                'custom_logo' => 'sometimes|file|mimes:jpg,jpeg,png,svg|max:2048',
+            ]);
+        }
+
+        if ($hasSmtpInput) {
+            $rules = array_merge($rules, [
+                'smtp_host' => 'nullable|string|max:255',
+                'smtp_port' => 'nullable|integer|min:1|max:65535',
+                'smtp_username' => 'nullable|string|max:255',
+                'smtp_password' => 'nullable|string',
+                'smtp_encryption' => 'nullable|string|in:tls,ssl,null',
+                'from_address' => 'nullable|email',
+            ]);
+        }
+
+        if ($hasBillingInput) {
+            $rules = array_merge($rules, [
+                'stripe_public_key' => 'nullable|string|max:255',
+                'stripe_secret_key' => 'nullable|string|max:255',
+                'stripe_webhook_secret' => 'nullable|string|max:255',
+                'stripe_premium_price_id' => 'nullable|string|max:255',
+                'stripe_premium_amount' => 'nullable|integer|min:100|max:999999',
+                'stripe_premium_currency' => 'nullable|string|size:3',
+            ]);
+        }
+
+        if (!empty($rules)) {
+            $request->validate($rules);
+        }
+
+        $generalSettings = [];
+        if ($hasGeneralInput) {
+            $generalSettings = [
+                'site_name' => $request->site_name,
+                'max_upload_size' => $request->max_upload_size,
+                'require_approval' => $request->boolean('require_approval'),
+            ];
+        }
+
+        $colorSettings = [];
+        if ($hasGeneralInput) {
+            $colorSettings = [
+                'primary_color' => $request->primary_color,
+                'primary_color_light' => $request->primary_color_light,
+                'primary_color_dark' => $request->primary_color_dark,
+                'accent_color' => $request->accent_color,
+                'accent_color_light' => $request->accent_color_light,
+                'accent_color_dark' => $request->accent_color_dark,
+            ];
+        }
 
         $logoSettings = [];
-        if ($request->has('remove_logo') && $request->remove_logo) {
+        if ($hasGeneralInput && $request->has('remove_logo') && $request->remove_logo) {
             $existingLogoPath = Setting::getValue('logo');
             if ($existingLogoPath && Storage::exists($existingLogoPath)) {
                 Storage::delete($existingLogoPath);
             }
             $logoSettings['logo'] = null;
-        } elseif ($request->hasFile('custom_logo') && $request->file('custom_logo')->isValid()) {
+        } elseif ($hasGeneralInput && $request->hasFile('custom_logo') && $request->file('custom_logo')->isValid()) {
             $logo = $request->file('custom_logo');
             $logoFileName = 'logo_' . time() . '.' . $logo->getClientOriginalExtension();
             $logoPath = $logo->storeAs('logos', $logoFileName, 'public');
@@ -137,13 +207,26 @@ class AdminSettingsController extends Controller
 
         $allSettings = array_merge($generalSettings, $colorSettings, $logoSettings);
 
+        $billingSettings = [
+            'stripe_public_key' => $request->stripe_public_key,
+            'stripe_secret_key' => $request->stripe_secret_key,
+            'stripe_webhook_secret' => $request->stripe_webhook_secret,
+            'stripe_premium_price_id' => $request->stripe_premium_price_id,
+            'stripe_premium_amount' => $request->stripe_premium_amount,
+            'stripe_premium_currency' => $request->filled('stripe_premium_currency')
+                ? strtolower($request->stripe_premium_currency)
+                : null,
+        ];
+
+        $allSettings = array_merge($allSettings, $billingSettings);
+
         foreach ($allSettings as $key => $value) {
             if (in_array($key, ['require_approval']) || $request->filled($key) || $key === 'logo') {
                 Setting::updateOrCreate(['key' => $key], ['value' => $value]);
             }
         }
 
-        if ($request->filled('site_name') && $request->site_name !== config('app.name')) {
+        if ($hasGeneralInput && $request->filled('site_name') && $request->site_name !== config('app.name')) {
             $envPath = base_path('.env');
             if (file_exists($envPath)) {
                 $envContent = file_get_contents($envPath);
@@ -156,7 +239,7 @@ class AdminSettingsController extends Controller
             }
         }
 
-        if ($request->hasAny(['smtp_host', 'smtp_port', 'smtp_username', 'smtp_password', 'smtp_encryption', 'from_address'])) {
+        if ($hasSmtpInput) {
             $this->updateSmtpSettings($request);
         }
 

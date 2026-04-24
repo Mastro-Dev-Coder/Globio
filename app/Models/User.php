@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\ApiAccessToken;
+use App\Models\PremiumSubscription;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,6 +27,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'stripe_customer_id',
+        'premium_access_ends_at',
     ];
 
     /**
@@ -48,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'premium_access_ends_at' => 'datetime',
         ];
     }
 
@@ -115,6 +119,59 @@ class User extends Authenticatable
     public function userPreferences(): HasOne
     {
         return $this->hasOne(UserPreference::class);
+    }
+
+    public function premiumSubscriptions(): HasMany
+    {
+        return $this->hasMany(PremiumSubscription::class);
+    }
+
+    public function activePremiumSubscription(): ?PremiumSubscription
+    {
+        return $this->premiumSubscriptions
+            ->first(fn (PremiumSubscription $subscription) => $subscription->isActive())
+            ?? $this->premiumSubscriptions()
+                ->latest('current_period_end')
+                ->get()
+                ->first(fn (PremiumSubscription $subscription) => $subscription->isActive());
+    }
+
+    public function hasActivePremium(): bool
+    {
+        if ($this->relationLoaded('premiumSubscriptions')) {
+            return $this->activePremiumSubscription() !== null;
+        }
+
+        return $this->premiumSubscriptions()
+            ->get()
+            ->contains(fn (PremiumSubscription $subscription) => $subscription->isActive());
+    }
+
+    public function premiumCapabilities(): array
+    {
+        $subscription = $this->activePremiumSubscription();
+
+        if (!$subscription) {
+            return [
+                'ad_free' => false,
+                'background_playback' => false,
+                'picture_in_picture' => false,
+                'smart_downloads' => false,
+                'higher_quality_streaming' => false,
+                'reels_enhanced_controls' => false,
+                'queue_management' => false,
+            ];
+        }
+
+        return array_merge([
+            'ad_free' => true,
+            'background_playback' => true,
+            'picture_in_picture' => true,
+            'smart_downloads' => true,
+            'higher_quality_streaming' => true,
+            'reels_enhanced_controls' => true,
+            'queue_management' => true,
+        ], $subscription->features ?? []);
     }
 
     // La relazione notifications Ã¨ gestita automaticamente dal trait Notifiable di Laravel

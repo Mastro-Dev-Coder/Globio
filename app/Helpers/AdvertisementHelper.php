@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Advertisement;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -13,6 +14,11 @@ class AdvertisementHelper
      */
     public static function getActiveAdvertisements($position, $limit = 1)
     {
+        $user = Auth::user();
+        if ($user && method_exists($user, 'hasActivePremium') && $user->hasActivePremium()) {
+            return collect();
+        }
+
         return Cache::remember(
             "advertisements_{$position}_{$limit}",
             300, // Cache per 5 minuti
