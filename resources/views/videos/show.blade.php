@@ -122,6 +122,36 @@
                                     </div>
                                 </div>
 
+                                @if (!empty($shouldShowPremiumBanner))
+                                    <div class="overflow-hidden rounded-3xl border border-yellow-400/20 bg-gradient-to-br from-yellow-400/12 via-orange-400/10 to-sky-400/10 p-5 shadow-xl shadow-black/20">
+                                        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                                            <div class="max-w-2xl">
+                                                <p class="text-xs font-semibold uppercase tracking-[0.25em] text-yellow-200">
+                                                    Globio Premium
+                                                </p>
+                                                <h2 class="mt-2 text-xl font-bold text-white">
+                                                    Guarda senza pubblicita e sblocca funzioni premium per video e reels.
+                                                </h2>
+                                                <p class="mt-2 text-sm leading-6 text-gray-300">
+                                                    Background playback, picture in picture, qualita avanzata e controlli extra in stile esperienza premium.
+                                                </p>
+                                            </div>
+                                            <div class="flex flex-col gap-3 sm:flex-row">
+                                                <a href="{{ route('premium.index') }}"
+                                                    class="inline-flex items-center justify-center rounded-full bg-yellow-400 px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-yellow-300">
+                                                    Scopri Premium
+                                                </a>
+                                                @guest
+                                                    <a href="{{ route('login') }}"
+                                                        class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                                                        Accedi per abbonarti
+                                                    </a>
+                                                @endguest
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <!-- Tags -->
                                 @if ($video->tags && count($video->tags) > 0)
                                     <div class="flex flex-wrap gap-2 py-4 border-b border-gray-800">

@@ -4,6 +4,7 @@
         <a href="{{ route('contact') }}" class="hover:underline">Contatti</a>
         <a href="{{ route('privacy') }}" class="hover:underline">Privacy Policy</a>
         <a href="{{ route('terms') }}" class="hover:underline">Termini di Servizio</a>
+        <a href="{{ route('premium.index') }}" class="hover:underline">Globio Premium</a>
         <a href="{{ route('api.docs') }}" class="hover:underline">API Docs</a>
     </div>
 

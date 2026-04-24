@@ -204,6 +204,9 @@ class VideoController extends Controller
             );
         }
 
+        $shouldShowPremiumBanner = !$request->user()?->hasActivePremium()
+            && ($video->id % 3 === 0 || $video->views_count % 5 === 0);
+
         $shareUrl = route('videos.show', $video);
 
         // Gestione stato del mini player
@@ -254,7 +257,8 @@ class VideoController extends Controller
             'miniPlayerLastVideo',
             'nextVideo',
             'playlistNextVideos',
-            'currentPlaylistId'
+            'currentPlaylistId',
+            'shouldShowPremiumBanner'
         ));
     }
 

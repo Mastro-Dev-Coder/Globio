@@ -11,6 +11,7 @@ use App\Http\Controllers\AdvancedAnalyticsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\DynamicStyleController;
 use App\Http\Controllers\PlaylistController;
+use App\Http\Controllers\PremiumController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\AdminLegalController;
@@ -53,6 +54,7 @@ Route::get('/home/filter', [HomeController::class, 'filter'])->name('home.filter
 Route::get('/contact', [LegalController::class, 'contact'])->name('contact');
 Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
+Route::get('/premium', [PremiumController::class, 'index'])->name('premium.index');
 Route::post('/contact/send', [LegalController::class, 'sendContact'])->name('send.contact');
 Route::view('/api-docs', 'api-docs')->name('api.docs');
 Route::post('/billing/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('billing.stripe.webhook');
@@ -86,6 +88,9 @@ Route::get('/channel/{channel_name}', [UserController::class, 'channel'])->name(
 
 // Protected Video Routes
 Route::middleware(['auth'])->group(function () {
+    Route::post('/premium/checkout', [PremiumController::class, 'checkout'])->name('premium.checkout');
+    Route::post('/premium/portal', [PremiumController::class, 'portal'])->name('premium.portal');
+
     Route::post('/upload', [VideoController::class, 'store'])->name('videos.store');
     Route::get('/my-videos', [VideoController::class, 'myVideos'])->name('videos.my');
     Route::get('/videos/{video}/edit', [VideoController::class, 'edit'])->name('videos.edit');
