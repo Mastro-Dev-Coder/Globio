@@ -44,7 +44,8 @@ class PremiumAndPlaylistApiTest extends TestCase
         $response->assertOk()
             ->assertJsonPath('active', true)
             ->assertJsonPath('plan.plan_code', 'globio-premium')
-            ->assertJsonPath('features.ad_free', true);
+            ->assertJsonPath('features.ad_free', true)
+            ->assertJsonPath('badge.short_label', 'Premium');
     }
 
     public function test_it_creates_playlist_and_adds_video(): void

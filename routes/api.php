@@ -109,6 +109,8 @@ Route::middleware('api')->group(function () {
             Route::post('/me/premium/checkout', [PremiumSubscriptionController::class, 'checkout']);
             Route::post('/me/premium/confirm', [PremiumSubscriptionController::class, 'confirm']);
             Route::post('/me/premium/portal', [PremiumSubscriptionController::class, 'portal']);
+            Route::post('/me/premium/cancel', [PremiumSubscriptionController::class, 'cancel']);
+            Route::post('/me/premium/resume', [PremiumSubscriptionController::class, 'resume']);
 
             // Authenticated - notifications
             Route::get('/me/notifications', [AccountController::class, 'notifications']);

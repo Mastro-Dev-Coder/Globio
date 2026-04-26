@@ -57,6 +57,68 @@
                             @method('PUT')
                             @csrf
 
+                            @php
+                                $premiumSubscription = $user->activePremiumSubscription();
+                            @endphp
+
+                            <div class="rounded-2xl border {{ $user->hasActivePremium() ? 'border-amber-200 bg-amber-50 dark:border-amber-500/20 dark:bg-amber-500/10' : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900/40' }} p-5">
+                                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="inline-flex h-10 w-10 items-center justify-center rounded-full {{ $user->hasActivePremium() ? 'bg-amber-400 text-gray-950' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300' }}">
+                                                <i class="fas fa-crown"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-gray-900 dark:text-white">Stato abbonamento</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                    {{ $user->hasActivePremium() ? ($premiumSubscription?->cancel_at_period_end ? 'Premium attivo fino a fine periodo' : 'Premium attivo con rinnovo automatico') : 'Nessun abbonamento premium attivo' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @if ($premiumSubscription?->current_period_end)
+                                            <p class="mt-3 text-sm text-gray-700 dark:text-gray-300">
+                                                Accesso valido fino al {{ $premiumSubscription->current_period_end->format('d/m/Y') }}.
+                                            </p>
+                                        @endif
+                                        @if ($user->hasActivePremium())
+                                            <p class="mt-2 inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:border-amber-400/30 dark:bg-amber-500/10 dark:text-amber-200">
+                                                <i class="fas fa-crown"></i>
+                                                Badge abbonato visibile sul profilo
+                                            </p>
+                                        @endif
+                                    </div>
+                                    <div class="flex flex-col gap-2 sm:flex-row">
+                                        @if ($user->hasActivePremium())
+                                            @if ($premiumSubscription?->cancel_at_period_end)
+                                                <form method="POST" action="{{ route('premium.resume') }}">
+                                                    @csrf
+                                                    <button type="submit" class="w-full rounded-xl bg-amber-400 px-4 py-3 text-sm font-semibold text-gray-950 hover:bg-amber-300">
+                                                        Riattiva rinnovo
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form method="POST" action="{{ route('premium.cancel') }}">
+                                                    @csrf
+                                                    <button type="submit" class="w-full rounded-xl bg-rose-600 px-4 py-3 text-sm font-semibold text-white hover:bg-rose-500">
+                                                        Disdici
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            <form method="POST" action="{{ route('premium.portal') }}">
+                                                @csrf
+                                                <button type="submit" class="w-full rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100">
+                                                    Gestisci
+                                                </button>
+                                            </form>
+                                        @else
+                                            <a href="{{ route('premium.index') }}" class="inline-flex items-center justify-center rounded-xl bg-amber-400 px-4 py-3 text-sm font-semibold text-gray-950 hover:bg-amber-300">
+                                                Scopri Premium
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Avatar Upload -->
                             <div class="flex items-center gap-6">
                                 <div class="relative">

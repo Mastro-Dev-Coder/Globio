@@ -34,7 +34,7 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $user->load('userProfile');
+        $user->load(['userProfile', 'premiumSubscriptions']);
 
         $userId = $user->id;
 
@@ -77,7 +77,7 @@ class UserController extends Controller
             abort(404, 'Canale non trovato');
         }
 
-        $UserProfile->load('user');
+        $UserProfile->load('user.premiumSubscriptions');
 
         if (is_null($UserProfile->is_channel_enabled)) {
             $UserProfile->is_channel_enabled = true;
@@ -926,6 +926,11 @@ class UserController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'premium' => [
+                    'active' => $user->hasActivePremium(),
+                    'badge' => $user->premiumBadge(),
+                    'premium_access_ends_at' => optional($user->premium_access_ends_at)?->toIso8601String(),
+                ],
                 'userProfile' => $user->userProfile ? [
                     'username' => $user->userProfile->username,
                     'bio' => $user->userProfile->bio,

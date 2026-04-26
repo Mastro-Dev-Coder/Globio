@@ -104,6 +104,12 @@
                                             <i class="fas fa-check text-white text-xs"></i>
                                         </div>
                                     @endif
+                                    @if ($UserProfile->user?->hasPremiumBadge())
+                                        <div class="inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/10 dark:text-amber-200">
+                                            <i class="fas fa-crown text-[11px]"></i>
+                                            <span>{{ $UserProfile->user->premiumBadge()['short_label'] }}</span>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div
@@ -125,6 +131,13 @@
                                 @if ($UserProfile && $UserProfile->channel_description)
                                     <p class="text-gray-700 dark:text-gray-300 max-w-3xl">
                                         {{ Str::limit($UserProfile->channel_description, 200) }}
+                                    </p>
+                                @endif
+
+                                @if ($UserProfile->user?->hasPremiumBadge())
+                                    <p class="mt-3 inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+                                        <i class="fas fa-crown"></i>
+                                        {{ $UserProfile->user->premiumBadge()['cancel_at_period_end'] ? 'Abbonato premium fino a fine periodo' : 'Abbonato premium attivo' }}
                                     </p>
                                 @endif
 

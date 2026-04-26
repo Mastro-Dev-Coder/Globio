@@ -22,10 +22,11 @@ class PremiumSubscriptionController extends Controller
     public function status(Request $request)
     {
         $user = $request->user()->load('premiumSubscriptions');
+        $subscription = $user->activePremiumSubscription();
 
         return response()->json([
             'active' => $user->hasActivePremium(),
-            'plan' => $user->activePremiumSubscription()?->only([
+            'plan' => $subscription?->only([
                 'id',
                 'plan_code',
                 'plan_name',
@@ -37,6 +38,8 @@ class PremiumSubscriptionController extends Controller
             ]),
             'features' => $user->premiumCapabilities(),
             'premium_access_ends_at' => optional($user->premium_access_ends_at)?->toIso8601String(),
+            'badge' => $user->premiumBadge(),
+            'current_period_end' => optional($subscription?->current_period_end)?->toIso8601String(),
         ]);
     }
 
@@ -87,6 +90,34 @@ class PremiumSubscriptionController extends Controller
             'message' => 'Premium subscription synchronized.',
             'subscription' => [
                 'status' => $subscription->status,
+                'current_period_end' => optional($subscription->current_period_end)?->toIso8601String(),
+            ],
+        ]);
+    }
+
+    public function cancel(Request $request)
+    {
+        $subscription = $this->billing->cancelSubscription($request->user());
+
+        return response()->json([
+            'message' => 'Premium subscription will end at the current billing period.',
+            'subscription' => [
+                'status' => $subscription->status,
+                'cancel_at_period_end' => (bool) $subscription->cancel_at_period_end,
+                'current_period_end' => optional($subscription->current_period_end)?->toIso8601String(),
+            ],
+        ]);
+    }
+
+    public function resume(Request $request)
+    {
+        $subscription = $this->billing->resumeSubscription($request->user());
+
+        return response()->json([
+            'message' => 'Premium subscription automatic renewal restored.',
+            'subscription' => [
+                'status' => $subscription->status,
+                'cancel_at_period_end' => (bool) $subscription->cancel_at_period_end,
                 'current_period_end' => optional($subscription->current_period_end)?->toIso8601String(),
             ],
         ]);

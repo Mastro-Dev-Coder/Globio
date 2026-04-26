@@ -41,6 +41,7 @@ class AccountController extends Controller
                     'cancel_at_period_end' => (bool) $premiumSubscription->cancel_at_period_end,
                 ] : null,
                 'features' => $user->premiumCapabilities(),
+                'badge' => $user->premiumBadge(),
             ],
             'profile' => [
                 'username' => $profile?->username,
@@ -52,6 +53,7 @@ class AccountController extends Controller
                 'subscriber_count' => (int) ($profile?->subscriber_count ?? 0),
                 'video_count' => (int) ($profile?->video_count ?? 0),
                 'total_views' => (int) ($profile?->total_views ?? 0),
+                'is_premium_subscriber' => $user->hasPremiumBadge(),
             ],
         ]);
     }

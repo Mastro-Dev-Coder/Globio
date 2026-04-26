@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Setting;
 use App\Models\PremiumSubscription;
 use App\Models\User;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -62,18 +63,22 @@ class StripeBillingService
             $user->forceFill(['stripe_customer_id' => $customerId])->save();
         }
 
-        $response = $this->request()->asForm()->post(self::STRIPE_API_BASE . '/checkout/sessions', [
-            'mode' => 'subscription',
-            'customer' => $customerId,
-            'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => $cancelUrl,
-            'line_items[0][price]' => $priceId,
-            'line_items[0][quantity]' => 1,
-            'allow_promotion_codes' => 'true',
-            'client_reference_id' => (string) $user->id,
-            'metadata[user_id]' => (string) $user->id,
-            'metadata[plan_code]' => 'globio-premium',
-        ]);
+        try {
+            $response = $this->request()->asForm()->post(self::STRIPE_API_BASE . '/checkout/sessions', [
+                'mode' => 'subscription',
+                'customer' => $customerId,
+                'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $cancelUrl,
+                'line_items[0][price]' => $priceId,
+                'line_items[0][quantity]' => 1,
+                'allow_promotion_codes' => 'true',
+                'client_reference_id' => (string) $user->id,
+                'metadata[user_id]' => (string) $user->id,
+                'metadata[plan_code]' => 'globio-premium',
+            ]);
+        } catch (RequestException $exception) {
+            $this->throwFriendlyStripeException($exception);
+        }
 
         $payload = $this->decode($response);
 
@@ -111,12 +116,26 @@ class StripeBillingService
             ]);
         }
 
-        $response = $this->request()->asForm()->post(self::STRIPE_API_BASE . '/billing_portal/sessions', [
-            'customer' => $customerId,
-            'return_url' => $returnUrl,
-        ]);
+        try {
+            $response = $this->request()->asForm()->post(self::STRIPE_API_BASE . '/billing_portal/sessions', [
+                'customer' => $customerId,
+                'return_url' => $returnUrl,
+            ]);
+        } catch (RequestException $exception) {
+            $this->throwFriendlyStripeException($exception);
+        }
 
         return $this->decode($response);
+    }
+
+    public function cancelSubscription(User $user): PremiumSubscription
+    {
+        return $this->setCancelAtPeriodEnd($user, true);
+    }
+
+    public function resumeSubscription(User $user): PremiumSubscription
+    {
+        return $this->setCancelAtPeriodEnd($user, false);
     }
 
     public function syncCheckoutSession(string $sessionId): PremiumSubscription
@@ -322,6 +341,30 @@ class StripeBillingService
         return $this->secret() !== '' && Setting::getValue('stripe_premium_price_id') !== null;
     }
 
+    private function setCancelAtPeriodEnd(User $user, bool $cancelAtPeriodEnd): PremiumSubscription
+    {
+        $subscription = $user->loadMissing('premiumSubscriptions')->activePremiumSubscription();
+
+        if (!$subscription?->stripe_subscription_id) {
+            throw ValidationException::withMessages([
+                'billing' => 'Non esiste un abbonamento premium attivo da aggiornare.',
+            ]);
+        }
+
+        try {
+            $response = $this->request()->asForm()->post(
+                self::STRIPE_API_BASE . '/subscriptions/' . $subscription->stripe_subscription_id,
+                [
+                    'cancel_at_period_end' => $cancelAtPeriodEnd ? 'true' : 'false',
+                ]
+            );
+        } catch (RequestException $exception) {
+            $this->throwFriendlyStripeException($exception);
+        }
+
+        return $this->syncSubscriptionPayload($this->decode($response));
+    }
+
     private function decode(Response $response): array
     {
         $response->throw();
@@ -341,5 +384,22 @@ class StripeBillingService
     private function secret(): string
     {
         return (string) Setting::getValue('stripe_secret_key', '');
+    }
+
+    private function throwFriendlyStripeException(RequestException $exception): never
+    {
+        $payload = $exception->response?->json() ?? [];
+        $code = $payload['error']['code'] ?? null;
+        $message = $payload['error']['message'] ?? 'Stripe request failed.';
+
+        if ($code === 'resource_missing') {
+            throw ValidationException::withMessages([
+                'billing' => 'Stripe non trova la risorsa richiesta: controlla soprattutto il Premium Price ID e verifica che appartenga allo stesso account e alla stessa modalita test/live della secret key.',
+            ]);
+        }
+
+        throw ValidationException::withMessages([
+            'billing' => 'Errore Stripe: ' . $message,
+        ]);
     }
 };

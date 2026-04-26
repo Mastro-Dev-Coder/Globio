@@ -96,6 +96,12 @@
                                     <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
                                         <span>@</span>{{ Auth::user()->userProfile->username }}
                                     </p>
+                                    @if (Auth::user()->hasPremiumBadge())
+                                        <p class="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+                                            <i class="fas fa-crown text-[10px]"></i>
+                                            <span>Abbonato Premium</span>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -342,6 +348,12 @@
                                     <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
                                         <span>@</span>{{ Auth::user()->userProfile->username }}
                                     </p>
+                                    @if (Auth::user()->hasPremiumBadge())
+                                        <p class="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+                                            <i class="fas fa-crown text-[10px]"></i>
+                                            <span>Abbonato Premium</span>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -90,7 +90,7 @@ class VideoController extends Controller
         }
     }
 
-    public function show($video)
+    public function show(Request $request, $video)
     {
         $video = Video::where('video_url', $video)->first();
 

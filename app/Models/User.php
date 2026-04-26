@@ -147,6 +147,28 @@ class User extends Authenticatable
             ->contains(fn (PremiumSubscription $subscription) => $subscription->isActive());
     }
 
+    public function hasPremiumBadge(): bool
+    {
+        return $this->hasActivePremium();
+    }
+
+    public function premiumBadge(): ?array
+    {
+        if (!$this->hasPremiumBadge()) {
+            return null;
+        }
+
+        $subscription = $this->activePremiumSubscription();
+
+        return [
+            'label' => 'Abbonato Premium',
+            'short_label' => 'Premium',
+            'icon' => 'fa-crown',
+            'current_period_end' => optional($subscription?->current_period_end)?->toIso8601String(),
+            'cancel_at_period_end' => (bool) ($subscription?->cancel_at_period_end ?? false),
+        ];
+    }
+
     public function premiumCapabilities(): array
     {
         $subscription = $this->activePremiumSubscription();

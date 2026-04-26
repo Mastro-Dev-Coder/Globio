@@ -90,6 +90,8 @@ Route::get('/channel/{channel_name}', [UserController::class, 'channel'])->name(
 Route::middleware(['auth'])->group(function () {
     Route::post('/premium/checkout', [PremiumController::class, 'checkout'])->name('premium.checkout');
     Route::post('/premium/portal', [PremiumController::class, 'portal'])->name('premium.portal');
+    Route::post('/premium/cancel', [PremiumController::class, 'cancel'])->name('premium.cancel');
+    Route::post('/premium/resume', [PremiumController::class, 'resume'])->name('premium.resume');
 
     Route::post('/upload', [VideoController::class, 'store'])->name('videos.store');
     Route::get('/my-videos', [VideoController::class, 'myVideos'])->name('videos.my');
