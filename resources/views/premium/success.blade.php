@@ -17,9 +17,29 @@
                             Il checkout e stato completato con successo. Ora puoi tornare alla sezione premium per vedere lo stato aggiornato del tuo abbonamento e il tuo badge da abbonato.
                         </p>
 
-                        @if (request('session_id'))
+                        @if ($synced)
                             <div class="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-100">
-                                Sessione checkout rilevata: <span class="font-mono text-emerald-200">{{ request('session_id') }}</span>
+                                Abbonamento sincronizzato correttamente con Globio.
+                                @if ($activeSubscription?->current_period_end)
+                                    <div class="mt-2 text-emerald-200/90">
+                                        Accesso premium valido fino al {{ $activeSubscription->current_period_end->format('d/m/Y') }}.
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
+
+                        @if ($syncError)
+                            <div class="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm text-amber-100">
+                                {{ $syncError }}
+                                @if ($sessionId)
+                                    <div class="mt-2 break-all font-mono text-xs text-amber-200/90">{{ $sessionId }}</div>
+                                @endif
+                            </div>
+                        @endif
+
+                        @if ($sessionId)
+                            <div class="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-gray-300">
+                                Sessione checkout: <span class="break-all font-mono text-gray-100">{{ $sessionId }}</span>
                             </div>
                         @endif
 
@@ -46,7 +66,7 @@
                             </div>
                         </div>
                         <div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-gray-300">
-                            Se il tuo client o la tua app usa `session_id`, da questa pagina puo sincronizzare lo stato premium e mostrare immediatamente l'accesso attivo.
+                            Questa pagina ora prova a sincronizzare subito lo stato premium usando il `session_id` restituito da Stripe, senza dipendere solo dal webhook.
                         </div>
                     </div>
                 </div>

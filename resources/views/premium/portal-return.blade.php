@@ -17,6 +17,17 @@
                     Hai terminato la gestione del tuo piano. Puoi rientrare nella pagina premium per verificare subito stato, rinnovo e badge abbonato.
                 </p>
 
+                @if ($activeSubscription?->current_period_end)
+                    <div class="mx-auto mt-6 max-w-2xl rounded-2xl border {{ $activeSubscription->cancel_at_period_end ? 'border-amber-400/20 bg-amber-400/10 text-amber-100' : 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100' }} p-4 text-sm">
+                        <div>
+                            Stato attuale: {{ $activeSubscription->cancel_at_period_end ? 'premium attivo fino a fine periodo' : 'premium attivo con rinnovo automatico' }}.
+                        </div>
+                        <div class="mt-2">
+                            Accesso valido fino al {{ $activeSubscription->current_period_end->format('d/m/Y') }}.
+                        </div>
+                    </div>
+                @endif
+
                 <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                     <a href="{{ route('premium.index') }}"
                         class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-gray-950 transition hover:bg-sky-100">

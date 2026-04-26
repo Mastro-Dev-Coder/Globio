@@ -58,9 +58,9 @@ Route::get('/premium', [PremiumController::class, 'index'])->name('premium.index
 Route::post('/contact/send', [LegalController::class, 'sendContact'])->name('send.contact');
 Route::view('/api-docs', 'api-docs')->name('api.docs');
 Route::post('/billing/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('billing.stripe.webhook');
-Route::view('/premium/success', 'premium.success')->name('billing.premium.success');
-Route::view('/premium/cancel', 'premium.cancel')->name('billing.premium.cancel');
-Route::view('/premium/portal-return', 'premium.portal-return')->name('billing.premium.portal-return');
+Route::get('/premium/success', [PremiumController::class, 'success'])->name('billing.premium.success');
+Route::get('/premium/cancel', [PremiumController::class, 'cancelPage'])->name('billing.premium.cancel');
+Route::get('/premium/portal-return', [PremiumController::class, 'portalReturn'])->name('billing.premium.portal-return');
 
 // Video Routes
 Route::get('/videos/{video:video_url}', [VideoController::class, 'show'])->name('videos.show');

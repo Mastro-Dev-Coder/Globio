@@ -60,6 +60,48 @@ class PremiumController extends Controller
         return redirect()->away($portal['url']);
     }
 
+    public function success(Request $request)
+    {
+        $sessionId = $request->query('session_id');
+        $syncError = null;
+        $synced = false;
+
+        if ($sessionId) {
+            try {
+                $this->billing->syncCheckoutSession($sessionId);
+                $synced = true;
+            } catch (ValidationException $exception) {
+                $syncError = collect($exception->errors())->flatten()->implode(' ');
+            } catch (\Throwable $exception) {
+                report($exception);
+                $syncError = 'Il pagamento risulta completato, ma la sincronizzazione automatica dell\'abbonamento non e riuscita subito.';
+            }
+        }
+
+        $activeSubscription = $request->user()?->loadMissing('premiumSubscriptions')->activePremiumSubscription();
+
+        return view('premium.success', [
+            'sessionId' => $sessionId,
+            'synced' => $synced,
+            'syncError' => $syncError,
+            'activeSubscription' => $activeSubscription,
+        ]);
+    }
+
+    public function cancelPage()
+    {
+        return view('premium.cancel');
+    }
+
+    public function portalReturn(Request $request)
+    {
+        $activeSubscription = $request->user()?->loadMissing('premiumSubscriptions')->activePremiumSubscription();
+
+        return view('premium.portal-return', [
+            'activeSubscription' => $activeSubscription,
+        ]);
+    }
+
     public function cancel(Request $request)
     {
         try {
