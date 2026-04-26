@@ -1,18 +1,18 @@
 <x-layout>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="w-full px-0 py-8">
 
             <!-- Header -->
-            <div class="mb-8">
+            <div class="mb-8 px-4 sm:px-6 lg:px-8">
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ __('ui.user_profile_title') }}</h1>
                 <p class="text-gray-600 dark:text-gray-400">{{ __('ui.user_profile_subtitle') }}</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 gap-8 px-0 lg:grid-cols-4 lg:px-8">
 
                 <!-- Sidebar Menu -->
-                <div class="lg:col-span-1">
-                    <nav class="space-y-2">
+                <div class="px-4 sm:px-6 lg:col-span-1 lg:px-0">
+                    <nav class="space-y-2 lg:sticky lg:top-24">
                         <a href="#profile" onclick="showSection('profile')"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-medium">
                             <i class="fas fa-user w-5"></i>

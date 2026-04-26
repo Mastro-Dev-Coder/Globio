@@ -1,5 +1,23 @@
 <x-layout>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+        @php
+            $channelFeedItems = $videos->getCollection()->map(fn($video) => [
+                'type' => 'video',
+                'content' => $video,
+            ]);
+        @endphp
+
+        <style>
+            [data-color-card] a {
+                background-color: transparent;
+                transition: background-color 220ms ease;
+            }
+
+            [data-color-card]:hover a {
+                background-color: var(--hover-color, rgba(120, 120, 120, 0.14));
+            }
+        </style>
+
         <!-- Channel Cover -->
         <div class="relative h-48 md:h-64 lg:h-80 overflow-hidden">
             @auth
@@ -40,7 +58,7 @@
             @endauth
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 mt-12 sm:px-6 lg:px-8">
+        <div class="mx-auto mt-12 w-full max-w-[1650px] px-3 sm:px-5 lg:px-7">
             <!-- Channel Header -->
             <div class="relative -mt-16 md:-mt-20 lg:-mt-24">
                 <div class="flex flex-col lg:flex-row items-start lg:items-end gap-6 pb-6">
@@ -235,61 +253,8 @@
                 <!-- {{ __('ui.video') }}s Tab -->
                 <div id="content-videos" class="tab-content">
                     @if ($videos->count() > 0)
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            @foreach ($videos as $video)
-                                <a href="{{ route('videos.show', $video) }}" class="group">
-                                    <div
-                                        class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-red-200 dark:hover:border-red-800">
-                                        <!-- Thumbnail -->
-                                        <div class="relative aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                                            @if ($video->thumbnail_path)
-                                                <img src="{{ asset('storage/' . $video->thumbnail_path) }}"
-                                                    alt="{{ $video->title }}"
-                                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                            @else
-                                                <div class="w-full h-full flex items-center justify-center">
-                                                    <i class="fas fa-video text-4xl text-gray-400"></i>
-                                                </div>
-                                            @endif
-
-                                            @if ($video->duration)
-                                                <div
-                                                    class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-lg font-medium">
-                                                    {{ gmdate('i:s', $video->duration) }}
-                                                </div>
-                                            @endif
-
-                                            <!-- Hover Overlay -->
-                                            <div
-                                                class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                                                <div
-                                                    class="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100">
-                                                    <i class="fas fa-play text-red-600 ml-1"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- {{ __('ui.video') }} Info -->
-                                        <div class="p-4">
-                                            <h3
-                                                class="font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
-                                                {{ $video->title }}
-                                            </h3>
-
-                                            <div
-                                                class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                                                <span class="flex items-center gap-1">
-                                                    <i class="fas fa-eye"></i>
-                                                    {{ number_format($video->views_count) }}
-                                                </span>
-                                                <span>
-                                                    {{ $video->published_at->diffForHumans() }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            @endforeach
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-3">
+                            @include('partials.home-feed-items', ['feedItems' => $channelFeedItems])
                         </div>
 
                         <!-- Pagination -->
@@ -549,7 +514,94 @@
 
         // Initialize default tab
         document.addEventListener('DOMContentLoaded', function() {
+            function getDominantColor(img) {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                if (!ctx) return null;
+
+                canvas.width = 36;
+                canvas.height = 36;
+                ctx.drawImage(img, 0, 0, 36, 36);
+                const data = ctx.getImageData(0, 0, 36, 36).data;
+
+                let r = 0;
+                let g = 0;
+                let b = 0;
+                let count = 0;
+
+                for (let i = 0; i < data.length; i += 4) {
+                    r += data[i];
+                    g += data[i + 1];
+                    b += data[i + 2];
+                    count++;
+                }
+
+                if (!count) return null;
+
+                return {
+                    r: Math.round(r / count),
+                    g: Math.round(g / count),
+                    b: Math.round(b / count),
+                };
+            }
+
+            function applyHoverColors(root = document) {
+                root.querySelectorAll('[data-color-card]').forEach((card) => {
+                    const img = card.querySelector('[data-color-thumb]');
+                    if (!img) return;
+
+                    const setColor = () => {
+                        const color = getDominantColor(img);
+                        if (!color) return;
+                        card.style.setProperty('--hover-color', `rgba(${color.r}, ${color.g}, ${color.b}, 0.16)`);
+                    };
+
+                    if (img.complete && img.naturalWidth > 0) {
+                        setColor();
+                    } else {
+                        img.addEventListener('load', setColor, {
+                            once: true
+                        });
+                    }
+                });
+            }
+
+            function bindHoverPreviews(root = document) {
+                root.querySelectorAll('[data-preview-card]').forEach((card) => {
+                    if (card.dataset.previewBound === '1') return;
+                    card.dataset.previewBound = '1';
+
+                    const video = card.querySelector('[data-preview-video]');
+                    const image = card.querySelector('[data-preview-image]');
+                    if (!video) return;
+
+                    const start = () => {
+                        video.currentTime = 0;
+                        const playPromise = video.play();
+                        if (playPromise && typeof playPromise.then === 'function') {
+                            playPromise.then(() => {
+                                video.classList.remove('opacity-0');
+                                video.classList.add('opacity-100');
+                                if (image) image.classList.add('opacity-0');
+                            }).catch(() => {});
+                        }
+                    };
+
+                    const stop = () => {
+                        video.pause();
+                        video.classList.remove('opacity-100');
+                        video.classList.add('opacity-0');
+                        if (image) image.classList.remove('opacity-0');
+                    };
+
+                    card.addEventListener('mouseenter', start);
+                    card.addEventListener('mouseleave', stop);
+                });
+            }
+
             switchTab('videos');
+            applyHoverColors(document);
+            bindHoverPreviews(document);
         });
 
         function openReportModal(type, id, title) {
