@@ -97,10 +97,7 @@
                                         <span>@</span>{{ Auth::user()->userProfile->username }}
                                     </p>
                                     @if (Auth::user()->hasPremiumBadge())
-                                        <p class="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
-                                            <i class="fas fa-crown text-[10px]"></i>
-                                            <span>Abbonato Premium</span>
-                                        </p>
+                                        <x-premium-badge label="Abbonato Premium" size="sm" variant="soft" class="mt-1" />
                                     @endif
                                 </div>
                             </div>
@@ -349,10 +346,7 @@
                                         <span>@</span>{{ Auth::user()->userProfile->username }}
                                     </p>
                                     @if (Auth::user()->hasPremiumBadge())
-                                        <p class="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
-                                            <i class="fas fa-crown text-[10px]"></i>
-                                            <span>Abbonato Premium</span>
-                                        </p>
+                                        <x-premium-badge label="Abbonato Premium" size="sm" variant="soft" class="mt-1" />
                                     @endif
                                 </div>
                             </div>

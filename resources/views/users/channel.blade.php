@@ -105,10 +105,7 @@
                                         </div>
                                     @endif
                                     @if ($UserProfile->user?->hasPremiumBadge())
-                                        <div class="inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/10 dark:text-amber-200">
-                                            <i class="fas fa-crown text-[11px]"></i>
-                                            <span>{{ $UserProfile->user->premiumBadge()['short_label'] }}</span>
-                                        </div>
+                                        <x-premium-badge :label="$UserProfile->user->premiumBadge()['short_label']" size="md" variant="solid" />
                                     @endif
                                 </div>
 
@@ -135,10 +132,11 @@
                                 @endif
 
                                 @if ($UserProfile->user?->hasPremiumBadge())
-                                    <p class="mt-3 inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
-                                        <i class="fas fa-crown"></i>
-                                        {{ $UserProfile->user->premiumBadge()['cancel_at_period_end'] ? 'Abbonato premium fino a fine periodo' : 'Abbonato premium attivo' }}
-                                    </p>
+                                    <x-premium-badge
+                                        :label="$UserProfile->user->premiumBadge()['cancel_at_period_end'] ? 'Abbonato premium fino a fine periodo' : 'Abbonato premium attivo'"
+                                        size="md"
+                                        variant="soft"
+                                        class="mt-3" />
                                 @endif
 
                                 <!-- Social Links -->

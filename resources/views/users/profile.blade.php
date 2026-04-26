@@ -81,10 +81,7 @@
                                             </p>
                                         @endif
                                         @if ($user->hasActivePremium())
-                                            <p class="mt-2 inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:border-amber-400/30 dark:bg-amber-500/10 dark:text-amber-200">
-                                                <i class="fas fa-crown"></i>
-                                                Badge abbonato visibile sul profilo
-                                            </p>
+                                            <x-premium-badge label="Badge abbonato visibile sul profilo" size="md" variant="outline" class="mt-2" />
                                         @endif
                                     </div>
                                     <div class="flex flex-col gap-2 sm:flex-row">

@@ -10,10 +10,7 @@
                             Globio Premium
                         </div>
                         @if ($hasPremium)
-                            <div class="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-3 py-1 text-xs font-semibold text-amber-100">
-                                <i class="fas fa-crown text-[11px]"></i>
-                                <span>Badge abbonato attivo</span>
-                            </div>
+                            <x-premium-badge label="Badge abbonato attivo" size="md" variant="solid" />
                         @endif
                     </div>
                     <h1 class="mt-5 max-w-2xl text-4xl font-black tracking-tight text-white sm:text-5xl">
