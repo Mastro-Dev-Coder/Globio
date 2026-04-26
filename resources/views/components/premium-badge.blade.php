@@ -19,8 +19,8 @@
 
     $variantClasses = match ($variant) {
         'soft' => 'border border-amber-200 bg-amber-50 text-amber-800 shadow-sm shadow-amber-100/70 dark:border-amber-400/30 dark:bg-amber-300/12 dark:text-amber-100 dark:shadow-black/20',
-        'outline' => 'border border-amber-300/70 bg-white/85 text-amber-800 shadow-sm shadow-amber-100/60 dark:border-amber-400/35 dark:bg-slate-900/70 dark:text-amber-100 dark:shadow-black/20',
-        default => 'border border-amber-300/75 bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-200 text-amber-950 shadow-md shadow-amber-200/70 dark:border-amber-300/30 dark:bg-gradient-to-r dark:from-amber-300 dark:via-yellow-200 dark:to-amber-100 dark:text-amber-950 dark:shadow-amber-950/30',
+        'outline' => 'border border-amber-300/80 bg-white text-amber-800 shadow-sm shadow-amber-100/60 dark:border-amber-400/35 dark:bg-slate-900/70 dark:text-amber-100 dark:shadow-black/20',
+        default => 'border border-amber-300/75 bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-100 text-amber-950 shadow-md shadow-amber-200/70 dark:border-amber-300/30 dark:from-amber-300 dark:via-yellow-200 dark:to-amber-100 dark:text-amber-950 dark:shadow-amber-950/30',
     };
 @endphp
 

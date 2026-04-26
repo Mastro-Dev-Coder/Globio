@@ -635,7 +635,7 @@ class ReelShow extends Component
             $video = Video::find($videoId);
 
             if ($video) {
-                $shareUrl = route('reel.show', $video->id);
+                $shareUrl = route('reels.show', $video->id);
 
                 $this->dispatch('share-video', [
                     'videoId' => $videoId,
@@ -674,7 +674,7 @@ class ReelShow extends Component
             $video = Video::find($videoId);
 
             if ($video) {
-                $shareUrl = route('reel.show', $video->id);
+                $shareUrl = route('reels.show', $video->id);
 
                 $this->dispatch('copy-link', [
                     'videoId' => $videoId,

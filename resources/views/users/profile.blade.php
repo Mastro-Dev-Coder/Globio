@@ -505,7 +505,7 @@
         // Gestione Tema Dinamico
         class ThemeManager {
             constructor() {
-                this.currentTheme = this.getStoredTheme() || 'dark';
+                this.currentTheme = this.getStoredTheme() || (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
                 this.init();
             }
 
@@ -516,25 +516,16 @@
             }
 
             getStoredTheme() {
-                return localStorage.getItem('user-theme') || sessionStorage.getItem('user-theme');
+                return localStorage.getItem('theme');
             }
 
             setStoredTheme(theme) {
-                localStorage.setItem('user-theme', theme);
-                sessionStorage.setItem('user-theme', theme);
+                localStorage.setItem('theme', theme);
             }
 
             applyTheme(theme) {
                 const html = document.documentElement;
-                const body = document.body;
-
-                // Rimuovi tutte le classi tema
-                html.classList.remove('light', 'dark');
-                body.classList.remove('light', 'dark');
-
-                // Applica il nuovo tema
-                html.classList.add(theme);
-                body.classList.add(theme);
+                html.classList.toggle('dark', theme === 'dark');
 
                 this.currentTheme = theme;
                 this.setStoredTheme(theme);
@@ -597,8 +588,8 @@
 
             saveThemePreference(theme) {
                 // Salva sul server tramite API call
-                fetch('/users/update-preferences', {
-                    method: 'PUT',
+                fetch('{{ route('users.update-preferences') }}', {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -734,6 +725,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Inizializza gestore tema
             window.themeManager = new ThemeManager();
+            window.themeManager.updateMetaThemeColor(window.themeManager.currentTheme);
 
             // Inizializza auto-save
             window.autoSaveManager = new AutoSaveManager();

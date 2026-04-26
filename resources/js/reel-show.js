@@ -29,6 +29,14 @@ class ReelScrollManager {
         this.setupContextMenu();
     }
 
+    getReelContainers() {
+        return Array.from(document.querySelectorAll('[id^="reelContainer"]'));
+    }
+
+    getReelContainer(index) {
+        return document.getElementById(`reelContainer${index}`);
+    }
+
     cacheElements() {
         document.querySelectorAll('[id^="videoElement"]').forEach((video, index) => {
             this.videoElements.set(index, video);
@@ -53,6 +61,12 @@ class ReelScrollManager {
             video.addEventListener('click', (event) => {
                 event.preventDefault();
                 this.togglePlayPause(index);
+            });
+        });
+
+        document.querySelectorAll('.quality-option').forEach((option) => {
+            option.addEventListener('click', () => {
+                window.selectReelQuality(option.dataset.quality, Number(option.dataset.videoIndex));
             });
         });
     }
@@ -99,16 +113,15 @@ class ReelScrollManager {
         this.observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const videoIndex = parseInt(entry.target.closest('[data-reel-index]')
-                        .dataset.reelIndex);
+                    const videoIndex = parseInt(entry.target.dataset.reelIndex, 10);
                     if (videoIndex !== this.currentIndex) {
-                        this.switchToVideo(videoIndex);
+                        this.switchToVideo(videoIndex, { scroll: false });
                     }
                 }
             });
         }, options);
 
-        document.querySelectorAll('[data-reel-index]').forEach(container => this.observer.observe(container));
+        this.getReelContainers().forEach(container => this.observer.observe(container));
     }
 
     setupScrollEvents() {
@@ -157,21 +170,22 @@ class ReelScrollManager {
         let closestIndex = this.currentIndex;
         let minDistance = Infinity;
 
-        document.querySelectorAll('[data-reel-index]').forEach(reel => {
+        this.getReelContainers().forEach(reel => {
             const reelRect = reel.getBoundingClientRect();
             const distance = Math.abs((reelRect.top + reelRect.height / 2) - containerCenter);
             if (distance < minDistance) {
                 minDistance = distance;
-                closestIndex = parseInt(reel.dataset.reelIndex);
+                closestIndex = parseInt(reel.dataset.reelIndex, 10);
             }
         });
 
         if (closestIndex !== this.currentIndex) {
-            this.switchToVideo(closestIndex);
+            this.switchToVideo(closestIndex, { scroll: false });
         }
     }
 
-    switchToVideo(newIndex) {
+    switchToVideo(newIndex, options = {}) {
+        const { scroll = true } = options;
         if (newIndex < 0 || newIndex >= this.totalReels || newIndex === this.currentIndex) return;
 
         const currentVideo = this.videoElements.get(this.currentIndex);
@@ -181,6 +195,22 @@ class ReelScrollManager {
         }
 
         this.currentIndex = newIndex;
+
+        if (scroll) {
+            const container = document.getElementById('reelsScrollContainer');
+            const targetReel = this.getReelContainer(newIndex);
+            if (container && targetReel) {
+                this.isScrolling = true;
+                container.scrollTo({
+                    top: targetReel.offsetTop,
+                    behavior: 'smooth'
+                });
+                clearTimeout(this.scrollReleaseTimeout);
+                this.scrollReleaseTimeout = setTimeout(() => {
+                    this.isScrolling = false;
+                }, 400);
+            }
+        }
 
         const newVideo = this.videoElements.get(newIndex);
         if (newVideo) {
@@ -197,10 +227,15 @@ class ReelScrollManager {
 
         this.updateInfoPanels();
 
+        const reelData = this.getCurrentReelData();
+        if (reelData?.url) {
+            window.history.replaceState({}, '', reelData.url);
+        }
+
         if (window.Livewire) {
             window.Livewire.dispatch('reelChanged', {
                 index: newIndex,
-                videoId: document.querySelector(`[data-reel-index="${newIndex}"]`).dataset.videoId
+                videoId: reelData?.videoId ?? this.getReelContainer(newIndex)?.dataset.videoId
             });
         }
     }
@@ -246,7 +281,7 @@ class ReelScrollManager {
     }
 
     setupContextMenu() {
-        document.querySelectorAll('[data-reel-index]').forEach(container => {
+        this.getReelContainers().forEach(container => {
             container.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
                 this.showContextMenu(e.clientX, e.clientY);
@@ -365,15 +400,19 @@ class ReelScrollManager {
     }
 
     getCurrentReelData() {
-        const currentContainer = document.querySelector(`[data-reel-index="${this.currentIndex}"]`);
+        const currentContainer = this.getReelContainer(this.currentIndex);
         if (!currentContainer) return null;
-        const videoId = currentContainer.dataset.videoId;
+        const fallbackData = window.reelItems?.[this.currentIndex] || {};
+        const videoId = Number(currentContainer.dataset.videoId || fallbackData.videoId || 0);
         const videoElement = currentContainer.querySelector('video');
         const sourceElement = videoElement?.querySelector('source');
         return {
             videoId,
             videoSrc: sourceElement?.src || '',
-            index: this.currentIndex
+            index: this.currentIndex,
+            url: fallbackData.url || `${window.location.origin}/reels/${videoId}`,
+            channelUrl: fallbackData.channelUrl || null,
+            title: fallbackData.title || ''
         };
     }
 
@@ -429,6 +468,28 @@ window.selectReelQuality = function(quality, videoIndex) {
     if (window.reelManager) {
         window.reelManager.reelCurrentQualities.set(videoIndex, quality);
     }
+    const video = window.reelManager?.videoElements.get(videoIndex);
+    const option = document.querySelector(`.quality-option[data-video-index="${videoIndex}"][data-quality="${quality}"]`);
+    const qualityUrl = option?.dataset.qualityUrl;
+    if (video && qualityUrl) {
+        const wasPaused = video.paused;
+        const currentTime = video.currentTime;
+        video.src = qualityUrl;
+        video.load();
+        video.addEventListener('loadedmetadata', function restorePosition() {
+            video.currentTime = currentTime;
+            if (!wasPaused) {
+                video.play().catch(() => {});
+            }
+            video.removeEventListener('loadedmetadata', restorePosition);
+        });
+    }
+    document.querySelectorAll(`.quality-option[data-video-index="${videoIndex}"]`).forEach((item) => {
+        item.classList.remove('bg-gray-800/50');
+        if (item.dataset.quality === quality) {
+            item.classList.add('bg-gray-800/50');
+        }
+    });
     const menu = document.getElementById(`reelQualityMenu${videoIndex}`);
     if (menu) {
         menu.classList.add('hidden');
@@ -442,8 +503,12 @@ window.hideContextMenu = function() {
 };
 
 window.toggleWatchLaterFromContext = function() {
-    const btn = document.querySelector('[wire\\:click="toggleWatchLater"]');
-    if (btn) btn.click();
+    const reelData = window.reelManager?.getCurrentReelData();
+    if (reelData && window.Livewire) {
+        window.Livewire.dispatch('reel-toggle-watch-later', {
+            videoId: reelData.videoId
+        });
+    }
     window.hideContextMenu();
 };
 
@@ -452,8 +517,8 @@ window.shareCurrentReel = function() {
         const data = window.reelManager.getCurrentReelData();
         if (data) {
             navigator.share({
-                title: 'Guarda questo reel',
-                url: window.location.origin + '/reel/show/' + data.videoId
+                title: data.title || 'Guarda questo reel',
+                url: data.url
             });
         }
     } else {
@@ -466,7 +531,7 @@ window.copyVideoLink = function() {
     if (window.reelManager) {
         const data = window.reelManager.getCurrentReelData();
         if (data) {
-            navigator.clipboard.writeText(window.location.origin + '/reel/show/' + data.videoId)
+            navigator.clipboard.writeText(data.url)
                 .then(() => window.showToast('Link copiato!', 'success'))
                 .catch(() => window.showToast('Errore', 'error'));
         }
@@ -492,7 +557,7 @@ window.downloadVideo = function() {
 window.openInNewTab = function() {
     if (window.reelManager) {
         const data = window.reelManager.getCurrentReelData();
-        if (data) window.open('/reel/show/' + data.videoId, '_blank');
+        if (data) window.open(data.url, '_blank');
     }
     window.hideContextMenu();
 };
@@ -587,14 +652,9 @@ window.copyVideoTitle = function() {
 
 window.goToChannel = function() {
     if (window.reelManager) {
-        const currentContainer = document.querySelector(
-            `[data-reel-index="${window.reelManager.currentIndex}"]`);
-        if (currentContainer) {
-            const channelLink = currentContainer.querySelector(
-                '.reel-info-panel:not(.hidden) a[href*="/channel/"]');
-            if (channelLink) {
-                window.location.href = channelLink.href;
-            }
+        const data = window.reelManager.getCurrentReelData();
+        if (data?.channelUrl) {
+            window.location.href = data.channelUrl;
         }
     }
     window.hideContextMenu();
@@ -602,8 +662,7 @@ window.goToChannel = function() {
 
 window.showVideoInfo = function() {
     if (window.reelManager) {
-        const currentContainer = document.querySelector(
-            `[data-reel-index="${window.reelManager.currentIndex}"]`);
+        const currentContainer = window.reelManager.getReelContainer(window.reelManager.currentIndex);
         if (currentContainer) {
             const videoId = currentContainer.dataset.videoId;
             window.location.href = `/video/${videoId}`;

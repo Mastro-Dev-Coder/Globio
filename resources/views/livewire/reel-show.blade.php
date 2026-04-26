@@ -4,17 +4,17 @@
     $currentReel = $reels[$currentIndex] ?? null;
 @endphp
 
-<div class="min-h-screen bg-gray-900">
+<div class="min-h-screen bg-gray-100 text-slate-900 dark:bg-gray-900 dark:text-white">
     <!-- Layout YouTube Style - 3 Columns -->
     <div class="flex h-screen max-h-screen">
         <!-- Left Sidebar: Channel Info & Description -->
-        <div class="hidden lg:flex w-80 flex-col border-r border-gray-800 bg-gray-900">
+        <div class="hidden lg:flex w-80 flex-col border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
             <!-- Header -->
-            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                <button onclick="history.back()" class="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors">
-                    <i class="fas fa-arrow-left text-white text-sm"></i>
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                <button onclick="history.back()" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <i class="fas fa-arrow-left text-slate-700 dark:text-white text-sm"></i>
                 </button>
-                <h2 class="text-white font-medium">Reel</h2>
+                <h2 class="font-medium text-slate-900 dark:text-white">Reel</h2>
                 <div class="w-8"></div>
             </div>
 
@@ -30,21 +30,21 @@
                                 <a href="{{ route('channel.show', $reel['user']['channel_name']) }}" class="block">
                                     <img src="{{ asset('storage/' . $reel['user']['avatar_url']) }}"
                                         alt="{{ $reel['user']['channel_name'] }}"
-                                        class="w-12 h-12 rounded-full object-cover border-2 border-gray-700">
+                                        class="w-12 h-12 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700">
                                 </a>
                             @else
                                 <div
-                                    class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center border-2 border-gray-700">
+                                    class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center border-2 border-gray-200 dark:border-gray-700">
                                     <span
                                         class="text-white font-bold text-sm">{{ strtoupper(substr($reel['user']['name'], 0, 1)) }}</span>
                                 </div>
                             @endif
                             <div class="flex-1 min-w-0">
                                 <a href="{{ route('channel.show', $reel['user']['channel_name']) }}">
-                                    <h3 class="text-white font-medium text-sm truncate">
+                                    <h3 class="text-slate-900 dark:text-white font-medium text-sm truncate">
                                         {{ $reel['user']['channel_name'] ?: $reel['user']['name'] }}</h3>
                                 </a>
-                                <p class="text-gray-400 text-xs">{{ number_format($reel['user']['subscribers'] ?? 0) }}
+                                <p class="text-slate-500 dark:text-gray-400 text-xs">{{ number_format($reel['user']['subscribers'] ?? 0) }}
                                     iscritti</p>
                             </div>
                         </div>
@@ -58,10 +58,10 @@
                         </div>
 
                         <!-- Title -->
-                        <h2 class="text-white font-medium text-base mb-3 leading-tight">{{ $reel['title'] }}</h2>
+                        <h2 class="text-slate-900 dark:text-white font-medium text-base mb-3 leading-tight">{{ $reel['title'] }}</h2>
 
                         <!-- Stats -->
-                        <div class="text-gray-400 text-sm mb-4">
+                        <div class="text-slate-500 dark:text-gray-400 text-sm mb-4">
                             <span>{{ $this->formatCount($reel['views_count']) }} visualizzazioni</span>
                             <span class="mx-2">-</span>
                             <span>{{ \Carbon\Carbon::parse($reel['created_at'])->diffForHumans() }}</span>
@@ -69,7 +69,7 @@
 
                         <!-- Description -->
                         @if ($reel['description'])
-                            <p class="text-gray-300 text-sm leading-relaxed mb-4">{{ $reel['description'] }}</p>
+                            <p class="text-slate-700 dark:text-gray-300 text-sm leading-relaxed mb-4">{{ $reel['description'] }}</p>
                         @endif
 
                         <!-- Tags -->
@@ -87,7 +87,7 @@
 
         <!-- Center: Video Reel -->
         <div
-            class="flex-1 flex items-center justify-center relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+            class="flex-1 flex items-center justify-center relative bg-gradient-to-br from-slate-100 via-white to-slate-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <!-- Scroll Container -->
             <div class="w-full h-screen overflow-y-auto snap-y snap-mandatory scrollbar-hide" id="reelsScrollContainer"
                 style="scroll-behavior: smooth;">
@@ -98,7 +98,7 @@
                         id="reelContainer{{ $index }}">
 
                         <!-- Video Container - Large and Rounded -->
-                        <div class="relative w-full max-w-[500px] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl cursor-pointer ring-4 ring-gray-800/50"
+                        <div class="relative w-full max-w-[500px] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl cursor-pointer ring-4 ring-slate-300/70 dark:ring-gray-800/50"
                             id="videoContainer{{ $index }}">
 
                             <!-- Video Element -->
@@ -142,7 +142,7 @@
 
         <!-- Right Sidebar: Actions -->
         <div
-            class="hidden md:flex w-24 flex-col items-center justify-center border-l border-gray-800 bg-gray-900/95 backdrop-blur-sm p-4 gap-6">
+            class="hidden md:flex w-24 flex-col items-center justify-center border-l border-gray-200 bg-white/95 backdrop-blur-sm p-4 gap-6 dark:border-gray-800 dark:bg-gray-900/95">
             @if (isset($reels[$currentIndex]))
                 @php $currentReel = $reels[$currentIndex]; @endphp
 
@@ -259,7 +259,7 @@
 
     <!-- Mobile Navigation -->
     <div
-        class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-lg border-t border-gray-800 p-4 z-50">
+        class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 p-4 z-50 dark:bg-gray-900/95 dark:border-gray-800">
         <div class="flex items-center justify-around">
             <button wire:click="previousVideo"
                 class="p-4 rounded-full hover:bg-gray-800 transition-all duration-200 hover:scale-110 {{ $currentIndex === 0 ? 'opacity-30' : '' }}"
@@ -304,7 +304,7 @@
                 <div class="space-y-2">
                     <button
                         class="quality-option w-full text-left px-4 py-3 rounded-xl hover:bg-gray-800 transition-all duration-150 flex items-center gap-3 bg-gray-800/50"
-                        data-quality="auto" data-video-index="{{ $index }}">
+                        data-quality="auto" data-video-index="{{ $index }}" data-quality-url="">
                         <i class="fas fa-magic text-purple-400"></i>
                         <div class="flex-1">
                             <div class="text-white font-medium">Auto</div>
@@ -341,7 +341,7 @@
                         @endphp
                         <button
                             class="quality-option w-full text-left px-4 py-3 rounded-xl hover:bg-gray-800 transition-all duration-150 flex items-center gap-3"
-                            data-quality="{{ $quality }}" data-video-index="{{ $index }}">
+                            data-quality="{{ $quality }}" data-video-index="{{ $index }}" data-quality-url="{{ $qualityData['url'] ?? '' }}">
                             <i class="{{ $icon }} {{ $color }}"></i>
                             <div class="flex-1">
                                 <div class="text-white font-medium">{{ $qualityLabels[$quality] ?? $quality }}</div>
@@ -463,11 +463,14 @@
             isMuted: {{ $isMuted ? 'true' : 'false' }}
         };
 
-        // Store video URLs for JavaScript
-        window.reelVideoUrls = {};
+        window.reelItems = {};
     @foreach ($reels as $index => $reel)
-            window.reelVideoUrls[{{ $index }}] =
-                '{{ $reel['video_url'] ? url($reel['video_url']) : url('/reels/' . $reel['id']) }}';
+            window.reelItems[{{ $index }}] = {
+                videoId: {{ $reel['id'] }},
+                url: @json(route('reels.show', $reel['id'])),
+                channelUrl: @json($reel['user']['channel_name'] ? route('channel.show', $reel['user']['channel_name']) : null),
+                title: @json($reel['title'])
+            };
     @endforeach
     </script>
 </div>
