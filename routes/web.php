@@ -58,15 +58,9 @@ Route::get('/premium', [PremiumController::class, 'index'])->name('premium.index
 Route::post('/contact/send', [LegalController::class, 'sendContact'])->name('send.contact');
 Route::view('/api-docs', 'api-docs')->name('api.docs');
 Route::post('/billing/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('billing.stripe.webhook');
-Route::get('/premium/success', function () {
-    return response('<h1>Pagamento completato</h1><p>Puoi tornare nell\'app e sincronizzare lo stato premium.</p>');
-})->name('billing.premium.success');
-Route::get('/premium/cancel', function () {
-    return response('<h1>Pagamento annullato</h1><p>Nessun addebito completato.</p>');
-})->name('billing.premium.cancel');
-Route::get('/premium/portal-return', function () {
-    return response('<h1>Portale abbonamento chiuso</h1><p>Puoi tornare nell\'app.</p>');
-})->name('billing.premium.portal-return');
+Route::view('/premium/success', 'premium.success')->name('billing.premium.success');
+Route::view('/premium/cancel', 'premium.cancel')->name('billing.premium.cancel');
+Route::view('/premium/portal-return', 'premium.portal-return')->name('billing.premium.portal-return');
 
 // Video Routes
 Route::get('/videos/{video:video_url}', [VideoController::class, 'show'])->name('videos.show');
