@@ -13,7 +13,7 @@
             ],
             [
                 'title' => 'Public Content',
-                'description' => 'Feed, creators, ricerca e configurazione globale dell’app.',
+                'description' => 'Feed, creators, ricerca e configurazione globale dell\'app.',
                 'endpoints' => [
                     ['method' => 'GET', 'path' => '/app-config', 'auth' => 'No', 'params' => 'feature flags, premium plan, app config'],
                     ['method' => 'GET', 'path' => '/home', 'auth' => 'No', 'params' => 'limit? (4-24)'],
@@ -28,32 +28,42 @@
             ],
             [
                 'title' => 'Premium',
-                'description' => 'Abbonamento mensile sicuro in stile YouTube con Stripe Checkout e Customer Portal.',
+                'description' => 'Abbonamento mensile con Stripe Checkout, Customer Portal, badge premium e rinnovo gestibile via API.',
                 'endpoints' => [
                     ['method' => 'GET', 'path' => '/premium/plans', 'auth' => 'No', 'params' => 'piano premium disponibile'],
-                    ['method' => 'GET', 'path' => '/me/premium', 'auth' => 'Si', 'params' => 'stato premium, capabilities, scadenza'],
+                    ['method' => 'GET', 'path' => '/me/premium', 'auth' => 'Si', 'params' => 'stato premium, capabilities, badge, scadenza'],
                     ['method' => 'POST', 'path' => '/me/premium/checkout', 'auth' => 'Si', 'params' => 'success_url?, cancel_url?'],
                     ['method' => 'POST', 'path' => '/me/premium/confirm', 'auth' => 'Si', 'params' => 'session_id Stripe Checkout'],
                     ['method' => 'POST', 'path' => '/me/premium/portal', 'auth' => 'Si', 'params' => 'return_url?'],
+                    ['method' => 'POST', 'path' => '/me/premium/cancel', 'auth' => 'Si', 'params' => 'disattiva rinnovo automatico'],
+                    ['method' => 'POST', 'path' => '/me/premium/resume', 'auth' => 'Si', 'params' => 'riattiva rinnovo automatico'],
                 ],
             ],
             [
-                'title' => 'Account & Library',
-                'description' => 'Profilo utente, watch later, cronologia, notifiche e playlist.',
+                'title' => 'Account & Badge',
+                'description' => 'Profilo utente con blocco premium, badge e flag rapidi per la UI.',
                 'endpoints' => [
-                    ['method' => 'GET', 'path' => '/me', 'auth' => 'Si', 'params' => 'profilo con stato premium'],
+                    ['method' => 'GET', 'path' => '/me', 'auth' => 'Si', 'params' => 'profilo con stato premium, badge e profile.is_premium_subscriber'],
                     ['method' => 'PUT', 'path' => '/me', 'auth' => 'Si', 'params' => 'name?, channel_name?, channel_description?, country?'],
+                    ['method' => 'GET', 'path' => '/me/notifications', 'auth' => 'Si', 'params' => 'lista notifiche'],
+                    ['method' => 'POST', 'path' => '/me/notifications/read-all', 'auth' => 'Si', 'params' => 'segna tutte come lette'],
+                    ['method' => 'POST', 'path' => '/me/notifications/{id}/read', 'auth' => 'Si', 'params' => 'segna una come letta'],
+                ],
+            ],
+            [
+                'title' => 'Library',
+                'description' => 'Watch later e cronologia personale.',
+                'endpoints' => [
                     ['method' => 'GET', 'path' => '/me/watch-later', 'auth' => 'Si', 'params' => '-'],
                     ['method' => 'POST', 'path' => '/me/watch-later/{id_or_slug}', 'auth' => 'Si', 'params' => 'aggiungi watch later'],
                     ['method' => 'DELETE', 'path' => '/me/watch-later/{id_or_slug}', 'auth' => 'Si', 'params' => 'rimuovi watch later'],
                     ['method' => 'GET', 'path' => '/me/history', 'auth' => 'Si', 'params' => '-'],
                     ['method' => 'POST', 'path' => '/me/history/{id_or_slug}', 'auth' => 'Si', 'params' => 'watched_duration, total_duration?, completed?'],
-                    ['method' => 'GET', 'path' => '/me/notifications', 'auth' => 'Si', 'params' => 'lista notifiche'],
                 ],
             ],
             [
                 'title' => 'Playlists',
-                'description' => 'CRUD playlist dedicato all’app mobile e web autenticato.',
+                'description' => 'CRUD playlist dedicato all\'app mobile e web autenticato.',
                 'endpoints' => [
                     ['method' => 'GET', 'path' => '/me/playlists', 'auth' => 'Si', 'params' => 'lista playlist utente'],
                     ['method' => 'POST', 'path' => '/me/playlists', 'auth' => 'Si', 'params' => 'title, description?, is_public?, video_ids[]?'],
@@ -70,6 +80,8 @@
                 'endpoints' => [
                     ['method' => 'GET', 'path' => '/me/channel', 'auth' => 'Si', 'params' => 'info canale'],
                     ['method' => 'PUT', 'path' => '/me/channel', 'auth' => 'Si', 'params' => 'channel_name?, channel_description?, country?, social_links?'],
+                    ['method' => 'GET', 'path' => '/me/subscriptions', 'auth' => 'Si', 'params' => 'iscrizioni ai canali'],
+                    ['method' => 'GET', 'path' => '/me/subscribers', 'auth' => 'Si', 'params' => 'iscritti al canale'],
                     ['method' => 'GET', 'path' => '/me/studio/summary', 'auth' => 'Si', 'params' => 'start_date?, end_date?'],
                     ['method' => 'GET', 'path' => '/me/studio/analytics', 'auth' => 'Si', 'params' => 'start_date?, end_date?, limit?'],
                     ['method' => 'GET', 'path' => '/me/studio/community', 'auth' => 'Si', 'params' => 'status?, per_page?'],
@@ -100,7 +112,7 @@
                     </p>
                     <h1 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Globio API v1</h1>
                     <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-300 sm:text-base">
-                        Endpoint pronti per web e app Flutter, con abbonamento premium mensile, playlist CRUD e stato premium integrato nel profilo utente.
+                        Endpoint pronti per web e app Flutter, con abbonamento premium mensile, badge premium integrato nel profilo utente e playlist CRUD complete.
                     </p>
 
                     <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -131,16 +143,16 @@
                         <li>Video e reels senza pubblicita</li>
                         <li>Background playback e picture in picture</li>
                         <li>Qualita avanzata e controlli premium</li>
-                        <li>Customer portal per gestione mensile sicura</li>
+                        <li>Customer portal e rinnovo gestibile via API</li>
                     </ul>
                 </div>
                 <div class="rounded-2xl border border-sky-900/60 bg-sky-950/20 p-5">
-                    <h2 class="text-base font-semibold text-sky-200">Playlist API</h2>
+                    <h2 class="text-base font-semibold text-sky-200">Badge Premium</h2>
                     <ul class="mt-3 space-y-2 text-sm text-sky-100/90">
-                        <li>Creazione playlist</li>
-                        <li>Aggiunta e rimozione video</li>
-                        <li>Visibilita pubblica o privata</li>
-                        <li>Payload pronto per mobile app</li>
+                        <li>Restituito da `GET /me` e `GET /me/premium`</li>
+                        <li>`short_label` pronto per chip e pill UI</li>
+                        <li>`icon` allineata a `fa-crown`</li>
+                        <li>`profile.is_premium_subscriber` come flag rapido</li>
                     </ul>
                 </div>
                 <div class="rounded-2xl border border-amber-900/60 bg-amber-950/20 p-5">
@@ -227,12 +239,39 @@
     "reels_enhanced_controls": true,
     "queue_management": true
   },
-  "premium_access_ends_at": "2026-05-24T12:00:00+02:00"
+  "premium_access_ends_at": "2026-05-24T12:00:00+02:00",
+  "badge": {
+    "label": "Abbonato Premium",
+    "short_label": "Premium",
+    "icon": "fa-crown",
+    "current_period_end": "2026-05-24T12:00:00+02:00",
+    "cancel_at_period_end": false
+  },
+  "current_period_end": "2026-05-24T12:00:00+02:00"
 }</code></pre>
                 </div>
             </div>
 
             <div class="mt-6 grid gap-6 lg:grid-cols-2">
+                <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
+                    <h3 class="text-base font-semibold text-white">Esempio Badge in GET /me</h3>
+                    <pre class="mt-3 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-4 text-xs leading-6 text-slate-200"><code>{
+  "premium": {
+    "active": true,
+    "badge": {
+      "label": "Abbonato Premium",
+      "short_label": "Premium",
+      "icon": "fa-crown",
+      "current_period_end": "2026-05-24T12:00:00+02:00",
+      "cancel_at_period_end": false
+    }
+  },
+  "profile": {
+    "is_premium_subscriber": true
+  }
+}</code></pre>
+                </div>
+
                 <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
                     <h3 class="text-base font-semibold text-white">Esempio Creazione Playlist</h3>
                     <pre class="mt-3 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-4 text-xs leading-6 text-slate-200"><code>curl -X POST "{{ $baseUrl }}/me/playlists" \
@@ -244,6 +283,24 @@
     "is_public": true,
     "video_ids": [12, 18, 22]
   }'</code></pre>
+                </div>
+            </div>
+
+            <div class="mt-6 grid gap-6 lg:grid-cols-2">
+                <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
+                    <h3 class="text-base font-semibold text-white">Rinnovo e Ripristino</h3>
+                    <pre class="mt-3 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-4 text-xs leading-6 text-slate-200"><code>POST {{ $baseUrl }}/me/premium/cancel
+POST {{ $baseUrl }}/me/premium/resume
+
+Risposta:
+{
+  "message": "Premium subscription automatic renewal restored.",
+  "subscription": {
+    "status": "active",
+    "cancel_at_period_end": false,
+    "current_period_end": "2026-05-24T12:00:00+02:00"
+  }
+}</code></pre>
                 </div>
 
                 <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
