@@ -33,6 +33,7 @@ class Video extends Model
         'dislikes_count',
         'comments_count',
         'status',
+        'visibility',
         'is_public',
         'is_featured',
         'is_reel',
@@ -43,8 +44,10 @@ class Video extends Model
         'video_format',
         'file_size',
         'tags',
+        'suggested_video_ids',
         'language',
         'published_at',
+        'scheduled_for',
         'moderation_reason',
         'original_file_path',
     ];
@@ -57,7 +60,9 @@ class Video extends Model
         'likes_enabled' => 'boolean',
         'comments_require_approval' => 'boolean',
         'tags' => 'array',
+        'suggested_video_ids' => 'array',
         'published_at' => 'datetime',
+        'scheduled_for' => 'datetime',
     ];
 
     public function getRouteKeyName()

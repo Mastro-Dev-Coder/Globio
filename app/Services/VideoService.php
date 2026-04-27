@@ -69,7 +69,7 @@ class VideoService
         $tempFilePath = $file->storeAs($this->tempPath, $fileName, 'local');
 
         try {
-            $fileSize = $file->getSize();
+            $fileSize = (int) $file->getSize();
             $videoFormat = strtolower($file->getClientOriginalExtension());
 
             // Prendi il valore is_reel specificato dall'utente, ma sarà sovrascritto durante il processamento
@@ -106,6 +106,58 @@ class VideoService
             Storage::disk('local')->delete($tempFilePath);
             throw $e;
         }
+    }
+
+    public function uploadVideoFromResumablePath(string $assembledPath, string $originalFileName, array $data, int $userId): Video
+    {
+        $extension = strtolower(pathinfo($originalFileName, PATHINFO_EXTENSION) ?: 'mp4');
+        $fileName = Str::uuid() . '.' . $extension;
+        $relativeTempFilePath = $this->tempPath . '/' . $fileName;
+        $finalTempPath = Storage::disk('local')->path($relativeTempFilePath);
+
+        $this->ensureDirectoryExists(dirname($finalTempPath));
+
+        if (!@rename($assembledPath, $finalTempPath)) {
+            copy($assembledPath, $finalTempPath);
+            @unlink($assembledPath);
+        }
+
+        $visibility = $data['visibility'] ?? (($data['is_public'] ?? true) ? 'public' : 'private');
+        $scheduledFor = !empty($data['scheduled_for']) ? now()->parse($data['scheduled_for']) : null;
+
+        $video = Video::create([
+            'user_id' => $userId,
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'status' => 'processing',
+            'visibility' => $visibility,
+            'is_public' => $visibility === 'public' && !$scheduledFor,
+            'language' => $data['language'] ?? 'it',
+            'tags' => $this->normalizeTags($data['tags'] ?? null),
+            'suggested_video_ids' => $this->normalizeSuggestedVideoIds($data['suggested_video_ids'] ?? []),
+            'video_path' => $relativeTempFilePath,
+            'video_url' => Str::upper(Str::random(11)),
+            'file_size' => (int) filesize($finalTempPath),
+            'video_format' => $extension,
+            'duration' => 0,
+            'views_count' => 0,
+            'likes_count' => 0,
+            'dislikes_count' => 0,
+            'comments_count' => 0,
+            'is_featured' => false,
+            'is_reel' => (bool) ($data['is_reel'] ?? false),
+            'video_quality' => null,
+            'published_at' => null,
+            'scheduled_for' => $scheduledFor,
+            'comments_enabled' => array_key_exists('comments_enabled', $data) ? (bool) $data['comments_enabled'] : true,
+            'likes_enabled' => array_key_exists('likes_enabled', $data) ? (bool) $data['likes_enabled'] : true,
+            'comments_require_approval' => array_key_exists('comments_require_approval', $data) ? (bool) $data['comments_require_approval'] : false,
+            'moderation_reason' => null,
+        ]);
+
+        dispatch(new ProcessVideoJob($video->id, $relativeTempFilePath));
+
+        return $video;
     }
 
     /**
@@ -363,6 +415,36 @@ class VideoService
 
         // Per altri percorsi, usa il path relativo
         return base_path($path);
+    }
+
+    private function normalizeTags(mixed $tags): ?array
+    {
+        if ($tags === null || $tags === '') {
+            return null;
+        }
+
+        if (!is_array($tags)) {
+            $tags = explode(',', (string) $tags);
+        }
+
+        $normalized = array_values(array_filter(array_map(fn ($tag) => trim((string) $tag), $tags)));
+
+        return empty($normalized) ? null : $normalized;
+    }
+
+    private function normalizeSuggestedVideoIds(mixed $ids): ?array
+    {
+        if ($ids === null || $ids === '') {
+            return null;
+        }
+
+        if (!is_array($ids)) {
+            $ids = explode(',', (string) $ids);
+        }
+
+        $normalized = array_values(array_unique(array_filter(array_map('intval', $ids))));
+
+        return empty($normalized) ? null : $normalized;
     }
 
     /**

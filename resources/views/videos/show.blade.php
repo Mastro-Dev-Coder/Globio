@@ -164,6 +164,39 @@
                                     </div>
                                 @endif
 
+                                @if (!empty($preferredSuggestions) && $preferredSuggestions->count() > 0)
+                                    <div class="border-b border-gray-800 py-4">
+                                        <div class="mb-4 flex items-center gap-2">
+                                            <i class="fas fa-clone text-red-400"></i>
+                                            <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-300">
+                                                Card Consigliate
+                                            </h3>
+                                        </div>
+                                        <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                                            @foreach ($preferredSuggestions->take(3) as $suggestedVideo)
+                                                <a href="{{ route('videos.show', $suggestedVideo) }}"
+                                                    class="group overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/70 transition hover:border-red-500/40">
+                                                    <div class="aspect-video overflow-hidden bg-gray-800">
+                                                        @if ($suggestedVideo->thumbnail_url)
+                                                            <img src="{{ $suggestedVideo->thumbnail_url }}"
+                                                                alt="{{ $suggestedVideo->title }}"
+                                                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+                                                        @endif
+                                                    </div>
+                                                    <div class="p-3">
+                                                        <p class="line-clamp-2 text-sm font-semibold text-white">
+                                                            {{ $suggestedVideo->title }}
+                                                        </p>
+                                                        <p class="mt-2 text-xs text-gray-400">
+                                                            {{ $suggestedVideo->user->userProfile?->channel_name ?: $suggestedVideo->user->name }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <!-- Comments Section -->
                                 <div class="pt-4">
                                     <livewire:video-comments :video="$video" />

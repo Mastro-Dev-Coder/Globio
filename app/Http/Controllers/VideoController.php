@@ -123,6 +123,16 @@ class VideoController extends Controller
             }
         ]);
 
+        $preferredSuggestions = collect();
+        if (!empty($video->suggested_video_ids)) {
+            $preferredSuggestions = Video::published()
+                ->whereIn('id', $video->suggested_video_ids)
+                ->where('id', '!=', $video->id)
+                ->get()
+                ->sortBy(fn ($candidate) => array_search($candidate->id, $video->suggested_video_ids, true))
+                ->values();
+        }
+
         // Get related videos for sidebar
         $relatedVideos = Video::published()
             ->where('id', '!=', $video->id)
@@ -138,6 +148,13 @@ class VideoController extends Controller
             })
             ->limit(10)
             ->get();
+
+        if ($preferredSuggestions->isNotEmpty()) {
+            $relatedVideos = $preferredSuggestions
+                ->concat($relatedVideos)
+                ->unique('id')
+                ->values();
+        }
 
         // Get suggested playlists for sidebar
         $suggestedPlaylists = collect();
@@ -249,6 +266,7 @@ class VideoController extends Controller
         return view('videos.show', compact(
             'video',
             'relatedVideos',
+            'preferredSuggestions',
             'suggestedPlaylists',
             'shareUrl',
             'restoreMiniPlayerState',
@@ -357,8 +375,8 @@ class VideoController extends Controller
                     'id' => $v->id,
                     'title' => $v->title,
                     'description' => $v->description,
-                    'thumbnail_path' => $v->thumbnail_path,
-                    'video_path' => $v->video_path,
+                    'thumbnail_path' => $v->thumbnail_url,
+                    'video_path' => $v->video_file_url,
                     'video_url' => $v->video_url,
                     'duration' => $v->duration,
                     'views_count' => $v->views_count,

@@ -54,12 +54,19 @@ class CompleteVideoJob implements ShouldQueue
             ]);
 
             $requireApproval = Setting::getBooleanValue('require_approval', false);
-            $finalStatus = $requireApproval ? 'pending_approval' : 'published';
-            $publishedAt = $requireApproval ? null : now();
+            $isScheduled = $video->scheduled_for && $video->scheduled_for->isFuture();
+            $isPrivate = $video->visibility === 'private';
+            $finalStatus = $isScheduled || $isPrivate
+                ? 'draft'
+                : ($requireApproval ? 'pending_approval' : 'published');
+            $publishedAt = $finalStatus === 'published' ? now() : null;
+            $isPublic = $finalStatus === 'published' && $video->visibility === 'public';
 
             Log::info('Determinazione stato finale video', [
                 'video_id' => $this->videoId,
                 'require_approval' => $requireApproval,
+                'is_scheduled' => $isScheduled,
+                'is_private' => $isPrivate,
                 'final_status' => $finalStatus,
                 'published_at' => $publishedAt
             ]);
@@ -67,6 +74,7 @@ class CompleteVideoJob implements ShouldQueue
             $video->update([
                 'status' => $finalStatus,
                 'published_at' => $publishedAt,
+                'is_public' => $isPublic,
                 'is_featured' => false,
                 'views_count' => $video->views_count ?? 0,
                 'likes_count' => $video->likes_count ?? 0,
@@ -74,7 +82,9 @@ class CompleteVideoJob implements ShouldQueue
                 'comments_count' => $video->comments_count ?? 0,
                 'video_quality' => $video->video_quality ?? '720p',
                 'video_format' => $video->video_format ?? 'mp4',
-                'moderation_reason' => $requireApproval ? 'In attesa di approvazione amministrativa' : null,
+                'moderation_reason' => $requireApproval && !$isScheduled && !$isPrivate
+                    ? 'In attesa di approvazione amministrativa'
+                    : null,
             ]);
 
             if ($user) {

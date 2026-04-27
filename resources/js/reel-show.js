@@ -410,7 +410,7 @@ class ReelScrollManager {
             videoId,
             videoSrc: sourceElement?.src || '',
             index: this.currentIndex,
-            url: fallbackData.url || `${window.location.origin}/reels/${videoId}`,
+            url: fallbackData.url || `${window.location.origin}/${videoId}`,
             channelUrl: fallbackData.channelUrl || null,
             title: fallbackData.title || ''
         };

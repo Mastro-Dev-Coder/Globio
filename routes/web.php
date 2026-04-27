@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UploadWizardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\AdminDashboardController;
@@ -82,6 +83,12 @@ Route::get('/channel/{channel_name}', [UserController::class, 'channel'])->name(
 
 // Protected Video Routes
 Route::middleware(['auth'])->group(function () {
+    Route::post('/upload-wizard/sessions', [UploadWizardController::class, 'createSession'])->name('upload-wizard.sessions.create');
+    Route::get('/upload-wizard/sessions/{token}', [UploadWizardController::class, 'showSession'])->name('upload-wizard.sessions.show');
+    Route::post('/upload-wizard/sessions/{token}/chunk', [UploadWizardController::class, 'uploadChunk'])->name('upload-wizard.sessions.chunk');
+    Route::post('/upload-wizard/sessions/{token}/finalize', [UploadWizardController::class, 'finalize'])->name('upload-wizard.sessions.finalize');
+    Route::delete('/upload-wizard/sessions/{token}', [UploadWizardController::class, 'cancel'])->name('upload-wizard.sessions.cancel');
+
     Route::post('/premium/checkout', [PremiumController::class, 'checkout'])->name('premium.checkout');
     Route::post('/premium/portal', [PremiumController::class, 'portal'])->name('premium.portal');
     Route::post('/premium/cancel', [PremiumController::class, 'cancel'])->name('premium.cancel');

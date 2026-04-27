@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Playlist;
 use App\Models\Setting;
+use App\Models\Video;
 use App\Services\VideoService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -357,6 +359,22 @@ class VideoUpload extends Component
 
     public function render()
     {
-        return view('livewire.video-upload');
+        $playlists = Playlist::query()
+            ->where('user_id', Auth::id())
+            ->withCount('videos')
+            ->latest()
+            ->get(['id', 'title', 'description', 'is_public']);
+
+        $videoCandidates = Video::query()
+            ->where('user_id', Auth::id())
+            ->whereIn('status', ['published', 'draft', 'pending_approval'])
+            ->latest('created_at')
+            ->limit(24)
+            ->get(['id', 'title', 'video_url', 'thumbnail_path', 'is_reel', 'status', 'published_at']);
+
+        return view('livewire.video-upload', [
+            'playlistOptions' => $playlists,
+            'suggestedCandidates' => $videoCandidates,
+        ]);
     }
 }

@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 Schedule::command('recommendations:update-interests')
     ->daily()
     ->description('Aggiorna gli interessi degli utenti per le raccomandazioni video');
+
+Schedule::command('videos:publish-scheduled')
+    ->everyMinute()
+    ->description('Pubblica i video programmati del wizard upload');
